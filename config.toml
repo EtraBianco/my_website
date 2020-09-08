@@ -20,8 +20,8 @@ disqusShortname = ""
 
   # Provide your metadata here.
   name = "Etra Bianco"
-  description = "Coming from Turin, one of Italy's industrial hubs, and from a family of entrepreneurs, business studies was a natural fit. I graduated from the University of Bath and during my undergraduate placement year I had the opportunity to discover opposite corners of Europe, living first in Stockholm and then in Budapest. After gaining work experience in the beverage industry with the Coca-Cola Company and later in the beauty sector with the Estée Lauder Companies, I decided to complement my business background with an analytics skill set at London Business School. I am currently completing a Masters in Analytics and Management with the hope of bringing meaningful data-driven insights to tomorrow’s corporate world and be a driver of growth."
-
+  description = "Etra Bianco Portfolio website"
+  
   # Link custom assets relative to /static
   custom_css = []
   custom_js  = []
@@ -68,20 +68,20 @@ disqusShortname = ""
 
     # Button Style 1
     [[params.navigation.button1]]
-      name = "Get Started"
+      name = "My Projects"
       url = "blogs"
 
     # Button Style 2
-    [[params.navigation.button2]]
-      name = "Log In"
-      url = "#"
+    #[[params.navigation.button2]]
+    #name = "Log In"
+    #url = "#"
 
 
   # Banner section
   [params.banner]
     # To change the background image on the homepage banner, replace 'banner.jpg' in
     # the 'static/img' folder.
-    title = "Hi, my name is Etra Bianco!"
+    title = "Hi, my name is Etra"
     #subtitle = "A RESPONSIVE SITE TEMPLATE DESIGNED BY HTML5 UP\nAND RELEASED UNDER THE CREATIVE COMMONS."
     buttonText = "Get Started"
 
@@ -92,10 +92,10 @@ disqusShortname = ""
     # Display your showcases here.
     
     [[params.tiles.showcase]]
-      title = "Aliquam"
-      subtitle = "Ipsum Dolor Sit Amet"
+      title = "NYT Masks"
+      subtitle = "How does mask use acceptance vary in the US?"
       image = "pic01.jpg"
-      url = "blogs/aliquam"
+      url = "blogs/blog5"
 
     [[params.tiles.showcase]]
       title = "Tempus"

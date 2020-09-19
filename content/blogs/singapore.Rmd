@@ -12,25 +12,102 @@ title: AirBnB
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(
+  message = FALSE, 
+  warning = FALSE, 
+  tidy=FALSE,     # display code as typed
+  size="small")   # slightly smaller font for code
+options(digits = 3)
+
+# default figure size
+knitr::opts_chunk$set(
+  fig.width=6.75, 
+  fig.height=6.75,
+  fig.align = "center")
+
+#avoid scientific notation 
+options(scipen=999)
 ```
 
-## Predicting prices for AirBnBs
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
+```{r load-libraries, warning=FALSE, message=FALSE, echo=FALSE}
+library(tidyverse)  # Loading packages for inspecting, wrangling, visualizing and modeling the data
+library(mosaic)
+library(ggthemes)
+library(lubridate)
+library(fivethirtyeight)
+library(here)
+library(skimr)
+library(janitor)
+library(vroom)
+library(tidyquant)
+library(ggthemes)
+library(kableExtra)
+library(ggrepel)
+library(RColorBrewer)
+library(scales)
+library(gridExtra)
+library(infer)
+library(moderndive)
+library(htmlTable)
+library(leaflet)
+library(GGally)
+library(kableExtra)
+library(huxtable)
+library(broom)
+library(fastDummies)
+library(jtools)
+library(ggfortify)
+library(car)
 ```
 
-## Including Plots
+# Predicting prices for AirBnBs
 
-You can also embed plots, for example:
+In this project I will be analysing data about Airbnb listings in Singapore with the goal of building a model to predict the total cost for two people staying four nights in Singapore. The data is from [insideairbnb.com]()
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+```{r load data}
+#importing the raw data from insideairbnb.com 
+df_raw <- read_csv(here("data","listings.csv"))
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+## Inspecting and cleaning the data 
+
+```{r, cache=TRUE, eval = FALSE}
+#glimpsing the data frame to get a sense of the raw data
+glimpse(df_raw)
+```
+```{r, cache=TRUE, eval = FALSE}
+#Skim for further inspection of the data frame 
+skimr::skim(df_raw)
+```
+
+An initial inspection using the `glimpse` and `skim` functions below also revealed numerous duplicated observations and many missing values which I proceed to remove, alongside any irrelevant variables.
+The raw data consists of 7323 observations (rows) and 106 variables (columns) and includes both quantitative and qualitative information on AirBnBs in Singapore. Lastly, some quantitative variables (eg. price, cleaning_fee, extra_people) appear with the wrong data type, which I change into numerical. 
+
+Some of the main variables analyzed are described below, with cost data typically expressed in US$: 
+
+- `price` = cost per night
+- `cleaning_fee`: cleaning fee
+- `extra_people`: charge for having more than 1 person
+- `property_type`: type of accommodation (House, Apartment, etc.)
+- `room_type`:
+  * Entire home/apt (guests have entire place to themselves)
+  * Private room (Guests have private room to sleep, all other rooms shared)
+  * Shared room (Guests sleep in room shared with others)
+- `number_of_reviews`: Total number of reviews for the listing
+- `review_scores_rating`: Average review score (0 - 100)
+- `longitude, latitude`: geographical coordinates to help us locate the listing
+- `neighbourhood`: three variables on a few major neighbourhoods in each city
+- `square_feet`: size of the listing in square feet
+- `cancellation policy`: type of cancellation policy (flexible, moderate, strict)
+- `host_is_identified`: indicates if the host has been validated by airbnb (True or False)
+- `host_is_superhost`: if the host is experienced and has received consistently positive reviews
+
+
+
+
+
+
+
+
+
+

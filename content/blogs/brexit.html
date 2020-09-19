@@ -59,7 +59,7 @@ y = &quot;Number of constituencies (out of 632 total)&quot;) +
         axis.text = element_text(color = &quot;#C7C8CF&quot;),
         axis.line = element_line(color = &quot;#C7C8CF&quot;),
         plot.caption = element_text(color = &quot;#C7C8CF&quot;))</code></pre>
-<p><img src="/blogs/brexit_files/figure-html/brexit_histogram-1.png" width="480" style="display: block; margin: auto;" /></p>
+<p><img src="/blogs/brexit_files/figure-html/brexit_histogram-1.png" width="960" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>ggplot(brexit_results, aes(x = leave_share)) +
   geom_density(color = &quot;grey&quot;) +
   labs(title = &quot;Distribution of UK constituencies according to their Brexit Results&quot;, subtitle = &quot;Pro-Brexit voters&#39; concentration in UK constituencies&quot;,
@@ -74,7 +74,7 @@ y = &quot;Density&quot;) +
         axis.text = element_text(color = &quot;#C7C8CF&quot;),
         axis.line = element_line(color = &quot;#C7C8CF&quot;),
         plot.caption = element_text(color = &quot;#C7C8CF&quot;))</code></pre>
-<p><img src="/blogs/brexit_files/figure-html/brexit_histogram-2.png" width="480" style="display: block; margin: auto;" /></p>
+<p><img src="/blogs/brexit_files/figure-html/brexit_histogram-2.png" width="960" style="display: block; margin: auto;" /></p>
 <p>The histogram, shows the distribution of UK constituencies according to their Brexit Results, more specifically, the concentration of Pro-Brexit voters in UK constituencies. The histogram is skewed to the right, indicating that a majority of UK constituencies (about 380, so more than half) had more than 50% of Pro-Brexit voters among their residents.</p>
 <p>Taking into account that the results of the UK’s 2016 Brexit referendum was 51.9% leave to 48.1% remain, the histogram above is extremely insightful. Indeed, for the plot to be so skewed to the right (towards a 58% concentration of Pro-Brexit voters), but then for the final outcome to have been so balanced, it suggests that “leave” voters were mostly located in smaller constituencies and, on the other hand, “remain” voters mostly located in bigger, more populated, constituencies - thus taking a greater number of these smaller constituencies to outweigh the “remain” constituencies.</p>
 <p>One common explanation for the Brexit outcome was fear of immigration and opposition to the EU’s more open border policy. Therefore, I proceed to investigate the relationship between the proportion of native born residents (<code>born_in_uk</code>) in a constituency and its <code>leave_share</code>. To do so I calculate the correlation between the two variables and graph them on a scatterplot.</p>
@@ -141,7 +141,7 @@ y = &quot;UK-born residents (as % of total in a constituency)&quot;) +
         axis.text = element_text(color = &quot;#C7C8CF&quot;),
         axis.line = element_line(color = &quot;#C7C8CF&quot;),
         plot.caption = element_text(color = &quot;#C7C8CF&quot;))</code></pre>
-<p><img src="/blogs/brexit_files/figure-html/brexit_immigration_plot-1.png" width="288" style="display: block; margin: auto;" /></p>
+<p><img src="/blogs/brexit_files/figure-html/brexit_immigration_plot-1.png" width="960" style="display: block; margin: auto;" /></p>
 <p>The correlation of almost 0.5, shows a positive correlation between the two variables, the proportion of native born residents in a constituency and the leave share in that constituency (number of Pro-Brexit votes as a percentage of total), further highlighted by the scatterplot. It thus supports the hypothesis that the Brexit outcome was influenced by nationalism and fear of immigration. However, it must be noted that the correlation is moderate, and thus not strong enough to suggest that this was the sole determinant of the referendum’s outcome.</p>
 <p>To end this analysis, I would like to visualize with a scatterplot how political affiliation translated into Brexit voting.</p>
 <pre class="r"><code>brexit &lt;- read_csv(here::here(&quot;data&quot;, &quot;brexit_results.csv&quot;))

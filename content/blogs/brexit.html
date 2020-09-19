@@ -59,7 +59,7 @@ y = &quot;Number of constituencies (out of 632 total)&quot;) +
         axis.text = element_text(color = &quot;#C7C8CF&quot;),
         axis.line = element_line(color = &quot;#C7C8CF&quot;),
         plot.caption = element_text(color = &quot;#C7C8CF&quot;))</code></pre>
-<p><img src="/blogs/brexit_files/figure-html/brexit_histogram-1.png" width="648" style="display: block; margin: auto;" /></p>
+<p><img src="/blogs/brexit_files/figure-html/brexit_histogram-1.png" width="480" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>ggplot(brexit_results, aes(x = leave_share)) +
   geom_density(color = &quot;grey&quot;) +
   labs(title = &quot;Distribution of UK constituencies according to their Brexit Results&quot;, subtitle = &quot;Pro-Brexit voters&#39; concentration in UK constituencies&quot;,
@@ -74,7 +74,7 @@ y = &quot;Density&quot;) +
         axis.text = element_text(color = &quot;#C7C8CF&quot;),
         axis.line = element_line(color = &quot;#C7C8CF&quot;),
         plot.caption = element_text(color = &quot;#C7C8CF&quot;))</code></pre>
-<p><img src="/blogs/brexit_files/figure-html/brexit_histogram-2.png" width="648" style="display: block; margin: auto;" /></p>
+<p><img src="/blogs/brexit_files/figure-html/brexit_histogram-2.png" width="480" style="display: block; margin: auto;" /></p>
 <p>The histogram, shows the distribution of UK constituencies according to their Brexit Results, more specifically, the concentration of Pro-Brexit voters in UK constituencies. The histogram is skewed to the right, indicating that a majority of UK constituencies (about 380, so more than half) had more than 50% of Pro-Brexit voters among their residents.</p>
 <p>Taking into account that the results of the UK’s 2016 Brexit referendum was 51.9% leave to 48.1% remain, the histogram above is extremely insightful. Indeed, for the plot to be so skewed to the right (towards a 58% concentration of Pro-Brexit voters), but then for the final outcome to have been so balanced, it suggests that “leave” voters were mostly located in smaller constituencies and, on the other hand, “remain” voters mostly located in bigger, more populated, constituencies - thus taking a greater number of these smaller constituencies to outweigh the “remain” constituencies.</p>
 <p>One common explanation for the Brexit outcome was fear of immigration and opposition to the EU’s more open border policy. Therefore, I proceed to investigate the relationship between the proportion of native born residents (<code>born_in_uk</code>) in a constituency and its <code>leave_share</code>. To do so I calculate the correlation between the two variables and graph them on a scatterplot.</p>
@@ -141,8 +141,55 @@ y = &quot;UK-born residents (as % of total in a constituency)&quot;) +
         axis.text = element_text(color = &quot;#C7C8CF&quot;),
         axis.line = element_line(color = &quot;#C7C8CF&quot;),
         plot.caption = element_text(color = &quot;#C7C8CF&quot;))</code></pre>
-<p><img src="/blogs/brexit_files/figure-html/brexit_immigration_plot-1.png" width="648" style="display: block; margin: auto;" /></p>
+<p><img src="/blogs/brexit_files/figure-html/brexit_immigration_plot-1.png" width="288" style="display: block; margin: auto;" /></p>
 <p>The correlation of almost 0.5, shows a positive correlation between the two variables, the proportion of native born residents in a constituency and the leave share in that constituency (number of Pro-Brexit votes as a percentage of total), further highlighted by the scatterplot. It thus supports the hypothesis that the Brexit outcome was influenced by nationalism and fear of immigration. However, it must be noted that the correlation is moderate, and thus not strong enough to suggest that this was the sole determinant of the referendum’s outcome.</p>
+<p>To end this analysis, I would like to visualize with a scatterplot how political affiliation translated into Brexit voting.</p>
+<pre class="r"><code>brexit &lt;- read_csv(here::here(&quot;data&quot;, &quot;brexit_results.csv&quot;))
+brexit</code></pre>
+<pre><code>## # A tibble: 632 x 11
+##    Seat  con_2015 lab_2015 ld_2015 ukip_2015 leave_share born_in_uk  male
+##    &lt;chr&gt;    &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt;       &lt;dbl&gt;      &lt;dbl&gt; &lt;dbl&gt;
+##  1 Alde…     50.6     18.3    8.82     17.9         57.9       83.1  49.9
+##  2 Aldr…     52.0     22.4    3.37     19.6         67.8       96.1  48.9
+##  3 Altr…     53.0     26.7    8.38      8.01        38.6       90.5  48.9
+##  4 Ambe…     44.0     34.8    2.98     15.9         65.3       97.3  49.2
+##  5 Arun…     60.8     11.2    7.19     14.4         49.7       93.3  48.0
+##  6 Ashf…     22.4     41.0   14.8      21.4         70.5       97.0  49.2
+##  7 Ashf…     52.5     18.4    5.98     18.8         59.9       90.5  48.5
+##  8 Asht…     22.1     49.8    2.42     21.8         61.8       90.7  49.2
+##  9 Ayle…     50.7     15.1   10.6      19.7         51.8       87.0  49.5
+## 10 Banb…     53.0     21.3    5.93     13.9         50.3       88.8  49.5
+## # … with 622 more rows, and 3 more variables: unemployed &lt;dbl&gt;, degree &lt;dbl&gt;,
+## #   age_18to24 &lt;dbl&gt;</code></pre>
+<pre class="r"><code>brexit_longer &lt;- brexit %&gt;% pivot_longer(cols=c(&quot;con_2015&quot;,&quot;lab_2015&quot;,&quot;ld_2015&quot;,&quot;ukip_2015&quot;),names_to=&quot;party&quot;)
+
+ggplot(brexit_longer,aes(x=value,y=leave_share)) +
+  geom_point(shape = 21,alpha=0.3,aes(fill=party,color=party))+
+  geom_smooth(method=&quot;lm&quot;,aes(color=party))+
+  scale_color_manual(values = c(&quot;#0087dc&quot;,&quot;#d50000&quot;, &quot;#FDBB30&quot;,&quot;#EFE600&quot;),labels=c(&quot;Convervative&quot;,&quot;Labour&quot;,&quot;Lib Dems&quot;,&quot;UKIP&quot;))+
+  scale_fill_manual(values = c(&quot;#0087dc&quot;,&quot;#d50000&quot;, &quot;#FDBB30&quot;,&quot;#EFE600&quot;))+
+  theme(legend.position = &quot;right&quot;,legend.box=&quot;horizontal&quot;,aspect.ratio = 0.4)+
+  labs(
+    title=&quot;How political affiliation translated to Brexit Voting&quot;,
+    x=&quot;Party % in the UK 2015 general election&quot;,
+    y=&quot;Leave % in the 2016 Brexit referendum&quot;,
+    color=&quot;&quot;
+  )+
+  guides(fill=FALSE) +
+  theme(panel.background = element_rect(fill = &quot;#2B304A&quot;, color = &quot;#2B304A&quot;), 
+        panel.grid = element_blank(),
+        plot.title = element_text(color = &quot;#C7C8CF&quot;, size = 10),
+        plot.subtitle = element_text(color = &quot;#C7C8CF&quot;, size = 9),
+        plot.background = element_rect(fill = &quot;#2B304A&quot;),
+        axis.title = element_text(color = &quot;#C7C8CF&quot;), 
+        axis.text = element_text(color = &quot;#C7C8CF&quot;),
+        axis.line = element_line(color = &quot;#C7C8CF&quot;),
+        plot.caption = element_text(color = &quot;#C7C8CF&quot;),
+        legend.key = element_rect(fill = &quot;#2B304A&quot;),
+        legend.text = element_text(color = &quot;#C7C8CF&quot;),
+        legend.title = element_text(color = &quot;#C7C8CF&quot;),
+         legend.background = element_rect(fill = &quot;#2B304A&quot;))</code></pre>
+<p><img src="/blogs/brexit_files/figure-html/figBrexit-1.png" width="960" style="display: block; margin: auto;" /></p>
 </div>
 </div>
 </div>

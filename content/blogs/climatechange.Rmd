@@ -3,7 +3,7 @@ categories:
 - ""
 - ""
 date: "2017-10-31T22:42:51-05:00"
-description: Visualizing temperature anomalies in R.
+description: Visualizing temperature anomalies in R
 draft: false
 image: pic07.jpg
 keywords: ""
@@ -80,7 +80,7 @@ glimpse(tidyweather)
 
 To visualize the temperature deviations I build the following time-series scatter plot and add a trend line, which evidences the constant increase in anomalies throughout the centuries.
 
-```{r scatter_plot, fig.height = 4, fig.weight = 5}
+```{r scatter_plot, fig.height = 4, fig.width = 5}
 
 #adding a variable ('date') to plot in a chronological order 
 tidyweather <- tidyweather %>%
@@ -137,7 +137,7 @@ comparison <- tidyweather %>%
 
 ```
 
-```{r density_plot, fig.height = 4, fig.weight = 5}
+```{r density_plot, fig.height = 4, fig.width=5}
 
 comparison%>%
 group_by(Interval)%>%

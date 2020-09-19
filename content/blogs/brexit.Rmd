@@ -68,7 +68,7 @@ Our main outcome variable (or y) is `leave_share`, which is the percent of votes
 
 To get a sense of the spread of the data, I begin by plotting a histogram and a density plot of the leave share in all constituencies.
 
-```{r brexit_histogram, warning=FALSE, message=FALSE, fig.height = 4, fig.weight = 5}
+```{r brexit_histogram, warning=FALSE, message=FALSE, fig.height = 4, fig.width=5}
 ggplot(brexit_results, aes(x = leave_share)) +
   geom_histogram(binwidth = 2.5, fill = "grey") + 
   labs(title = "Distribution of UK constituencies according to their Brexit Results", subtitle = "Pro-Brexit voters' concentration in UK constituencies",
@@ -116,7 +116,7 @@ brexit_results %>%
 ```
 
 
-```{r brexit_immigration_plot, fig.height = 4, fig.weight = 5}
+```{r brexit_immigration_plot, fig.height = 2, fig.width = 3}
 ggplot(brexit_results, aes(x = born_in_uk, y = leave_share)) +
   geom_point(alpha=0.8, color = "grey") +
   geom_smooth(method = "lm", color = "white") +
@@ -137,3 +137,39 @@ y = "UK-born residents (as % of total in a constituency)") +
 ```
 
 The correlation of almost 0.5, shows a positive correlation between the two variables, the proportion of native born residents in a constituency and the leave share in that constituency (number of Pro-Brexit votes as a percentage of total), further highlighted by the scatterplot. It thus supports the hypothesis that the Brexit outcome was influenced by nationalism and fear of immigration. However, it must be noted that the correlation is moderate, and thus not strong enough to suggest that this was the sole determinant of the referendum's outcome.
+
+To end this analysis, I would like to visualize with a scatterplot how political affiliation translated into Brexit voting.
+
+```{r figBrexit, fig.width = 10, fig.asp = 0.6}
+
+brexit <- read_csv(here::here("data", "brexit_results.csv"))
+brexit
+brexit_longer <- brexit %>% pivot_longer(cols=c("con_2015","lab_2015","ld_2015","ukip_2015"),names_to="party")
+
+ggplot(brexit_longer,aes(x=value,y=leave_share)) +
+  geom_point(shape = 21,alpha=0.3,aes(fill=party,color=party))+
+  geom_smooth(method="lm",aes(color=party))+
+  scale_color_manual(values = c("#0087dc","#d50000", "#FDBB30","#EFE600"),labels=c("Convervative","Labour","Lib Dems","UKIP"))+
+  scale_fill_manual(values = c("#0087dc","#d50000", "#FDBB30","#EFE600"))+
+  theme(legend.position = "right",legend.box="horizontal",aspect.ratio = 0.4)+
+  labs(
+    title="How political affiliation translated to Brexit Voting",
+    x="Party % in the UK 2015 general election",
+    y="Leave % in the 2016 Brexit referendum",
+    color=""
+  )+
+  guides(fill=FALSE) +
+  theme(panel.background = element_rect(fill = "#2B304A", color = "#2B304A"), 
+        panel.grid = element_blank(),
+        plot.title = element_text(color = "#C7C8CF", size = 10),
+        plot.subtitle = element_text(color = "#C7C8CF", size = 9),
+        plot.background = element_rect(fill = "#2B304A"),
+        axis.title = element_text(color = "#C7C8CF"), 
+        axis.text = element_text(color = "#C7C8CF"),
+        axis.line = element_line(color = "#C7C8CF"),
+        plot.caption = element_text(color = "#C7C8CF"),
+        legend.key = element_rect(fill = "#2B304A"),
+        legend.text = element_text(color = "#C7C8CF"),
+        legend.title = element_text(color = "#C7C8CF"),
+         legend.background = element_rect(fill = "#2B304A"))
+    ```

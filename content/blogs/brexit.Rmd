@@ -5,7 +5,7 @@ categories:
 date: "2017-10-31T22:42:51-05:00"
 description: An analysis of the Brexit Referendum.
 draft: false
-image: pic07.jpg
+image: london.jpg
 keywords: ""
 slug: brexit
 title: Brexit
@@ -48,7 +48,6 @@ library(dplyr)
 # An analysis of the Brexit Referendum 
 
 The purpose of this project is to analyse the results of the 2016 Brexit vote in the UK. 
-
 The data comes from [Elliott Morris](https://www.thecrosstab.com/), who made it available through his [DataCamp class on analysing election and polling data in R](https://www.datacamp.com/courses/analyzing-election-and-polling-data-in-r).
 
 ## Exploratory Data Analysis
@@ -70,7 +69,7 @@ To get a sense of the spread of the data, I begin by plotting a histogram and a 
 
 ```{r brexit_histogram, warning=FALSE, message=FALSE, fig.height =5, fig.width=10}
 ggplot(brexit_results, aes(x = leave_share)) +
-  geom_histogram(binwidth = 2.5, fill = "grey") + 
+  geom_histogram(binwidth = 2.5, fill = "grey", color = "#2B304A") + 
   labs(title = "Distribution of UK constituencies according to their Brexit Results", subtitle = "Pro-Brexit voters' concentration in UK constituencies",
 x = "Share of pro-Brexit votes (as % of total voters in a constituency)",
 y = "Number of constituencies (out of 632 total)") + 
@@ -115,11 +114,10 @@ brexit_results %>%
   kable_styling()
 ```
 
-
 ```{r brexit_immigration_plot, fig.height = 5, fig.width = 10}
 ggplot(brexit_results, aes(x = born_in_uk, y = leave_share)) +
   geom_point(alpha=0.8, color = "grey") +
-  geom_smooth(method = "lm", color = "white") +
+  geom_smooth(method = "lm", color = "#0087dc") +
   theme_bw() +
   labs(title = "Correlation between the concentration of UK-born residents 
        and Pro-Brexit voters in UK constituencies",
@@ -143,7 +141,7 @@ The correlation of almost 0.5, shows a positive correlation between the two vari
 brexit_longer <- brexit %>% pivot_longer(cols=c("con_2015","lab_2015","ld_2015","ukip_2015"),names_to="party")
 
 ggplot(brexit_longer,aes(x=value,y=leave_share)) +
-  geom_point(shape = 21,alpha=0.3,aes(fill=party,color=party))+
+  geom_point(shape = 21,alpha=0.3,aes(fill=party, color=party))+
   geom_smooth(method="lm",aes(color=party))+
   scale_color_manual(values = c("#0087dc","#d50000", "#FDBB30","#EFE600"),labels=c("Convervative","Labour","Lib Dems","UKIP"))+
   scale_fill_manual(values = c("#0087dc","#d50000", "#FDBB30","#EFE600"))+

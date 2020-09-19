@@ -1,0 +1,140 @@
+---
+categories:
+- ""
+- ""
+date: "2017-10-31T22:42:51-05:00"
+description: Visualizing temperature anomalies in R.
+draft: false
+image: pic07.jpg
+keywords: ""
+slug: brexit
+title: Brexit
+---
+
+```{r, setup, include=FALSE}
+knitr::opts_chunk$set(
+  message = FALSE, 
+  warning = FALSE, 
+  tidy=FALSE,     
+  size="small")   
+options(digits = 3)
+
+# default figure size
+knitr::opts_chunk$set(
+  fig.width=6.75, 
+  fig.height=6.75,
+  fig.align = "center")
+```
+
+```{r load-libraries, include=FALSE}
+library(tidyverse) # Loading the packages to clean, wrangle and visualize data
+library(mosaic)
+library(ggthemes)
+library(lubridate)
+library(here)
+library(skimr)
+library(janitor)
+library(httr)
+library(readxl)
+library(vroom)
+library(kableExtra)
+library(lubridate)
+library(infer)
+library(ggplot2)
+library(gapminder)  
+library(dplyr)
+```
+
+# An analysis of the Brexit Referendum 
+
+The purpose of this project is to analyse the results of the 2016 Brexit vote in the UK. 
+
+The data comes from [Elliott Morris](https://www.thecrosstab.com/), who made it available through his [DataCamp class on analysing election and polling data in R](https://www.datacamp.com/courses/analyzing-election-and-polling-data-in-r).
+
+## Exploratory Data Analysis
+### Importing and inspecting the data
+
+First I *import* the data using `read_csv()` and briefly glimpse the data frame to *inspect* it. 
+
+```{r load_brexit_data, warning=FALSE, message=FALSE}
+brexit_results <- read_csv(here::here("Data","brexit_results.csv"))
+
+glimpse(brexit_results)
+```
+
+Our main outcome variable (or y) is `leave_share`, which is the percent of votes cast in favour of Brexit, or leaving the EU. Each row is a UK [parliament constituency](https://en.wikipedia.org/wiki/United_Kingdom_Parliament_constituencies). 
+
+### Visualizing the data
+
+To get a sense of the spread of the data, I begin by plotting a histogram and a density plot of the leave share in all constituencies.
+
+```{r brexit_histogram, warning=FALSE, message=FALSE}
+ggplot(brexit_results, aes(x = leave_share)) +
+  geom_histogram(binwidth = 2.5, fill = "grey") + 
+  labs(title = "Distribution of UK constituencies according to their Brexit Results", subtitle = "Pro-Brexit voters' concentration in UK constituencies",
+x = "Share of pro-Brexit votes (as % of total voters in a constituency)",
+y = "Number of constituencies (out of 632 total)") + 
+  theme(panel.background = element_rect(fill = "#2B304A", color = "#2B304A"), 
+        panel.grid = element_blank(),
+        plot.title = element_text(color = "#C7C8CF", size = 10),
+        plot.subtitle = element_text(color = "#C7C8CF", size = 9),
+        plot.background = element_rect(fill = "#2B304A"),
+        axis.title = element_text(color = "#C7C8CF", size = 8), 
+        axis.text = element_text(color = "#C7C8CF"),
+        axis.line = element_line(color = "#C7C8CF"),
+        plot.caption = element_text(color = "#C7C8CF"))
+
+ggplot(brexit_results, aes(x = leave_share)) +
+  geom_density(color = "grey") +
+  labs(title = "Distribution of UK constituencies according to their Brexit Results", subtitle = "Pro-Brexit voters' concentration in UK constituencies",
+x = "Share of pro-Brexit votes (as % of total voters in a constituency)",
+y = "Density") + 
+  theme(panel.background = element_rect(fill = "#2B304A", color = "#2B304A"), 
+        panel.grid = element_blank(),
+        plot.title = element_text(color = "#C7C8CF", size = 10),
+        plot.subtitle = element_text(color = "#C7C8CF", size = 9),
+        plot.background = element_rect(fill = "#2B304A"),
+        axis.title = element_text(color = "#C7C8CF", size = 8), 
+        axis.text = element_text(color = "#C7C8CF"),
+        axis.line = element_line(color = "#C7C8CF"),
+        plot.caption = element_text(color = "#C7C8CF"))
+
+```
+
+The histogram, shows the distribution of UK constituencies according to their Brexit Results, more specifically, the concentration of Pro-Brexit voters in UK constituencies. The histogram is skewed to the right, indicating that a majority of UK constituencies (about 380, so more than half) had more than 50% of Pro-Brexit voters among their residents.
+
+Taking into account that the results of the UK's 2016 Brexit referendum was 51.9% leave to 48.1% remain, the histogram above is extremely insightful. Indeed, for the plot to be so skewed to the right (towards a 58% concentration of Pro-Brexit voters), but then for the final outcome to have been so balanced, it suggests that "leave" voters were mostly located in smaller constituencies and, on the other hand, "remain" voters mostly located in bigger, more populated, constituencies - thus taking a greater number of these smaller constituencies to outweigh the "remain" constituencies. 
+
+One common explanation for the Brexit outcome was fear of immigration and opposition to the EU's more open border policy. Therefore, I proceed to investigate the relationship between the proportion of native born residents (`born_in_uk`) in a constituency and its `leave_share`. To do so I calculate the correlation between the two variables and graph them on a scatterplot.
+
+```{r brexit_immigration_correlation}
+brexit_results %>% 
+  select(leave_share, born_in_uk) %>% 
+  cor() %>%
+  kbl(caption = 'Correlation')%>%
+  kable_styling()
+```
+
+
+```{r brexit_immigration_plot}
+ggplot(brexit_results, aes(x = born_in_uk, y = leave_share)) +
+  geom_point(alpha=0.8, color = "grey") +
+  geom_smooth(method = "lm", color = "white") +
+  theme_bw() +
+  labs(title = "Correlation between the concentration of UK-born residents 
+       and Pro-Brexit voters in UK constituencies",
+x = "Pro-Brexit voters (as % of total in a constituency)",
+y = "UK-born residents (as % of total in a constituency)") + 
+  theme(panel.background = element_rect(fill = "#2B304A", color = "#2B304A"), 
+        panel.grid = element_blank(),
+        plot.title = element_text(color = "#C7C8CF", size = 10),
+        plot.subtitle = element_text(color = "#C7C8CF", size = 9),
+        plot.background = element_rect(fill = "#2B304A"),
+        axis.title = element_text(color = "#C7C8CF", size = 8), 
+        axis.text = element_text(color = "#C7C8CF"),
+        axis.line = element_line(color = "#C7C8CF"),
+        plot.caption = element_text(color = "#C7C8CF"))
+  NULL
+```
+
+The correlation of almost 0.5, shows a positive correlation between the two variables, the proportion of native born residents in a constituency and the leave share in that constituency (number of Pro-Brexit votes as a percentage of total), further highlighted by the scatterplot. It thus supports the hypothesis that the Brexit outcome was influenced by nationalism and fear of immigration. However, it must be noted that the correlation is moderate, and thus not strong enough to suggest that this was the sole determinant of the referendum's outcome.

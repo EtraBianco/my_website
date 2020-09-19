@@ -3,14 +3,13 @@ categories:
 - ""
 - ""
 date: "2017-10-31T22:42:51-05:00"
-description: Nullam et orci eu lorem consequat tincidunt vivamus et sagittis magna sed nunc rhoncus condimentum sem. In efficitur ligula tate urna. Maecenas massa sed magna lacinia magna pellentesque lorem ipsum dolor. Nullam et orci eu lorem consequat tincidunt. Vivamus et sagittis tempus.
+description: Visualizing temperature anomalies in R.
 draft: false
 image: pic07.jpg
 keywords: ""
 slug: climatechange
 title: Climate Change
 ---
-
 ```{r, setup, include=FALSE}
 knitr::opts_chunk$set(
   message = FALSE, 
@@ -23,13 +22,11 @@ options(digits = 3)
 knitr::opts_chunk$set(
   fig.width=6.75, 
   fig.height=6.75,
-  fig.align = "center"
-)
+  fig.align = "center")
 ```
 
-
 ```{r load-libraries, include=FALSE}
-library(tidyverse)  
+library(tidyverse) # Loading the packages to clean, wrangle and visualize data
 library(mosaic)
 library(ggthemes)
 library(lubridate)
@@ -44,48 +41,66 @@ library(lubridate)
 library(infer)
 ```
 
-# Climate Change 
+# Analysis of Temperature Anomalies 
 
-The Covid-19 emergency has put a halt on, and arguably reversed, the fight for sustainability. However, the below analysis of temperature anomalies recorded since 1880 serves as a sad reminder that efforts against climate change cannot be postponed. 
+The Covid-19 emergency has put a halt on, and arguably reversed, the fight for sustainability. However, the below analysis of historical temperature anomalies serves as a reminder that efforts against climate change cannot be postponed. 
 
-The raw data was sourced from [NASA's Goddard Institute for Space Studies](https://data.giss.nasa.gov/gistemp), who recorded the *Combined Land-Surface Air and Sea-Surface Water Temperature Anomalies* in the Northern Hemisphere. The [tabular data of temperature anomalies can be found here.](https://data.giss.nasa.gov/gistemp/tabledata_v3/NH.Ts+dSST.txt)
+##Familiarizing with the data
+
+The raw data, which I *import* below, is sourced from [NASA's Goddard Institute for Space Studies](https://data.giss.nasa.gov/gistemp), who recorded the *Combined Land-Surface Air and Sea-Surface Water Temperature Anomalies* in the Northern Hemisphere. The [tabular data of temperature anomalies can be found here.](https://data.giss.nasa.gov/gistemp/tabledata_v3/NH.Ts+dSST.txt)
 
 ```{r weather_data, cache=TRUE}
-
+#importing the data from NASA's GISS
 weather <- 
   read_csv("https://data.giss.nasa.gov/gistemp/tabledata_v3/NH.Ts+dSST.csv", 
            skip = 1, 
            na = "***")
-
 ```
 
-```{r tidyweather}
+Firstly I *inspect* the data frame weather, which consists of 140 rows, corresponding to observations, and 19 columns, the variables describing each observation. To adjust the data frame for my analysis, I select the relevant columns (`Year` and the 12 months variables) and use the function `pivot_longer`to reorder the data points, creating the new data frame below, named `tidyweather`. This displays the monthly deviations from the expected temperature (`delta`) recorded since 1880. 
+
+```{r, eval = FALSE}
+#inspecting the data 
+glimpse(weather)
+# checking for missing values and duplicates
+skim(weather)
+
 #remove unnecessary columns from the original data frame
 remove_cols <- weather %>%
   select(1:13)
-
+#adjust the data frame
 tidyweather <- remove_cols %>%
   pivot_longer(cols = 2:13, names_to = "Month", values_to = "delta")
-
 ```
 
-## Inspecting the data
+```{r tidyweather}
+#viewing the new data frame
+glimpse(tidyweather)
+```
 
-After cleaning the data, we plot it in a time-series scatter plot below. 
+## Visualizing the data
+
+To visualize the temperature deviations I build the following time-series scatter plot and add a trend line, which evidences the constant increase in anomalies throughout the centuries.
 
 ```{r scatter_plot, fig.height = 4, fig.weight = 5}
 
+#adding a variable ('date') to plot in a chronological order 
 tidyweather <- tidyweather %>%
   mutate(date = ymd(paste(as.character(Year), Month, "1")),
          month = month(date, label=TRUE),
          year = year(date))
 
+#creating the scatter plot
 ggplot(tidyweather, aes(x=date, y = delta))+
+#adjusting the color and size for the points
   geom_point(size = 0.5, color = "grey")+
+#inserting a trend line
   geom_smooth(color="white") +
+#labelling the graph
   labs (
     title = "GLOBAL WARMING", subtitle = "Temperature anomalies since 1880", x = "Year", y = "Temperature Deviation", caption = "Source: NASA's Goddard Institute for Space Studies"
   ) + 
+#adjusting color and size for the background, axis and text 
   theme(panel.background = element_rect(fill = "#2B304A", color = "#2B304A"), 
         panel.grid = element_blank(),
         plot.title = element_text(color = "#C7C8CF", size = 10),
@@ -97,6 +112,11 @@ ggplot(tidyweather, aes(x=date, y = delta))+
         plot.caption = element_text(color = "#2B304A"))
 
 ```
+Interested to analyse more closely the past three decades, I 
+
+
+
+Below I create a density plot to study the distribution of monthly deviations (`delta`), grouped by the different time periods we are interested in. 
 
 ```{r intervals}
 #The code below creates a new data frame called `comparison` that groups data 
@@ -119,7 +139,7 @@ comparison <- tidyweather %>%
 
 ```
 
-```{r density_plot}
+```{r density_plot, fig.height = 4, fig.weight = 5}
 
 comparison%>%
 group_by(Interval)%>%
@@ -144,8 +164,13 @@ ggplot(aes(x=Delta, fill=Interval)) +
 
 ```{r density_plot}
 
-favstats( Delta ~ Interval, data = comparison)
+summary_stat <- favstats( Delta ~ Interval, data = comparison)
 
+summary_stat %>%
+  kbl(caption = 'Statistics on Temperature Anomalies')%>%
+  kable_styling()
 
 ```
 
+evident from both the following scatter plots and summary statistics, we
+ also have larger variation in delta compared to other months.

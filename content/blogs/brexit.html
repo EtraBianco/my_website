@@ -3,7 +3,7 @@ categories:
 - ""
 - ""
 date: "2017-10-31T22:42:51-05:00"
-description: Visualizing temperature anomalies in R.
+description: An analysis of the Brexit Referendum.
 draft: false
 image: pic07.jpg
 keywords: ""
@@ -23,7 +23,7 @@ title: Brexit
 <h2>Exploratory Data Analysis</h2>
 <div id="importing-and-inspecting-the-data" class="section level3">
 <h3>Importing and inspecting the data</h3>
-<p>First I <em>import</em> the data using <code>read_csv()</code> and briefly glimpse the data frame to <em>inspect</em> it.</p>
+<p>First I import the data using <code>read_csv()</code> and briefly glimpse the data frame to inspect it.</p>
 <pre class="r"><code>brexit_results &lt;- read_csv(here::here(&quot;Data&quot;,&quot;brexit_results.csv&quot;))
 
 glimpse(brexit_results)</code></pre>
@@ -142,8 +142,6 @@ y = &quot;UK-born residents (as % of total in a constituency)&quot;) +
         axis.line = element_line(color = &quot;#C7C8CF&quot;),
         plot.caption = element_text(color = &quot;#C7C8CF&quot;))</code></pre>
 <p><img src="/blogs/brexit_files/figure-html/brexit_immigration_plot-1.png" width="648" style="display: block; margin: auto;" /></p>
-<pre class="r"><code>  NULL</code></pre>
-<pre><code>## NULL</code></pre>
 <p>The correlation of almost 0.5, shows a positive correlation between the two variables, the proportion of native born residents in a constituency and the leave share in that constituency (number of Pro-Brexit votes as a percentage of total), further highlighted by the scatterplot. It thus supports the hypothesis that the Brexit outcome was influenced by nationalism and fear of immigration. However, it must be noted that the correlation is moderate, and thus not strong enough to suggest that this was the sole determinant of the referendum’s outcome.</p>
 </div>
 </div>

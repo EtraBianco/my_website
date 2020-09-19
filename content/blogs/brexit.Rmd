@@ -3,7 +3,7 @@ categories:
 - ""
 - ""
 date: "2017-10-31T22:42:51-05:00"
-description: Visualizing temperature anomalies in R.
+description: An analysis of the Brexit Referendum.
 draft: false
 image: pic07.jpg
 keywords: ""
@@ -54,7 +54,7 @@ The data comes from [Elliott Morris](https://www.thecrosstab.com/), who made it 
 ## Exploratory Data Analysis
 ### Importing and inspecting the data
 
-First I *import* the data using `read_csv()` and briefly glimpse the data frame to *inspect* it. 
+First I import the data using `read_csv()` and briefly glimpse the data frame to inspect it. 
 
 ```{r load_brexit_data, warning=FALSE, message=FALSE}
 brexit_results <- read_csv(here::here("Data","brexit_results.csv"))
@@ -68,7 +68,7 @@ Our main outcome variable (or y) is `leave_share`, which is the percent of votes
 
 To get a sense of the spread of the data, I begin by plotting a histogram and a density plot of the leave share in all constituencies.
 
-```{r brexit_histogram, warning=FALSE, message=FALSE}
+```{r brexit_histogram, warning=FALSE, message=FALSE, fig.height = 4, fig.weight = 5}
 ggplot(brexit_results, aes(x = leave_share)) +
   geom_histogram(binwidth = 2.5, fill = "grey") + 
   labs(title = "Distribution of UK constituencies according to their Brexit Results", subtitle = "Pro-Brexit voters' concentration in UK constituencies",
@@ -116,7 +116,7 @@ brexit_results %>%
 ```
 
 
-```{r brexit_immigration_plot}
+```{r brexit_immigration_plot, fig.height = 4, fig.weight = 5}
 ggplot(brexit_results, aes(x = born_in_uk, y = leave_share)) +
   geom_point(alpha=0.8, color = "grey") +
   geom_smooth(method = "lm", color = "white") +
@@ -134,7 +134,6 @@ y = "UK-born residents (as % of total in a constituency)") +
         axis.text = element_text(color = "#C7C8CF"),
         axis.line = element_line(color = "#C7C8CF"),
         plot.caption = element_text(color = "#C7C8CF"))
-  NULL
 ```
 
 The correlation of almost 0.5, shows a positive correlation between the two variables, the proportion of native born residents in a constituency and the leave share in that constituency (number of Pro-Brexit votes as a percentage of total), further highlighted by the scatterplot. It thus supports the hypothesis that the Brexit outcome was influenced by nationalism and fear of immigration. However, it must be noted that the correlation is moderate, and thus not strong enough to suggest that this was the sole determinant of the referendum's outcome.

@@ -97,10 +97,10 @@ disqusShortname = ""
       url = "blogs/blog5"
 
     [[params.tiles.showcase]]
-      title = "Tempus"
-      subtitle = "Feugiat Amet Tempus"
+      title = "AirBnBs in Singapore"
+      subtitle = "Cost prediction with R"
       image = "pic02.jpg"
-      url = "blogs/tempus"
+      url = "blogs/singapore"
 
     [[params.tiles.showcase]]
       title = "Magna"

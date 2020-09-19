@@ -68,7 +68,7 @@ Our main outcome variable (or y) is `leave_share`, which is the percent of votes
 
 To get a sense of the spread of the data, I begin by plotting a histogram and a density plot of the leave share in all constituencies.
 
-```{r brexit_histogram, warning=FALSE, message=FALSE, fig.height =7, fig.width=10}
+```{r brexit_histogram, warning=FALSE, message=FALSE, fig.height =10, fig.width=10}
 ggplot(brexit_results, aes(x = leave_share)) +
   geom_histogram(binwidth = 2.5, fill = "grey") + 
   labs(title = "Distribution of UK constituencies according to their Brexit Results", subtitle = "Pro-Brexit voters' concentration in UK constituencies",
@@ -116,7 +116,7 @@ brexit_results %>%
 ```
 
 
-```{r brexit_immigration_plot, fig.height = 7, fig.width = 10}
+```{r brexit_immigration_plot, fig.height = 10, fig.width = 10}
 ggplot(brexit_results, aes(x = born_in_uk, y = leave_share)) +
   geom_point(alpha=0.8, color = "grey") +
   geom_smooth(method = "lm", color = "white") +
@@ -140,10 +140,8 @@ The correlation of almost 0.5, shows a positive correlation between the two vari
 
 To end this analysis, I would like to visualize with a scatterplot how political affiliation translated into Brexit voting.
 
-```{r figBrexit, fig.width = 10, fig.asp = 0.6}
+```{r figBrexit, fig.width = 10}
 
-brexit <- read_csv(here::here("data", "brexit_results.csv"))
-brexit
 brexit_longer <- brexit %>% pivot_longer(cols=c("con_2015","lab_2015","ld_2015","ukip_2015"),names_to="party")
 
 ggplot(brexit_longer,aes(x=value,y=leave_share)) +

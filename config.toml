@@ -84,6 +84,7 @@ disqusShortname = ""
     title = "Etra Bianco"
     subtitle = "Welcome! \
     I am currently completing a Masters in Analytics and Management at London Business School and this website will be my platform to showcase my portfolio of data science projects. I am an International Management graduate from the University of Bath, with experience in the beverage and beauty industries, who is currently delving into data analytics at London Business School with the aspiration of bringing meaningful insights and lasting impact to businesses."
+    
     buttonText = "My projects"
 
   # Tiles Section

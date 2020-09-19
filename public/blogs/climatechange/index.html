@@ -1,0 +1,233 @@
+<!DOCTYPE HTML>
+<html>
+
+    <head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<meta name="description" content="Etra Bianco Portfolio website">
+	<meta name="author" content="Etra Bianco">
+	<meta name="generator" content="Hugo 0.74.3" />
+	<title>Climate Change &middot; Portfolio website for Etra Bianco</title>
+	<!-- Stylesheets -->
+	
+	<link rel="stylesheet" href="/css/main.css"/>
+	
+	
+
+	
+
+	<!-- Custom Fonts -->
+	<link href="/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+	
+	<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+	<link rel="icon" type="image/x-icon" href="/favicon.ico">
+	
+
+	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	<!--[if lt IE 9]>
+	<script src="js/ie/html5shiv.js"></script>
+	<script src="js/ie/html5shiv.jsrespond.min.js"></script>
+	<![endif]-->
+</head>
+
+    <body>
+
+    <!-- Wrapper -->
+        <div id="wrapper">
+
+            <!-- Header -->
+    <header id="header" class="alt">
+        <a href="/" class="logo"><strong>Etra Bianco</strong> <span></span></a>
+        <nav>
+            <a href="#menu">Menu</a>
+        </nav>
+    </header>
+
+<!-- Menu -->
+    <nav id="menu">
+        <ul class="links">
+            
+                <li><a href="/">Home</a></li>
+            
+                <li><a href="/blogs">Blogs</a></li>
+            
+
+        </ul>
+        <ul class="actions vertical">
+            
+                <li><a href="/blogs" class="button special fit">My Projects</a></li>
+            
+            
+        </ul>
+    </nav>
+
+        <!-- Main -->
+            <div id="main" class="alt">
+
+                
+                    <section id="one">
+                        <div class="inner">
+                            <header class="major">
+                                <h1>Climate Change</h1>
+                            </header>
+                            
+                                <span class="image main"><img src="/img/blogs/pic07.jpg" alt="" /></span>
+                            
+                            
+
+
+<div id="climate-change" class="section level1">
+<h1>Climate Change</h1>
+<p>The Covid-19 emergency has put a halt on, and arguably reversed, the fight for sustainability. However, the below analysis of temperature anomalies recorded since 1880 serves as a sad reminder that efforts against climate change cannot be postponed.</p>
+<p>The raw data was sourced from <a href="https://data.giss.nasa.gov/gistemp">NASA’s Goddard Institute for Space Studies</a>, who recorded the <em>Combined Land-Surface Air and Sea-Surface Water Temperature Anomalies</em> in the Northern Hemisphere. The <a href="https://data.giss.nasa.gov/gistemp/tabledata_v3/NH.Ts+dSST.txt">tabular data of temperature anomalies can be found here.</a></p>
+<pre class="r"><code>weather &lt;- 
+  read_csv(&quot;https://data.giss.nasa.gov/gistemp/tabledata_v3/NH.Ts+dSST.csv&quot;, 
+           skip = 1, 
+           na = &quot;***&quot;)</code></pre>
+<pre class="r"><code>#remove unnecessary columns from the original data frame
+remove_cols &lt;- weather %&gt;%
+  select(1:13)
+
+tidyweather &lt;- remove_cols %&gt;%
+  pivot_longer(cols = 2:13, names_to = &quot;Month&quot;, values_to = &quot;delta&quot;)</code></pre>
+<div id="inspecting-the-data" class="section level2">
+<h2>Inspecting the data</h2>
+<p>After cleaning the data, we plot it in a time-series scatter plot below.</p>
+<pre class="r"><code>tidyweather &lt;- tidyweather %&gt;%
+  mutate(date = ymd(paste(as.character(Year), Month, &quot;1&quot;)),
+         month = month(date, label=TRUE),
+         year = year(date))
+
+ggplot(tidyweather, aes(x=date, y = delta))+
+  geom_point(size = 0.5, color = &quot;grey&quot;)+
+  geom_smooth(color=&quot;white&quot;) +
+  labs (
+    title = &quot;GLOBAL WARMING&quot;, subtitle = &quot;Temperature anomalies since 1880&quot;, x = &quot;Year&quot;, y = &quot;Temperature Deviation&quot;, caption = &quot;Source: NASA&#39;s Goddard Institute for Space Studies&quot;
+  ) + 
+  theme(panel.background = element_rect(fill = &quot;#2B304A&quot;, color = &quot;#2B304A&quot;), 
+        panel.grid = element_blank(),
+        plot.title = element_text(color = &quot;#C7C8CF&quot;, size = 10),
+        plot.subtitle = element_text(color = &quot;#C7C8CF&quot;, size = 9),
+        plot.background = element_rect(fill = &quot;#2B304A&quot;),
+        axis.title = element_text(color = &quot;#C7C8CF&quot;), 
+        axis.text = element_text(color = &quot;#C7C8CF&quot;),
+        axis.line = element_line(color = &quot;#C7C8CF&quot;),
+        plot.caption = element_text(color = &quot;#2B304A&quot;))</code></pre>
+<p><img src="/blogs/climatechange_files/figure-html/scatter_plot-1.png" width="648" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>#The code below creates a new data frame called `comparison` that groups data 
+#in three time periods: 1990-2000, 2000-2010, 2010-2020. 
+
+comparison &lt;- tidyweather %&gt;% 
+  filter(Year&gt;= 1990) %&gt;%     #remove years prior to 1990
+  #create new variable &#39;interval&#39;, and assign values based on criteria below:
+  mutate(interval = case_when(
+    Year %in% c(1990:2000) ~ &quot;1990-2000&quot;,
+    Year %in% c(2000:2010) ~ &quot;2000-2010&quot;,
+    Year %in% c(2010:2020) ~ &quot;2010-2020&quot;))
+  
+  comparison </code></pre>
+<pre><code>## # A tibble: 360 x 7
+##     Year Month delta date       month  year interval 
+##    &lt;dbl&gt; &lt;chr&gt; &lt;dbl&gt; &lt;date&gt;     &lt;ord&gt; &lt;dbl&gt; &lt;chr&gt;    
+##  1  1990 Jan    0.45 1990-01-01 Jan    1990 1990-2000
+##  2  1990 Feb    0.5  1990-02-01 Feb    1990 1990-2000
+##  3  1990 Mar    1.15 1990-03-01 Mar    1990 1990-2000
+##  4  1990 Apr    0.66 1990-04-01 Apr    1990 1990-2000
+##  5  1990 May    0.47 1990-05-01 May    1990 1990-2000
+##  6  1990 Jun    0.49 1990-06-01 Jun    1990 1990-2000
+##  7  1990 Jul    0.31 1990-07-01 Jul    1990 1990-2000
+##  8  1990 Aug    0.36 1990-08-01 Aug    1990 1990-2000
+##  9  1990 Sep    0.41 1990-09-01 Sep    1990 1990-2000
+## 10  1990 Oct    0.46 1990-10-01 Oct    1990 1990-2000
+## # … with 350 more rows</code></pre>
+<pre class="r"><code>  comparison %&gt;%
+  rename(&quot;Delta&quot; = &quot;delta&quot; , &#39;Full Date&#39; = &#39;date&#39;,
+         &#39;Months&#39; = &#39;month&#39;,&#39;Years&#39; = &#39;year&#39; ,
+         &#39;Interval&#39; = &#39;interval&#39;)</code></pre>
+<pre><code>## # A tibble: 360 x 7
+##     Year Month Delta `Full Date` Months Years Interval 
+##    &lt;dbl&gt; &lt;chr&gt; &lt;dbl&gt; &lt;date&gt;      &lt;ord&gt;  &lt;dbl&gt; &lt;chr&gt;    
+##  1  1990 Jan    0.45 1990-01-01  Jan     1990 1990-2000
+##  2  1990 Feb    0.5  1990-02-01  Feb     1990 1990-2000
+##  3  1990 Mar    1.15 1990-03-01  Mar     1990 1990-2000
+##  4  1990 Apr    0.66 1990-04-01  Apr     1990 1990-2000
+##  5  1990 May    0.47 1990-05-01  May     1990 1990-2000
+##  6  1990 Jun    0.49 1990-06-01  Jun     1990 1990-2000
+##  7  1990 Jul    0.31 1990-07-01  Jul     1990 1990-2000
+##  8  1990 Aug    0.36 1990-08-01  Aug     1990 1990-2000
+##  9  1990 Sep    0.41 1990-09-01  Sep     1990 1990-2000
+## 10  1990 Oct    0.46 1990-10-01  Oct     1990 1990-2000
+## # … with 350 more rows</code></pre>
+<pre class="r"><code>comparison%&gt;%
+group_by(interval)%&gt;%
+ggplot(aes(x=delta, fill=interval)) +
+  geom_density(alpha=0.2) +   
+  labs (title = &quot;Both temperature and unpredictability of the weather are increasing&quot;, subtitle = &quot;Distribution of temperature deviations per decade since 1990&quot;, x = &quot;Temperature Deviations&quot;, caption =&quot;Source: NASA&#39;s Goddard Institute for Space Studies&quot;) +
+  theme(panel.background = element_rect(fill = &quot;#2B304A&quot;, color = &quot;#2B304A&quot;), 
+        panel.grid = element_blank(),
+        plot.title = element_text(color = &quot;#C7C8CF&quot;, size = 10),
+        plot.subtitle = element_text(color = &quot;#C7C8CF&quot;, size = 9),
+        plot.background = element_rect(fill = &quot;#2B304A&quot;),
+        axis.title = element_text(color = &quot;#C7C8CF&quot;), 
+        axis.text = element_text(color = &quot;#C7C8CF&quot;),
+        axis.line = element_line(color = &quot;#C7C8CF&quot;),
+        plot.caption = element_text(color = &quot;#C7C8CF&quot;),
+        legend.key = element_rect(fill = &quot;#2B304A&quot;),
+        legend.text = element_text(color = &quot;#C7C8CF&quot;),
+        legend.title = element_text(color = &quot;#C7C8CF&quot;),
+         legend.background = element_rect(fill = &quot;#2B304A&quot;))</code></pre>
+<p><img src="/blogs/climatechange_files/figure-html/density_plot-1.png" width="648" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+
+                        </div>
+                    </section>
+            <!-- Disqus Inject -->
+                
+            </div>
+            
+        <!-- Footer -->
+            
+                <!-- Footer -->
+    <footer id="footer">
+        <div class="inner">
+            <ul class="icons">
+                
+                    <li><a href="https://github.com/EtraBianco/my_website.git" class="icon alt fa-github" target="_blank"><span class="label">GitHub</span></a></li>
+                
+                    <li><a href="https://www.linkedin.com/in/etra-bianco/" class="icon alt fa-linkedin" target="_blank"><span class="label">LinkedIn</span></a></li>
+                
+            </ul>
+            <ul class="copyright">
+                <li>&copy; London Business School</li>
+                
+            </ul>
+        </div>
+    </footer>
+
+            
+        </div>
+
+    <!-- Scripts -->
+        <!-- Scripts -->
+    <!-- jQuery -->
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/jquery.scrolly.min.js"></script>
+    <script src="/js/jquery.scrollex.min.js"></script>
+    <script src="/js/skel.min.js"></script>
+    <script src="/js/util.js"></script>
+
+    
+
+    <!-- Main JS -->
+    <script src="/js/main.js"></script>
+
+    
+
+    
+
+    </body>
+</html>

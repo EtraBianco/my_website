@@ -1,0 +1,147 @@
+---
+categories:
+- ""
+- ""
+date: "2017-10-31T22:42:51-05:00"
+description: Nullam et orci eu lorem consequat tincidunt vivamus et sagittis magna sed nunc rhoncus condimentum sem. In efficitur ligula tate urna. Maecenas massa sed magna lacinia magna pellentesque lorem ipsum dolor. Nullam et orci eu lorem consequat tincidunt. Vivamus et sagittis tempus.
+draft: false
+image: pic07.jpg
+keywords: ""
+slug: climatechange
+title: Climate Change
+---
+
+```{r, setup, include=FALSE}
+knitr::opts_chunk$set(
+  message = FALSE, 
+  warning = FALSE, 
+  tidy=FALSE,     
+  size="small")   
+options(digits = 3)
+
+# default figure size
+knitr::opts_chunk$set(
+  fig.width=6.75, 
+  fig.height=6.75,
+  fig.align = "center"
+)
+```
+
+
+```{r load-libraries, include=FALSE}
+library(tidyverse)  
+library(mosaic)
+library(ggthemes)
+library(lubridate)
+library(here)
+library(skimr)
+library(janitor)
+library(httr)
+library(readxl)
+library(vroom)
+library(kableExtra)
+library(lubridate)
+library(infer)
+```
+
+# Climate Change 
+
+The Covid-19 emergency has put a halt on, and arguably reversed, the fight for sustainability. However, the below analysis of temperature anomalies recorded since 1880 serves as a sad reminder that efforts against climate change cannot be postponed. 
+
+The raw data was sourced from [NASA's Goddard Institute for Space Studies](https://data.giss.nasa.gov/gistemp), who recorded the *Combined Land-Surface Air and Sea-Surface Water Temperature Anomalies* in the Northern Hemisphere. The [tabular data of temperature anomalies can be found here.](https://data.giss.nasa.gov/gistemp/tabledata_v3/NH.Ts+dSST.txt)
+
+```{r weather_data, cache=TRUE}
+
+weather <- 
+  read_csv("https://data.giss.nasa.gov/gistemp/tabledata_v3/NH.Ts+dSST.csv", 
+           skip = 1, 
+           na = "***")
+
+```
+
+```{r tidyweather}
+#remove unnecessary columns from the original data frame
+remove_cols <- weather %>%
+  select(1:13)
+
+tidyweather <- remove_cols %>%
+  pivot_longer(cols = 2:13, names_to = "Month", values_to = "delta")
+
+```
+
+## Inspecting the data
+
+After cleaning the data, we plot it in a time-series scatter plot below. 
+
+```{r scatter_plot, fig.height = 4, fig.weight = 5}
+
+tidyweather <- tidyweather %>%
+  mutate(date = ymd(paste(as.character(Year), Month, "1")),
+         month = month(date, label=TRUE),
+         year = year(date))
+
+ggplot(tidyweather, aes(x=date, y = delta))+
+  geom_point(size = 0.5, color = "grey")+
+  geom_smooth(color="white") +
+  labs (
+    title = "GLOBAL WARMING", subtitle = "Temperature anomalies since 1880", x = "Year", y = "Temperature Deviation", caption = "Source: NASA's Goddard Institute for Space Studies"
+  ) + 
+  theme(panel.background = element_rect(fill = "#2B304A", color = "#2B304A"), 
+        panel.grid = element_blank(),
+        plot.title = element_text(color = "#C7C8CF", size = 10),
+        plot.subtitle = element_text(color = "#C7C8CF", size = 9),
+        plot.background = element_rect(fill = "#2B304A"),
+        axis.title = element_text(color = "#C7C8CF"), 
+        axis.text = element_text(color = "#C7C8CF"),
+        axis.line = element_line(color = "#C7C8CF"),
+        plot.caption = element_text(color = "#2B304A"))
+
+```
+
+```{r intervals}
+#The code below creates a new data frame called `comparison` that groups data 
+#in three time periods: 1990-2000, 2000-2010, 2010-2020. 
+
+comparison <- tidyweather %>% 
+  filter(Year>= 1990) %>%     #remove years prior to 1990
+  #create new variable 'interval', and assign values based on criteria below:
+  mutate(interval = case_when(
+    Year %in% c(1990:2000) ~ "1990-2000",
+    Year %in% c(2000:2010) ~ "2000-2010",
+    Year %in% c(2010:2020) ~ "2010-2020"))
+  
+  comparison 
+  
+  comparison %>%
+  rename("Delta" = "delta" , 'Full Date' = 'date',
+         'Months' = 'month','Years' = 'year' ,
+         'Interval' = 'interval')
+
+```
+
+```{r density_plot}
+
+comparison%>%
+group_by(interval)%>%
+ggplot(aes(x=delta, fill=interval)) +
+  geom_density(alpha=0.2) +   
+  labs (title = "Both temperature and unpredictability of the weather are increasing", subtitle = "Distribution of temperature deviations per decade since 1990", x = "Temperature Deviations", caption ="Source: NASA's Goddard Institute for Space Studies") +
+  theme(panel.background = element_rect(fill = "#2B304A", color = "#2B304A"), 
+        panel.grid = element_blank(),
+        plot.title = element_text(color = "#C7C8CF", size = 10),
+        plot.subtitle = element_text(color = "#C7C8CF", size = 9),
+        plot.background = element_rect(fill = "#2B304A"),
+        axis.title = element_text(color = "#C7C8CF"), 
+        axis.text = element_text(color = "#C7C8CF"),
+        axis.line = element_line(color = "#C7C8CF"),
+        plot.caption = element_text(color = "#C7C8CF"),
+        legend.key = element_rect(fill = "#2B304A"),
+        legend.text = element_text(color = "#C7C8CF"),
+        legend.title = element_text(color = "#C7C8CF"),
+         legend.background = element_rect(fill = "#2B304A"))
+
+
+```
+
+
+

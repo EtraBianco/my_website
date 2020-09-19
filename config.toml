@@ -109,10 +109,10 @@ disqusShortname = ""
       url = "blogs/bigmacindex"
 
     [[params.tiles.showcase]]
-      title = "Ipsum"
-      subtitle = "Nisl Sed Aliquam"
+      title = "Climate Change"
+      subtitle = "Analysis of temperature anomalies"
       image = "pic04.jpg"
-      url = "blogs/ipsum"
+      url = "blogs/climatechange"
 
     #[[params.tiles.showcase]]
       #title = "Consequat"

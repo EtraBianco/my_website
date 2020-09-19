@@ -103,10 +103,10 @@ disqusShortname = ""
       url = "blogs/singapore"
 
     [[params.tiles.showcase]]
-      title = "Magna"
-      subtitle = "London"
+      title = "Big Mac Index"
+      subtitle = "Deep dive"
       image = "pic03.jpg"
-      url = "blogs/magna"
+      url = "blogs/bigmacindex"
 
     [[params.tiles.showcase]]
       title = "Ipsum"

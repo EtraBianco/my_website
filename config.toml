@@ -82,7 +82,7 @@ disqusShortname = ""
     # To change the background image on the homepage banner, replace 'banner.jpg' in
     # the 'static/img' folder.
     title = "Etra Bianco"
-    #subtitle = "A RESPONSIVE SITE TEMPLATE DESIGNED BY HTML5 UP\nAND RELEASED UNDER THE CREATIVE COMMONS."
+    subtitle = "Welcome! I am completing a Masters in Analytics and Management at London Business School and this website will be my platform to showcase my portfolio of data science projects. I am an International Management graduate from the University of Bath, with experience in the beverage and beauty industries, who is currently delving into data analytics at London Business School with the aspiration of bringing meaningful insights and lasting impact to businesses."
     buttonText = "My projects"
 
   # Tiles Section
@@ -134,15 +134,6 @@ disqusShortname = ""
     # For more informtion take a look at the README.
     # To add more blogs just copy and paste the code.
 
-  # Section Type Two
-  [params.two]
-    enable = true
-    title = "Welcome to my website"
-    subtitle = "I am an International Management graduate of the University of Bath, with experience in the beverage and beauty industries, who is currently delving into data analytics at London Business School with the aspiration of bringing meaningful insights and lasting impact to businesses. This website will be my platform to showcase my portfolio of data science projects."
-    buttonText = "Discover"
-    url = "blogs"
-
-
   # Contact section
   [params.contact]
     enable = true
@@ -160,7 +151,7 @@ disqusShortname = ""
     # - send a dummy email yourself to confirm your account
     # - click the confirm link in the email from www.formspree.io
     # - you're done. Happy mailing!
-    # formEmail = "example@domain.com"
+    formEmail = "ebianco.mam2021@london.edu"
 
     # Contact Section
     # You can add multiple emails, phone numbers, or addresses

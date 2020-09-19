@@ -97,6 +97,12 @@ disqusShortname = ""
       url = "blogs/brexit"
 
     [[params.tiles.showcase]]
+      title = "Climate Change"
+      subtitle = "Analysis of temperature anomalies"
+      image = "pic04.jpg"
+      url = "blogs/climatechange"
+      
+    [[params.tiles.showcase]]
       title = "AirBnBs in Singapore"
       subtitle = "Cost prediction with R"
       image = "pic02.jpg"
@@ -107,12 +113,6 @@ disqusShortname = ""
       subtitle = "Deep dive"
       image = "pic03.jpg"
       url = "blogs/bigmacindex"
-
-    [[params.tiles.showcase]]
-      title = "Climate Change"
-      subtitle = "Analysis of temperature anomalies"
-      image = "pic04.jpg"
-      url = "blogs/climatechange"
 
     #[[params.tiles.showcase]]
       #title = "Consequat"

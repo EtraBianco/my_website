@@ -138,7 +138,7 @@ The correlation of almost 0.5, shows a positive correlation between the two vari
 
 ```{r figBrexit, fig.width = 10}
 
-brexit_longer <- brexit %>% pivot_longer(cols=c("con_2015","lab_2015","ld_2015","ukip_2015"),names_to="party")
+brexit_longer <- brexit_results %>% pivot_longer(cols=c("con_2015","lab_2015","ld_2015","ukip_2015"),names_to="party")
 
 ggplot(brexit_longer,aes(x=value,y=leave_share)) +
   geom_point(shape = 21,alpha=0.3,aes(fill=party, color=party))+

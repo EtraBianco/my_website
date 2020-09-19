@@ -68,7 +68,7 @@ Our main outcome variable (or y) is `leave_share`, which is the percent of votes
 
 To get a sense of the spread of the data, I begin by plotting a histogram and a density plot of the leave share in all constituencies.
 
-```{r brexit_histogram, warning=FALSE, message=FALSE, fig.height =10, fig.width=10}
+```{r brexit_histogram, warning=FALSE, message=FALSE, fig.height =5, fig.width=10}
 ggplot(brexit_results, aes(x = leave_share)) +
   geom_histogram(binwidth = 2.5, fill = "grey") + 
   labs(title = "Distribution of UK constituencies according to their Brexit Results", subtitle = "Pro-Brexit voters' concentration in UK constituencies",
@@ -116,7 +116,7 @@ brexit_results %>%
 ```
 
 
-```{r brexit_immigration_plot, fig.height = 10, fig.width = 10}
+```{r brexit_immigration_plot, fig.height = 5, fig.width = 10}
 ggplot(brexit_results, aes(x = born_in_uk, y = leave_share)) +
   geom_point(alpha=0.8, color = "grey") +
   geom_smooth(method = "lm", color = "white") +
@@ -136,9 +136,7 @@ y = "UK-born residents (as % of total in a constituency)") +
         plot.caption = element_text(color = "#C7C8CF"))
 ```
 
-The correlation of almost 0.5, shows a positive correlation between the two variables, the proportion of native born residents in a constituency and the leave share in that constituency (number of Pro-Brexit votes as a percentage of total), further highlighted by the scatterplot. It thus supports the hypothesis that the Brexit outcome was influenced by nationalism and fear of immigration. However, it must be noted that the correlation is moderate, and thus not strong enough to suggest that this was the sole determinant of the referendum's outcome.
-
-To end this analysis, I would like to visualize with a scatterplot how political affiliation translated into Brexit voting.
+The correlation of almost 0.5, shows a positive correlation between the two variables, the proportion of native born residents in a constituency and the leave share in that constituency (number of Pro-Brexit votes as a percentage of total), further highlighted by the scatterplot. It thus supports the hypothesis that the Brexit outcome was influenced by nationalism and fear of immigration. However, it must be noted that the correlation is moderate, and thus not strong enough to suggest that this was the sole determinant of the referendum's outcome. In line with the correlation described above, it is unsurprising to find that political affiliation translated into Brexit voting, as highlighted by the scatterplot below.
 
 ```{r figBrexit, fig.width = 10}
 

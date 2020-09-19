@@ -81,10 +81,9 @@ disqusShortname = ""
   [params.banner]
     # To change the background image on the homepage banner, replace 'banner.jpg' in
     # the 'static/img' folder.
-    title = "Hi, my name is Etra"
+    title = "Etra Bianco"
     #subtitle = "A RESPONSIVE SITE TEMPLATE DESIGNED BY HTML5 UP\nAND RELEASED UNDER THE CREATIVE COMMONS."
-    buttonText = "Get Started"
-
+    buttonText = "My projects"
 
   # Tiles Section
   [params.tiles]
@@ -138,13 +137,9 @@ disqusShortname = ""
   # Section Type Two
   [params.two]
     enable = true
-    title = "Massa libero"
-    subtitle = """Nullam et orci eu lorem consequat tincidunt vivamus et sagittis libero. 
-    Mauris aliquet magna magna sed nunc rhoncus pharetra. 
-    Pellentesque condimentum sem. In efficitur ligula tate urna. Maecenas laoreet massa vel lacinia pellentesque lorem ipsum dolor. 
-    Nullam et orci eu lorem consequat tincidunt. Vivamus et sagittis libero.
-    Mauris aliquet magna magna sed nunc rhoncus amet pharetra et feugiat tempus."""
-    buttonText = "Get Started"
+    title = "Welcome to my website"
+    subtitle = "I am an International Management graduate of the University of Bath, with experience in the beverage and beauty industries, who is currently delving into data analytics at London Business School with the aspiration of bringing meaningful insights and lasting impact to businesses. This website will be my platform to showcase my portfolio of data science projects."
+    buttonText = "Discover"
     url = "blogs"
 
 

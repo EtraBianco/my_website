@@ -41,7 +41,6 @@ library(lubridate)
 library(infer)
 ```
 # Analysis of Temperature Anomalies 
-
 The Covid-19 emergency has put a halt on, and arguably reversed, the fight for sustainability. However, the below analysis of historical temperature anomalies serves as a reminder that efforts against climate change cannot be postponed. 
 
 ##Familiarizing with the data

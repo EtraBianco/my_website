@@ -69,6 +69,58 @@ I firstly load and inspect the data from the `bmindex_data`, which is the data f
 - `dollar_price`: the equivalent dollar price for a Big Mac
 </ol>
 
+# Exchange rate mismatch
+
+The Big Mac Index, by outlining the differences in local prices (the cost of a Big Mac), suggests what the exchange rate should be and thus reveals any mismatch in exchange rates.
+
+Below I calculate and visualize, for each country, whether the local currency was undervalued or overvalued against the US dollar as of July 2020. To do so  I filter and mutate the data frame to calculate for each country the implied exchange rate based on the local price of a Big Mac in US$ and compare it to the actual exchange rate at the time to get the percentage difference. 
+
+```{r}
+
+#mutating data frame to calculate exchange rate mismatch
+
+er_mismatch <- bmindex_data %>% 
+  select(1:7) %>% 
+  filter(date == "2020-07-01") %>% 
+  mutate(implied_er = (local_price/5.71)) %>% 
+  mutate(mismatch = implied_er-dollar_ex) %>% 
+  mutate(percent_miss = (mismatch/dollar_ex)*100)
+  
+er_mismatch %>% 
+head(3) %>% 
+  #Formatting the table for HTML
+kbl(caption = "Exchange Rate Mismatch") %>% 
+  kable_styling() 
+
+```
+```{r fig.height = 5, fig.width=10}
+ggplot(er_mismatch, aes(y = percent_miss, x = name, fill = name, label = currency_code)) +
+  geom_col() + 
+  labs(title = "Most currencies were undervalued against the Dollar in July 2020", subtitle = "Percentage difference between the exchange rate and the PPP of that currency", x = "Country", y = "Percentage mismatch") + 
+  geom_text(color = "white",size = 4, y = -0.8, color = "#C7C8CF") +
+  theme(legend.position = "right", axis.text = element_blank(), axis.ticks = element_blank(), 
+        panel.background = element_rect(fill = "#2B304A", color = "#2B304A"), 
+        panel.grid = element_blank(),
+        plot.title = element_text(color = "#C7C8CF", size = 10),
+        plot.subtitle = element_text(color = "#C7C8CF", size = 9),
+        plot.background = element_rect(fill = "#2B304A"),
+        axis.title = element_text(color = "#C7C8CF"), 
+        axis.line = element_line(color = "#C7C8CF"), 
+        legend.key = element_rect(fill = "#2B304A"),
+        legend.text = element_text(color = "#C7C8CF"),
+        legend.title = element_blank(),
+         legend.background = element_rect(fill = "#2B304A"))
+
+table_curr <- er_mismatch %>% 
+  select(3:4) %>% 
+#Formatting the table for HTML
+kbl(caption = "Exchange Rate Mismatch") %>% 
+  kable_styling() 
+table_curr 
+
+```
+Notably, most currencies were undervalued against the dollar in July 2020, with the exception of the Swiss Franc (CHF), the Lebanese Pound (LBP) and the Swedish Krona (SEK).
+
 # How does the price for a Big Mac vary across countries? 
 
 ```{r, slim_data_frame}
@@ -125,7 +177,7 @@ As of July 2020 a Big Mac was priced, on average $3.58 around the world. Interes
 
 Next we look in more detail at which countries are towards the lower level of the spectrum and which instead are the most expensive. 
 
-```{r, most_expensive_burger}
+```{r, most_expensive_burger, fig.height = 5, fig.width=10}
 
 #reducing the data to the cheapest 8 locations in July 2020
 cheapest_july20 <- bmindex_data %>% 
@@ -188,6 +240,7 @@ According to The Economist's data, as of July 2020, South Africa was the country
 Vice versa, Swizerland, with almost 4 times the amount, sold the most expensive ($6.91). 
 
 # Has Covid impacted the price for Big Mac? 
+
 Next, I look into the percentage change in the price for a Big Mac between January and July 2020 the Big Mac has had in 2020. In fact, in light of China's Covid-19 emergency, which unfolded in Europe and then worldwide in March 2020, I was curious to see what price fluctuations have taken place in 2020. 
 Interestingly, as reflected by the bar chart below, whilst the price has fluctuated, the price change has not been homogeneous across countries. Indeed, there is not a clear or similar pattern across countries, but rather, it increased in some whilst decreasing in others. 
 

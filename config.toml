@@ -134,6 +134,12 @@ disqusShortname = ""
     # For more informtion take a look at the README.
     # To add more blogs just copy and paste the code.
 
+# Section Type Two
+  [params.two]
+    enable = true
+    title = "About Me"
+    subtitle = "I am an International Management graduate from the University of Bath, with experience in the beverage and beauty industries, who is currently delving into data analytics at London Business School with the aspiration of bringing meaningful insights and lasting impact to businesses. 
+
   # Contact section
   [params.contact]
     enable = true

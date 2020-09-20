@@ -18,8 +18,9 @@ title: Climate Change
 <div id="analysis-of-temperature-anomalies" class="section level1">
 <h1>Analysis of Temperature Anomalies</h1>
 <p>The Covid-19 emergency has put a halt on, and arguably reversed, the fight for sustainability. However, the below analysis of historical temperature anomalies serves as a reminder that efforts against climate change cannot be postponed.</p>
-<p>##Familiarizing with the data
-The raw data, which I <em>import</em> below, is sourced from <a href="https://data.giss.nasa.gov/gistemp">NASA’s Goddard Institute for Space Studies</a>, who recorded the <em>Combined Land-Surface Air and Sea-Surface Water Temperature Anomalies</em> in the Northern Hemisphere. The <a href="https://data.giss.nasa.gov/gistemp/tabledata_v3/NH.Ts+dSST.txt">tabular data of temperature anomalies can be found here.</a></p>
+<div id="familiarizing-with-the-data" class="section level2">
+<h2>Familiarizing with the data</h2>
+<p>The raw data, which I <em>import</em> below, is sourced from <a href="https://data.giss.nasa.gov/gistemp">NASA’s Goddard Institute for Space Studies</a>, who recorded the <em>Combined Land-Surface Air and Sea-Surface Water Temperature Anomalies</em> in the Northern Hemisphere. The <a href="https://data.giss.nasa.gov/gistemp/tabledata_v3/NH.Ts+dSST.txt">tabular data of temperature anomalies can be found here.</a></p>
 <pre class="r"><code>#importing the data from NASA&#39;s GISS
 weather &lt;- 
   read_csv(&quot;https://data.giss.nasa.gov/gistemp/tabledata_v3/NH.Ts+dSST.csv&quot;, 
@@ -848,6 +849,7 @@ glimpse(tidyweather)</code></pre>
 ## $ Year  &lt;dbl&gt; 1880, 1880, 1880, 1880, 1880, 1880, 1880, 1880, 1880, 1880, 188…
 ## $ Month &lt;chr&gt; &quot;Jan&quot;, &quot;Feb&quot;, &quot;Mar&quot;, &quot;Apr&quot;, &quot;May&quot;, &quot;Jun&quot;, &quot;Jul&quot;, &quot;Aug&quot;, &quot;Sep&quot;, …
 ## $ delta &lt;dbl&gt; -0.54, -0.38, -0.26, -0.37, -0.11, -0.22, -0.23, -0.24, -0.26, …</code></pre>
+</div>
 <div id="visualizing-the-data" class="section level2">
 <h2>Visualizing the data</h2>
 <p>To visualize the temperature deviations I build the following time-series scatter plot and add a trend line, which evidences the constant increase in anomalies throughout the centuries.</p>

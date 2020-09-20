@@ -38,7 +38,7 @@ Exploratory Data Analysis Importing and inspecting the data First I import the d
       
       <guid>/blogs/climatechange/</guid>
       <description>Analysis of Temperature Anomalies The Covid-19 emergency has put a halt on, and arguably reversed, the fight for sustainability. However, the below analysis of historical temperature anomalies serves as a reminder that efforts against climate change cannot be postponed.
-##Familiarizing with the data The raw data, which I import below, is sourced from NASA’s Goddard Institute for Space Studies, who recorded the Combined Land-Surface Air and Sea-Surface Water Temperature Anomalies in the Northern Hemisphere.</description>
+Familiarizing with the data The raw data, which I import below, is sourced from NASA’s Goddard Institute for Space Studies, who recorded the Combined Land-Surface Air and Sea-Surface Water Temperature Anomalies in the Northern Hemisphere.</description>
     </item>
     
     <item>

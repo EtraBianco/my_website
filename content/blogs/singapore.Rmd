@@ -5,7 +5,7 @@ categories:
 date: "2017-10-31T21:28:43-05:00"
 description: ""
 draft: false
-image: pic10.jpg
+image: pic02.jpg
 keywords: ""
 slug: airbnb
 title: AirBnB
@@ -111,11 +111,11 @@ df_raw <- read_csv("listings.csv")
 
 ## Inspecting and cleaning the data 
 
-```{r, cache=TRUE, eval = TRUE }
+```{r, cache=TRUE, eval = TRUE, echo = FALSE }
 #glimpsing the data frame to get a sense of the raw data
 glimpse(df_raw)
 ```
-```{r, cache=TRUE, eval = TRUE }
+```{r, cache=TRUE, eval = TRUE, echo = FALSE }
 #Skim for further inspection of the data frame 
 skimr::skim(df_raw)
 ```
@@ -747,10 +747,10 @@ glimpse(regression_data)
 I first fit a linear model called `model1` using `prop_type_simplified`, `number_of_reviews`, and `review_scores_rating` and plot the output and summary statistics to evaluate the significance of these variables as predictors. 
 The key metrics that I will be examining to evaluate the above are:
 <ol>
-1. R-squared adjusted: measurement of the extent of the variance of the outcome variable that is explained by the model. 
-2. P Values: indicates whether the independent explanatory variable is significant to the model (when below 0.05 it can be deemed significant).
-3. T Stat: serves the same function as the P Value, suggesting whether the independent explanatory variable is significant to the model (when above 2 it can be deemed significant).
-4. Variance Inflation Factor (VIFs): enable us to check for multicollinearity in my model. Since these are not provided in the summary table for the model, I will be computing this with the `vif` function in the `car` package.
+1. *R-squared adjusted*: measurement of the extent of the variance of the outcome variable that is explained by the model. 
+2. *P Values*: indicates whether the independent explanatory variable is significant to the model (when below 0.05 it can be deemed significant).
+3. *T Stat*: serves the same function as the P Value, suggesting whether the independent explanatory variable is significant to the model (when above 2 it can be deemed significant).
+4. *Variance Inflation Factor (VIFs)*: enable us to check for multicollinearity in my model. Since these are not provided in the summary table for the model, I will be computing this with the `vif` function in the `car` package.
 </ol>
 
 ```{r, fig.height = 10, fig.width=10}
@@ -885,7 +885,7 @@ binary_encoded <- binary_encoded  %>%
 
 ```
 
-I then select the more significant neighbourhoods to include in my model based on the summaries from before. The cleaned model is shown below.
+I then select the more significant neighborhoods to include in my model based on the summaries from before. The cleaned model is shown below.
 ```{r}
 #Only choose significant neighbourhoods, and add them into the mode
 final_model <- lm(formula = log(price_4_nights) ~ 
@@ -931,86 +931,6 @@ autoplot(final_model) +
 vif(final_model)
 ```
 From the VIF table, I see that there are no values larger than 5 and the model does not appear to suffer from collinear variables. The residual plots all look promising as they follow the patters previously described, suggesting a linear relationship between the variables. 
-
-#### Best Model validation
-
-Now I will split the data into a test and train segments to evaluate the usefulness and accuracy of the model I built above as a means to predict AirBnB prices in Singapore.
-
-```{r}
-
-##removing nas
-binary_encoded <- binary_encoded %>%
-  filter(is.na(beds) == FALSE & is.na(bedrooms) == FALSE)
-
-#getting train and test
-
-train_index <- sample(1:nrow(binary_encoded), 0.8 * nrow(binary_encoded))
-test_index <- setdiff(1:nrow(binary_encoded), train_index)
-
-# Build X_train, y_train, X_test, y_test
-X_train <- binary_encoded[train_index, -15]
-y_train <- binary_encoded[train_index, "price_4_nights"]
-
-X_test <- binary_encoded[test_index, -15]
-y_test <- binary_encoded[test_index, "price_4_nights"]
-```
-
-Training model on `X_train`
-
-```{r}
-
-#Only choose significant neighbourhoods, and add them into the mode
-final_model_val <- lm(formula = log(y_train) ~ 
-    number_of_reviews + 
-    review_scores_rating + bedrooms + 
-    beds  + accommodates + 
-    neighbourhood_cleansed_Bedok + 
-    `neighbourhood_cleansed_Downtown Core` + 
-    neighbourhood_cleansed_Geylang +
-    `neighbourhood_cleansed_Marina South` +
-    neighbourhood_cleansed_Newton + 
-      neighbourhood_cleansed_Orchard + 
-    neighbourhood_cleansed_Outram + 
-      `neighbourhood_cleansed_River Valley` + 
-    neighbourhood_cleansed_Rochor + 
-    `neighbourhood_cleansed_Singapore River` + 
-      `neighbourhood_cleansed_Southern Islands` + 
-      neighbourhood_cleansed_Tuas + 
-    neighbourhood_cleansed_Woodlands + 
-      room_type*cancellation_policy_flexible + 
-    prop_type_simplified_Apartment + prop_type_simplified_Condominium + 
-    prop_type_simplified_House, 
-    data = X_train)
-
-
-```
-
-Next I generate predictions from the model and calculate the Root Mean Square Error (RMSE), which is the standard deviation between my predicted points and the actual values.
-
-```{r}
-#predict values 
-y_pred = predict(final_model_val , X_test)
-
-```
-
-```{r}
-#calculate MSE
-MSE = mean((y_test - exp(y_pred))^2)
-#cacllucale the RMSE 
-RMSE = sqrt(MSE)
-RMSE
-```
-
-The RMSE is high, suggesting that my model is imperfect. However this is understandable given the pitfalls in the original data as well as the weak correlation between my dependant variables and independent variable first seen in my correlation plot. 
-
-## Summary Table
-
-```{r}
-#plotting summary table
-huxreg(list("model1" = model1, "model2" = model2, "model3" = model3, "step_model" = step_model,"group_model"=group_model, "final_model"=final_model))
-```
-
-From my summary table, I can say most of my P values are significant while maintaining R square in a relatively high number.
 
 ## Prediction
 

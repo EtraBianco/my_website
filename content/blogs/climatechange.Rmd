@@ -43,7 +43,7 @@ library(infer)
 # Analysis of Temperature Anomalies 
 The Covid-19 emergency has put a halt on, and arguably reversed, the fight for sustainability. However, the below analysis of historical temperature anomalies serves as a reminder that efforts against climate change cannot be postponed. 
 
-##Familiarizing with the data
+## Familiarizing with the data
 The raw data, which I *import* below, is sourced from [NASA's Goddard Institute for Space Studies](https://data.giss.nasa.gov/gistemp), who recorded the *Combined Land-Surface Air and Sea-Surface Water Temperature Anomalies* in the Northern Hemisphere. The [tabular data of temperature anomalies can be found here.](https://data.giss.nasa.gov/gistemp/tabledata_v3/NH.Ts+dSST.txt)
 
 ```{r weather_data, cache=TRUE}

@@ -28,7 +28,7 @@ knitr::opts_chunk$set(
 options(scipen=999)
 ```
 
-```{r load-libraries, warning=FALSE, message=FALSE, echo=FALSE}
+```{r load-libraries, warning=FALSE, message=FALSE, echo=FALSE, include=FALSE}
 library(tidyverse)  # Loading  packages
 library(mosaic)
 library(ggthemes)
@@ -55,7 +55,7 @@ source_data <- read_csv("big-mac-source-data.csv")
 historical_data <- read_csv("big-mac-historical-source-data.csv")
 bmindex_data <- read_csv("big-mac-full-index.csv")
 ```
-```{r, inspecting_data, echo = FALSE}
+```{r, inspecting_data, echo = FALSE, include=FALSE}
 
 glimpse(bmindex_data)
 skim(bmindex_data)
@@ -78,14 +78,14 @@ Below I calculate and visualize, for each country, whether the local currency wa
 ```{r}
 
 #mutating data frame to calculate exchange rate mismatch
-
 er_mismatch <- bmindex_data %>% 
   select(1:7) %>% 
   filter(date == "2020-07-01") %>% 
   mutate(implied_er = (local_price/5.71)) %>% 
   mutate(mismatch = implied_er-dollar_ex) %>% 
   mutate(percent_miss = (mismatch/dollar_ex)*100)
-  
+
+#visualizing some of the rows to see the output  
 er_mismatch %>% 
 head(3) %>% 
   #Formatting the table for HTML
@@ -94,9 +94,11 @@ kbl(caption = "Exchange Rate Mismatch") %>%
 
 ```
 ```{r fig.height = 5, fig.width=10}
+
+#plotting the under and over valuation of the exchange rates
 ggplot(er_mismatch, aes(y = percent_miss, x = name, fill = name, label = currency_code)) +
   geom_col() + 
-  labs(title = "Most currencies were undervalued against the Dollar in July 2020", subtitle = "Percentage difference between the exchange rate and the PPP of that currency", x = "Country", y = "Percentage mismatch") + 
+  labs(title = "Most currencies were undervalued against the Dollar in July 2020", subtitle = "Percentage difference between the implied and actual exchange rate", x = "Country", y = "Percentage mismatch") + 
   geom_text(color = "white",size = 4, y = -0.8, color = "#C7C8CF") +
   theme(legend.position = "right", axis.text = element_blank(), axis.ticks = element_blank(), 
         panel.background = element_rect(fill = "#2B304A", color = "#2B304A"), 

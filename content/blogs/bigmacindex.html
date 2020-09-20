@@ -11,6 +11,8 @@ slug: bigmacindex
 title: Big Mac Index
 ---
 
+<script src="/rmarkdown-libs/kePrint/kePrint.js"></script>
+<link href="/rmarkdown-libs/lightable/lightable.css" rel="stylesheet" />
 
 
 <p>In 1986 <em>The Economist</em> introduced <strong>The Big Mac Index</strong>, providing a unit of comparison for the cost of living in different countries and exchange rates based on the price of a Big Mac burger from McDonald’s. Burgernomics was certainly innovative and in the analysis below I dig into <a href="https://github.com/TheEconomist/big-mac-data">The Economist’s data</a> for insights.</p>
@@ -18,851 +20,6 @@ title: Big Mac Index
 source_data &lt;- read_csv(&quot;big-mac-source-data.csv&quot;)
 historical_data &lt;- read_csv(&quot;big-mac-historical-source-data.csv&quot;)
 bmindex_data &lt;- read_csv(&quot;big-mac-full-index.csv&quot;)</code></pre>
-<pre><code>## Rows: 1,386
-## Columns: 19
-## $ date          &lt;date&gt; 2000-04-01, 2000-04-01, 2000-04-01, 2000-04-01, 2000-0…
-## $ iso_a3        &lt;chr&gt; &quot;ARG&quot;, &quot;AUS&quot;, &quot;BRA&quot;, &quot;CAN&quot;, &quot;CHE&quot;, &quot;CHL&quot;, &quot;CHN&quot;, &quot;CZE&quot;,…
-## $ currency_code &lt;chr&gt; &quot;ARS&quot;, &quot;AUD&quot;, &quot;BRL&quot;, &quot;CAD&quot;, &quot;CHF&quot;, &quot;CLP&quot;, &quot;CNY&quot;, &quot;CZK&quot;,…
-## $ name          &lt;chr&gt; &quot;Argentina&quot;, &quot;Australia&quot;, &quot;Brazil&quot;, &quot;Canada&quot;, &quot;Switzerl…
-## $ local_price   &lt;dbl&gt; 2.50, 2.59, 2.95, 2.85, 5.90, 1260.00, 9.90, 54.37, 24.…
-## $ dollar_ex     &lt;dbl&gt; 1.000, 1.680, 1.790, 1.470, 1.700, 514.000, 8.280, 39.1…
-## $ dollar_price  &lt;dbl&gt; 2.50, 1.54, 1.65, 1.94, 3.47, 2.45, 1.20, 1.39, 3.08, 2…
-## $ USD_raw       &lt;dbl&gt; -0.00398, -0.38579, -0.34341, -0.22758, 0.38270, -0.023…
-## $ EUR_raw       &lt;dbl&gt; 0.0501, -0.3525, -0.3078, -0.1857, 0.4577, 0.0296, -0.4…
-## $ GBP_raw       &lt;dbl&gt; -0.1672, -0.4864, -0.4510, -0.3542, 0.1561, -0.1834, -0…
-## $ JPY_raw       &lt;dbl&gt; -0.0986, -0.4442, -0.4058, -0.3010, 0.2513, -0.1162, -0…
-## $ CNY_raw       &lt;dbl&gt; 1.09091, 0.28939, 0.37836, 0.62152, 1.90267, 1.05023, 0…
-## $ GDP_dollar    &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,…
-## $ adj_price     &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,…
-## $ USD_adjusted  &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,…
-## $ EUR_adjusted  &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,…
-## $ GBP_adjusted  &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,…
-## $ JPY_adjusted  &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,…
-## $ CNY_adjusted  &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,…</code></pre>
-<table style='width: auto;'
-        class='table table-condensed'>
-<caption>
-(#tab:inspecting_data)Data summary
-</caption>
-<thead>
-<tr>
-<th style="text-align:left;">
-</th>
-<th style="text-align:left;">
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left;">
-Name
-</td>
-<td style="text-align:left;">
-bmindex_data
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Number of rows
-</td>
-<td style="text-align:left;">
-1386
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Number of columns
-</td>
-<td style="text-align:left;">
-19
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-_______________________
-</td>
-<td style="text-align:left;">
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Column type frequency:
-</td>
-<td style="text-align:left;">
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-character
-</td>
-<td style="text-align:left;">
-3
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Date
-</td>
-<td style="text-align:left;">
-1
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-numeric
-</td>
-<td style="text-align:left;">
-15
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-________________________
-</td>
-<td style="text-align:left;">
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Group variables
-</td>
-<td style="text-align:left;">
-None
-</td>
-</tr>
-</tbody>
-</table>
-<p><strong>Variable type: character</strong></p>
-<table>
-<thead>
-<tr>
-<th style="text-align:left;">
-skim_variable
-</th>
-<th style="text-align:right;">
-n_missing
-</th>
-<th style="text-align:right;">
-complete_rate
-</th>
-<th style="text-align:right;">
-min
-</th>
-<th style="text-align:right;">
-max
-</th>
-<th style="text-align:right;">
-empty
-</th>
-<th style="text-align:right;">
-n_unique
-</th>
-<th style="text-align:right;">
-whitespace
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left;">
-iso_a3
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-56
-</td>
-<td style="text-align:right;">
-0
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-currency_code
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-56
-</td>
-<td style="text-align:right;">
-0
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-name
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-20
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-57
-</td>
-<td style="text-align:right;">
-0
-</td>
-</tr>
-</tbody>
-</table>
-<p><strong>Variable type: Date</strong></p>
-<table>
-<thead>
-<tr>
-<th style="text-align:left;">
-skim_variable
-</th>
-<th style="text-align:right;">
-n_missing
-</th>
-<th style="text-align:right;">
-complete_rate
-</th>
-<th style="text-align:left;">
-min
-</th>
-<th style="text-align:left;">
-max
-</th>
-<th style="text-align:left;">
-median
-</th>
-<th style="text-align:right;">
-n_unique
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left;">
-date
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:left;">
-2000-04-01
-</td>
-<td style="text-align:left;">
-2020-07-01
-</td>
-<td style="text-align:left;">
-2013-07-01
-</td>
-<td style="text-align:right;">
-33
-</td>
-</tr>
-</tbody>
-</table>
-<p><strong>Variable type: numeric</strong></p>
-<table>
-<thead>
-<tr>
-<th style="text-align:left;">
-skim_variable
-</th>
-<th style="text-align:right;">
-n_missing
-</th>
-<th style="text-align:right;">
-complete_rate
-</th>
-<th style="text-align:right;">
-mean
-</th>
-<th style="text-align:right;">
-sd
-</th>
-<th style="text-align:right;">
-p0
-</th>
-<th style="text-align:right;">
-p25
-</th>
-<th style="text-align:right;">
-p50
-</th>
-<th style="text-align:right;">
-p75
-</th>
-<th style="text-align:right;">
-p100
-</th>
-<th style="text-align:left;">
-hist
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left;">
-local_price
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-1.00
-</td>
-<td style="text-align:right;">
-10043.23
-</td>
-<td style="text-align:right;">
-181450.81
-</td>
-<td style="text-align:right;">
-1.05
-</td>
-<td style="text-align:right;">
-7.25
-</td>
-<td style="text-align:right;">
-24.25
-</td>
-<td style="text-align:right;">
-119.00
-</td>
-<td style="text-align:right;">
-4000000.00
-</td>
-<td style="text-align:left;">
-▇▁▁▁▁
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-dollar_ex
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-1.00
-</td>
-<td style="text-align:right;">
-3817.91
-</td>
-<td style="text-align:right;">
-69296.09
-</td>
-<td style="text-align:right;">
-0.30
-</td>
-<td style="text-align:right;">
-2.98
-</td>
-<td style="text-align:right;">
-7.75
-</td>
-<td style="text-align:right;">
-47.09
-</td>
-<td style="text-align:right;">
-1600500.00
-</td>
-<td style="text-align:left;">
-▇▁▁▁▁
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-dollar_price
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-1.00
-</td>
-<td style="text-align:right;">
-3.26
-</td>
-<td style="text-align:right;">
-1.26
-</td>
-<td style="text-align:right;">
-0.64
-</td>
-<td style="text-align:right;">
-2.34
-</td>
-<td style="text-align:right;">
-3.04
-</td>
-<td style="text-align:right;">
-4.01
-</td>
-<td style="text-align:right;">
-8.31
-</td>
-<td style="text-align:left;">
-▃▇▃▁▁
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-USD_raw
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-1.00
-</td>
-<td style="text-align:right;">
--0.23
-</td>
-<td style="text-align:right;">
-0.30
-</td>
-<td style="text-align:right;">
--0.78
-</td>
-<td style="text-align:right;">
--0.45
-</td>
-<td style="text-align:right;">
--0.29
-</td>
-<td style="text-align:right;">
--0.07
-</td>
-<td style="text-align:right;">
-1.27
-</td>
-<td style="text-align:left;">
-▆▇▂▁▁
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-EUR_raw
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-1.00
-</td>
-<td style="text-align:right;">
--0.23
-</td>
-<td style="text-align:right;">
-0.27
-</td>
-<td style="text-align:right;">
--0.81
-</td>
-<td style="text-align:right;">
--0.44
-</td>
-<td style="text-align:right;">
--0.28
-</td>
-<td style="text-align:right;">
--0.07
-</td>
-<td style="text-align:right;">
-0.87
-</td>
-<td style="text-align:left;">
-▃▇▃▁▁
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-GBP_raw
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-1.00
-</td>
-<td style="text-align:right;">
--0.18
-</td>
-<td style="text-align:right;">
-0.30
-</td>
-<td style="text-align:right;">
--0.81
-</td>
-<td style="text-align:right;">
--0.40
-</td>
-<td style="text-align:right;">
--0.23
-</td>
-<td style="text-align:right;">
-0.00
-</td>
-<td style="text-align:right;">
-1.14
-</td>
-<td style="text-align:left;">
-▃▇▃▁▁
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-JPY_raw
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-1.00
-</td>
-<td style="text-align:right;">
-0.04
-</td>
-<td style="text-align:right;">
-0.39
-</td>
-<td style="text-align:right;">
--0.72
-</td>
-<td style="text-align:right;">
--0.26
-</td>
-<td style="text-align:right;">
-0.00
-</td>
-<td style="text-align:right;">
-0.23
-</td>
-<td style="text-align:right;">
-2.16
-</td>
-<td style="text-align:left;">
-▆▇▂▁▁
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-CNY_raw
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-1.00
-</td>
-<td style="text-align:right;">
-0.49
-</td>
-<td style="text-align:right;">
-0.63
-</td>
-<td style="text-align:right;">
--0.57
-</td>
-<td style="text-align:right;">
-0.05
-</td>
-<td style="text-align:right;">
-0.33
-</td>
-<td style="text-align:right;">
-0.81
-</td>
-<td style="text-align:right;">
-4.39
-</td>
-<td style="text-align:left;">
-▇▅▁▁▁
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-GDP_dollar
-</td>
-<td style="text-align:right;">
-684
-</td>
-<td style="text-align:right;">
-0.51
-</td>
-<td style="text-align:right;">
-25982.72
-</td>
-<td style="text-align:right;">
-22811.59
-</td>
-<td style="text-align:right;">
-1049.75
-</td>
-<td style="text-align:right;">
-7989.72
-</td>
-<td style="text-align:right;">
-15214.06
-</td>
-<td style="text-align:right;">
-42221.24
-</td>
-<td style="text-align:right;">
-100578.97
-</td>
-<td style="text-align:left;">
-▇▂▃▁▁
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-adj_price
-</td>
-<td style="text-align:right;">
-684
-</td>
-<td style="text-align:right;">
-0.51
-</td>
-<td style="text-align:right;">
-3.71
-</td>
-<td style="text-align:right;">
-0.98
-</td>
-<td style="text-align:right;">
-2.33
-</td>
-<td style="text-align:right;">
-2.94
-</td>
-<td style="text-align:right;">
-3.31
-</td>
-<td style="text-align:right;">
-4.42
-</td>
-<td style="text-align:right;">
-7.43
-</td>
-<td style="text-align:left;">
-▇▃▃▁▁
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-USD_adjusted
-</td>
-<td style="text-align:right;">
-684
-</td>
-<td style="text-align:right;">
-0.51
-</td>
-<td style="text-align:right;">
--0.02
-</td>
-<td style="text-align:right;">
-0.26
-</td>
-<td style="text-align:right;">
--0.58
-</td>
-<td style="text-align:right;">
--0.18
-</td>
-<td style="text-align:right;">
--0.03
-</td>
-<td style="text-align:right;">
-0.10
-</td>
-<td style="text-align:right;">
-1.49
-</td>
-<td style="text-align:left;">
-▃▇▁▁▁
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-EUR_adjusted
-</td>
-<td style="text-align:right;">
-684
-</td>
-<td style="text-align:right;">
-0.51
-</td>
-<td style="text-align:right;">
--0.09
-</td>
-<td style="text-align:right;">
-0.21
-</td>
-<td style="text-align:right;">
--0.58
-</td>
-<td style="text-align:right;">
--0.22
-</td>
-<td style="text-align:right;">
--0.10
-</td>
-<td style="text-align:right;">
-0.02
-</td>
-<td style="text-align:right;">
-0.82
-</td>
-<td style="text-align:left;">
-▂▇▅▁▁
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-GBP_adjusted
-</td>
-<td style="text-align:right;">
-684
-</td>
-<td style="text-align:right;">
-0.51
-</td>
-<td style="text-align:right;">
-0.01
-</td>
-<td style="text-align:right;">
-0.25
-</td>
-<td style="text-align:right;">
--0.59
-</td>
-<td style="text-align:right;">
--0.14
-</td>
-<td style="text-align:right;">
-0.00
-</td>
-<td style="text-align:right;">
-0.15
-</td>
-<td style="text-align:right;">
-1.29
-</td>
-<td style="text-align:left;">
-▂▇▂▁▁
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-JPY_adjusted
-</td>
-<td style="text-align:right;">
-684
-</td>
-<td style="text-align:right;">
-0.51
-</td>
-<td style="text-align:right;">
-0.23
-</td>
-<td style="text-align:right;">
-0.31
-</td>
-<td style="text-align:right;">
--0.46
-</td>
-<td style="text-align:right;">
-0.01
-</td>
-<td style="text-align:right;">
-0.20
-</td>
-<td style="text-align:right;">
-0.38
-</td>
-<td style="text-align:right;">
-1.62
-</td>
-<td style="text-align:left;">
-▂▇▃▁▁
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-CNY_adjusted
-</td>
-<td style="text-align:right;">
-684
-</td>
-<td style="text-align:right;">
-0.51
-</td>
-<td style="text-align:right;">
-0.03
-</td>
-<td style="text-align:right;">
-0.26
-</td>
-<td style="text-align:right;">
--0.56
-</td>
-<td style="text-align:right;">
--0.13
-</td>
-<td style="text-align:right;">
-0.02
-</td>
-<td style="text-align:right;">
-0.15
-</td>
-<td style="text-align:right;">
-1.41
-</td>
-<td style="text-align:left;">
-▂▇▂▁▁
-</td>
-</tr>
-</tbody>
-</table>
 I firstly load and inspect the data from the <code>bmindex_data</code>, which is the data frame I will be drawing my analysis from. It displays information for 56 countries dating back to 2000. The most important variables that the data frame includes are:
 <ol>
 <ul>
@@ -871,6 +28,652 @@ I firstly load and inspect the data from the <code>bmindex_data</code>, which is
 <li><code>dollar_price</code>: the equivalent dollar price for a Big Mac</li>
 </ul>
 </ol>
+<div id="exchange-rate-mismatch" class="section level1">
+<h1>Exchange rate mismatch</h1>
+<p>The Big Mac Index, by outlining the differences in local prices (the cost of a Big Mac), suggests what the exchange rate should be and thus reveals any mismatch in exchange rates.</p>
+<p>Below I calculate and visualize, for each country, whether the local currency was undervalued or overvalued against the US dollar as of July 2020. To do so I filter and mutate the data frame to calculate for each country the implied exchange rate based on the local price of a Big Mac in US$ and compare it to the actual exchange rate at the time to get the percentage difference.</p>
+<pre class="r"><code>#mutating data frame to calculate exchange rate mismatch
+er_mismatch &lt;- bmindex_data %&gt;% 
+  select(1:7) %&gt;% 
+  filter(date == &quot;2020-07-01&quot;) %&gt;% 
+  mutate(implied_er = (local_price/5.71)) %&gt;% 
+  mutate(mismatch = implied_er-dollar_ex) %&gt;% 
+  mutate(percent_miss = (mismatch/dollar_ex)*100)
+
+#visualizing some of the rows to see the output  
+er_mismatch %&gt;% 
+head(3) %&gt;% 
+  #Formatting the table for HTML
+kbl(caption = &quot;Exchange Rate Mismatch&quot;) %&gt;% 
+  kable_styling() </code></pre>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:unnamed-chunk-1">Table 1: </span>Exchange Rate Mismatch
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+date
+</th>
+<th style="text-align:left;">
+iso_a3
+</th>
+<th style="text-align:left;">
+currency_code
+</th>
+<th style="text-align:left;">
+name
+</th>
+<th style="text-align:right;">
+local_price
+</th>
+<th style="text-align:right;">
+dollar_ex
+</th>
+<th style="text-align:right;">
+dollar_price
+</th>
+<th style="text-align:right;">
+implied_er
+</th>
+<th style="text-align:right;">
+mismatch
+</th>
+<th style="text-align:right;">
+percent_miss
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+2020-07-01
+</td>
+<td style="text-align:left;">
+ARE
+</td>
+<td style="text-align:left;">
+AED
+</td>
+<td style="text-align:left;">
+United Arab Emirates
+</td>
+<td style="text-align:right;">
+14.75
+</td>
+<td style="text-align:right;">
+3.67
+</td>
+<td style="text-align:right;">
+4.02
+</td>
+<td style="text-align:right;">
+2.58
+</td>
+<td style="text-align:right;">
+-1.090
+</td>
+<td style="text-align:right;">
+-29.7
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-07-01
+</td>
+<td style="text-align:left;">
+ARG
+</td>
+<td style="text-align:left;">
+ARS
+</td>
+<td style="text-align:left;">
+Argentina
+</td>
+<td style="text-align:right;">
+250.00
+</td>
+<td style="text-align:right;">
+71.24
+</td>
+<td style="text-align:right;">
+3.51
+</td>
+<td style="text-align:right;">
+43.78
+</td>
+<td style="text-align:right;">
+-27.458
+</td>
+<td style="text-align:right;">
+-38.5
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020-07-01
+</td>
+<td style="text-align:left;">
+AUS
+</td>
+<td style="text-align:left;">
+AUD
+</td>
+<td style="text-align:left;">
+Australia
+</td>
+<td style="text-align:right;">
+6.55
+</td>
+<td style="text-align:right;">
+1.43
+</td>
+<td style="text-align:right;">
+4.58
+</td>
+<td style="text-align:right;">
+1.15
+</td>
+<td style="text-align:right;">
+-0.284
+</td>
+<td style="text-align:right;">
+-19.8
+</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>#plotting the under and over valuation of the exchange rates
+ggplot(er_mismatch, aes(y = percent_miss, x = name, fill = name, label = currency_code)) +
+  geom_col() + 
+  labs(title = &quot;Most currencies were undervalued against the Dollar in July 2020&quot;, subtitle = &quot;Percentage difference between the implied and actual exchange rate&quot;, x = &quot;Country&quot;, y = &quot;Percentage mismatch&quot;) + 
+  geom_text(color = &quot;white&quot;,size = 4, y = -0.8, color = &quot;#C7C8CF&quot;) +
+  theme(legend.position = &quot;right&quot;, axis.text = element_blank(), axis.ticks = element_blank(), 
+        panel.background = element_rect(fill = &quot;#2B304A&quot;, color = &quot;#2B304A&quot;), 
+        panel.grid = element_blank(),
+        plot.title = element_text(color = &quot;#C7C8CF&quot;, size = 10),
+        plot.subtitle = element_text(color = &quot;#C7C8CF&quot;, size = 9),
+        plot.background = element_rect(fill = &quot;#2B304A&quot;),
+        axis.title = element_text(color = &quot;#C7C8CF&quot;), 
+        axis.line = element_line(color = &quot;#C7C8CF&quot;), 
+        legend.key = element_rect(fill = &quot;#2B304A&quot;),
+        legend.text = element_text(color = &quot;#C7C8CF&quot;),
+        legend.title = element_blank(),
+         legend.background = element_rect(fill = &quot;#2B304A&quot;))</code></pre>
+<p><img src="/blogs/bigmacindex_files/figure-html/unnamed-chunk-2-1.png" width="960" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>table_curr &lt;- er_mismatch %&gt;% 
+  select(3:4) %&gt;% 
+#Formatting the table for HTML
+kbl(caption = &quot;Exchange Rate Mismatch&quot;) %&gt;% 
+  kable_styling() 
+table_curr </code></pre>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:unnamed-chunk-2">Table 2: </span>Exchange Rate Mismatch
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+currency_code
+</th>
+<th style="text-align:left;">
+name
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+AED
+</td>
+<td style="text-align:left;">
+United Arab Emirates
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ARS
+</td>
+<td style="text-align:left;">
+Argentina
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+AUD
+</td>
+<td style="text-align:left;">
+Australia
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+AZN
+</td>
+<td style="text-align:left;">
+Azerbaijan
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+BHD
+</td>
+<td style="text-align:left;">
+Bahrain
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+BRL
+</td>
+<td style="text-align:left;">
+Brazil
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+CAD
+</td>
+<td style="text-align:left;">
+Canada
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+CHF
+</td>
+<td style="text-align:left;">
+Switzerland
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+CLP
+</td>
+<td style="text-align:left;">
+Chile
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+CNY
+</td>
+<td style="text-align:left;">
+China
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+COP
+</td>
+<td style="text-align:left;">
+Colombia
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+CRC
+</td>
+<td style="text-align:left;">
+Costa Rica
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+CZK
+</td>
+<td style="text-align:left;">
+Czech Republic
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+DKK
+</td>
+<td style="text-align:left;">
+Denmark
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+EGP
+</td>
+<td style="text-align:left;">
+Egypt
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+EUR
+</td>
+<td style="text-align:left;">
+Euro area
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+GBP
+</td>
+<td style="text-align:left;">
+Britain
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+GTQ
+</td>
+<td style="text-align:left;">
+Guatemala
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+HKD
+</td>
+<td style="text-align:left;">
+Hong Kong
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+HNL
+</td>
+<td style="text-align:left;">
+Honduras
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+HRK
+</td>
+<td style="text-align:left;">
+Croatia
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+HUF
+</td>
+<td style="text-align:left;">
+Hungary
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+IDR
+</td>
+<td style="text-align:left;">
+Indonesia
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+INR
+</td>
+<td style="text-align:left;">
+India
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ILS
+</td>
+<td style="text-align:left;">
+Israel
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+JOD
+</td>
+<td style="text-align:left;">
+Jordan
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+JPY
+</td>
+<td style="text-align:left;">
+Japan
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+KRW
+</td>
+<td style="text-align:left;">
+South Korea
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+KWD
+</td>
+<td style="text-align:left;">
+Kuwait
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+LBP
+</td>
+<td style="text-align:left;">
+Lebanon
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+LKR
+</td>
+<td style="text-align:left;">
+Sri Lanka
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+MDL
+</td>
+<td style="text-align:left;">
+Moldova
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+MXN
+</td>
+<td style="text-align:left;">
+Mexico
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+MYR
+</td>
+<td style="text-align:left;">
+Malaysia
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+NIO
+</td>
+<td style="text-align:left;">
+Nicaragua
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+NOK
+</td>
+<td style="text-align:left;">
+Norway
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+NZD
+</td>
+<td style="text-align:left;">
+New Zealand
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+OMR
+</td>
+<td style="text-align:left;">
+Oman
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+PKR
+</td>
+<td style="text-align:left;">
+Pakistan
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+PEN
+</td>
+<td style="text-align:left;">
+Peru
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+PHP
+</td>
+<td style="text-align:left;">
+Philippines
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+PLN
+</td>
+<td style="text-align:left;">
+Poland
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+QAR
+</td>
+<td style="text-align:left;">
+Qatar
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+RON
+</td>
+<td style="text-align:left;">
+Romania
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+RUB
+</td>
+<td style="text-align:left;">
+Russia
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+SAR
+</td>
+<td style="text-align:left;">
+Saudi Arabia
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+SGD
+</td>
+<td style="text-align:left;">
+Singapore
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+SEK
+</td>
+<td style="text-align:left;">
+Sweden
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+THB
+</td>
+<td style="text-align:left;">
+Thailand
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+TRY
+</td>
+<td style="text-align:left;">
+Turkey
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+TWD
+</td>
+<td style="text-align:left;">
+Taiwan
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+UAH
+</td>
+<td style="text-align:left;">
+Ukraine
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+UYU
+</td>
+<td style="text-align:left;">
+Uruguay
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+USD
+</td>
+<td style="text-align:left;">
+United States
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+VND
+</td>
+<td style="text-align:left;">
+Vietnam
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ZAR
+</td>
+<td style="text-align:left;">
+South Africa
+</td>
+</tr>
+</tbody>
+</table>
+<p>Notably, most currencies were undervalued against the dollar in July 2020, with the exception of the Swiss Franc (CHF), the Lebanese Pound (LBP) and the Swedish Krona (SEK).</p>
+</div>
 <div id="how-does-the-price-for-a-big-mac-vary-across-countries" class="section level1">
 <h1>How does the price for a Big Mac vary across countries?</h1>
 <pre class="r"><code>#reducing the data to July 2020 observations only
@@ -972,7 +775,7 @@ p2 &lt;- expensive_july20 %&gt;%
 
 
 grid.arrange(p1,p2, nrow = 1)</code></pre>
-<p><img src="/blogs/bigmacindex_files/figure-html/most_expensive_burger-1.png" width="648" style="display: block; margin: auto;" /></p>
+<p><img src="/blogs/bigmacindex_files/figure-html/most_expensive_burger-1.png" width="960" style="display: block; margin: auto;" /></p>
 <p>According to The Economist’s data, as of July 2020, South Africa was the country with the cheapest Big Mac (only $1.86) among the countries included in the study.
 Vice versa, Swizerland, with almost 4 times the amount, sold the most expensive ($6.91).</p>
 </div>
@@ -1021,5 +824,5 @@ test</code></pre>
         plot.background = element_rect(fill = &quot;#2B304A&quot;),
         axis.title = element_text(color = &quot;#C7C8CF&quot;), 
         axis.line = element_line(color = &quot;#C7C8CF&quot;))</code></pre>
-<p><img src="/blogs/bigmacindex_files/figure-html/unnamed-chunk-3-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p><img src="/blogs/bigmacindex_files/figure-html/unnamed-chunk-5-1.png" width="960" style="display: block; margin: auto;" /></p>
 </div>

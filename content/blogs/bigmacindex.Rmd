@@ -85,13 +85,20 @@ favstats(~ dollar_price, data = recent_data)
 #plotting the variation in price for a Big Mac as of July 2020
   ggplot(recent_data, aes(x = dollar_price)) +
   geom_vline(xintercept = 3.58, color = "#DA291C") +
-  geom_density() + 
-  theme_few() +
+  geom_density(color = "#C7C8CF") + 
   labs(
     title="A Big Mac costs $3.58 on average around the world",
     subtitle="Distribution of prices for a big Mac as of July 2020",
     x="Price(US$)",
-    y="Density") 
+    y="Density") +
+  theme(panel.background = element_rect(fill = "#2B304A", color = "#2B304A"), 
+        panel.grid = element_blank(),
+        plot.title = element_text(color = "#C7C8CF", size = 10),
+        plot.subtitle = element_text(color = "#C7C8CF", size = 9),
+        plot.background = element_rect(fill = "#2B304A"),
+        axis.title = element_text(color = "#C7C8CF"), 
+        axis.text = element_text(color = "#C7C8CF"),
+        axis.line = element_line(color = "#C7C8CF"))
 ```
 
 As of July 2020 a Big Mac was priced, on average $3.58 around the world. Interestingly, the distribution for the price of a Big Mac is right skewed, suggesting that most countries have a relatively cheaper price, also reflected by the box plot below.
@@ -99,13 +106,21 @@ As of July 2020 a Big Mac was priced, on average $3.58 around the world. Interes
 ```{r cheapest_burger2, fig.height=5, fig.weight = 10}
 #plotting the variation in price for a Big Mac as of July 2020
   ggplot(recent_data, aes(x = dollar_price)) +
-  geom_boxplot() +
+  geom_boxplot(color = "#C7C8CF") +
   theme_few() +
   labs(
     title="A Big Mac costs $3.58 on average around the world",
     subtitle="Distribution of prices for a big Mac as of July 2020",
     x="Price(US$)",
-    y="Density") 
+    y="Density") +
+  theme(panel.background = element_rect(fill = "#2B304A", color = "#2B304A"), 
+        panel.grid = element_blank(),
+        plot.title = element_text(color = "#C7C8CF", size = 10),
+        plot.subtitle = element_text(color = "#C7C8CF", size = 9),
+        plot.background = element_rect(fill = "#2B304A"),
+        axis.title = element_text(color = "#C7C8CF"), 
+        axis.text = element_text(color = "#C7C8CF"),
+        axis.line = element_line(color = "#C7C8CF"))
 ```
 
 Next we look in more detail at which countries are towards the lower level of the spectrum and which instead are the most expensive. 
@@ -128,7 +143,15 @@ p1 <- cheapest_july20 %>%
     subtitle="Price per country of a Big Mac in July 2020 ",
     x="Price(US$)",
     y="Country") +
- scale_x_continuous(expand = c(0,0))
+ scale_x_continuous(expand = c(0,0)) +
+  theme(panel.background = element_rect(fill = "#2B304A", color = "#2B304A"), 
+        panel.grid = element_blank(),
+        plot.title = element_text(color = "#C7C8CF", size = 10),
+        plot.subtitle = element_text(color = "#C7C8CF", size = 9),
+        plot.background = element_rect(fill = "#2B304A"),
+        axis.title = element_text(color = "#C7C8CF"), 
+        axis.text = element_text(color = "#C7C8CF"),
+        axis.line = element_line(color = "#C7C8CF"))
 
 #reducing the data to the most expensive 8 locations in July 2020
 expensive_july20 <- bmindex_data %>% 
@@ -142,13 +165,20 @@ p2 <- expensive_july20 %>%
   arrange(desc(dollar_price)) %>%
   ggplot(aes(x = dollar_price, y = reorder(name,dollar_price))) +
   geom_col(fill = "#FFC72C") + 
-  theme_few() +
   labs(
     title="Swizerland has the most expensive Big Mac",
     subtitle="Price per country of a Big Mac in July 2020 ",
     x="Price(US$)",
     y="Country") +
- scale_x_continuous(expand = c(0,0))
+ scale_x_continuous(expand = c(0,0)) +
+  theme(panel.background = element_rect(fill = "#2B304A", color = "#2B304A"), 
+        panel.grid = element_blank(),
+        plot.title = element_text(color = "#C7C8CF", size = 10),
+        plot.subtitle = element_text(color = "#C7C8CF", size = 9),
+        plot.background = element_rect(fill = "#2B304A"),
+        axis.title = element_text(color = "#C7C8CF"), 
+        axis.text = element_text(color = "#C7C8CF"),
+        axis.line = element_line(color = "#C7C8CF"))
 
 
 grid.arrange(p1,p2, nrow = 1)
@@ -158,7 +188,8 @@ According to The Economist's data, as of July 2020, South Africa was the country
 Vice versa, Swizerland, with almost 4 times the amount, sold the most expensive ($6.91). 
 
 # Has Covid impacted the price for Big Mac? 
-
+Next, I look into the percentage change in the price for a Big Mac between January and July 2020 the Big Mac has had in 2020. In fact, in light of China's Covid-19 emergency, which unfolded in Europe and then worldwide in March 2020, I was curious to see what price fluctuations have taken place in 2020. 
+Interestingly, as reflected by the bar chart below, whilst the price has fluctuated, the price change has not been homogeneous across countries. Indeed, there is not a clear or similar pattern across countries, but rather, it increased in some whilst decreasing in others. 
 
 ```{r graph_for_covid}
 #reducing the data to July 2020 and January observations only
@@ -187,8 +218,68 @@ test
 ```{r}
 ggplot(test, aes(y = percentage_change, x = name, fill = name, label = name)) +
   geom_col() + 
-  labs(title = "Percentage change in ", x = "Country", y = "Percentage change") + 
-  geom_text(size = 3, check_overlap = TRUE) +
-  theme(legend.position = "none", axis.text = element_blank(), axis.ticks = element_blank()) 
+  labs(title = "Covid's impact on a Big Mac's price not homogeneous", subtitle = "Percentage change in price between January and July 2020", x = "Country", y = "Percentage change") + 
+  geom_text(size = 3, check_overlap = FALSE, color = "#C7C8CF") +
+  theme(legend.position = "none", axis.text = element_blank(), axis.ticks = element_blank(), 
+        panel.background = element_rect(fill = "#2B304A", color = "#2B304A"), 
+        panel.grid = element_blank(),
+        plot.title = element_text(color = "#C7C8CF", size = 10),
+        plot.subtitle = element_text(color = "#C7C8CF", size = 9),
+        plot.background = element_rect(fill = "#2B304A"),
+        axis.title = element_text(color = "#C7C8CF"), 
+        axis.line = element_line(color = "#C7C8CF"))
 
 ```
+
+```{r}
+#reducing the data to 2019 observations only
+data19 <- bmindex_data %>% 
+  filter(date == "2019-01-01" | date == "2019-07-09") 
+  
+prev_yr<- data19 %>% 
+  group_by(name) %>%
+  mutate(
+    January= dplyr::first(dollar_price) , 
+    July = dplyr::last(dollar_price)
+  ) %>%
+  select(name,January,July) %>%
+  mutate(percentage_change = round(((July - January)/January)*100,2)) %>% 
+  slice(1:10) 
+ 
+prev_yr <- prev_yr[!duplicated(prev_yr$name),]
+```
+```{r}
+#reducing the data to 2019 observations only
+data18 <- bmindex_data %>% 
+  filter(date == "2018-07-01" | date == "2018-01-01") 
+  
+prev_yr2<- data18 %>% 
+  group_by(name) %>%
+  mutate(
+    January= dplyr::first(dollar_price) , 
+    July = dplyr::last(dollar_price)
+  ) %>%
+  select(name,January,July) %>%
+  mutate(percentage_change = round(((July - January)/January)*100,2)) %>% 
+  slice(1:10) 
+ 
+prev_yr2 <- prev_yr2[!duplicated(prev_yr2$name),]
+```
+
+```{r}
+
+#computing summary statistics for percentage change in price 18,19,2020
+price_stats18 <- favstats(~ percentage_change, data = prev_yr2) 
+price_stats19 <- favstats(~ percentage_change, data = prev_yr)
+price_stats20 <- favstats(~ percentage_change, data = test) 
+
+#combined all of the above summary statistics for my variables in one table
+sum_tab <- rbind(price_stats18, price_stats19, price_stats20) %>%
+  #adding a column with the variable names 
+  mutate(year  = c("2018" , "2019" , "2020")) 
+sum_tab[,c(10,1:9)] %>% 
+  #Formatting the table for HTML
+kbl(caption = "Summary Statistics for % change in prices per year") %>% 
+  kable_styling()
+```
+

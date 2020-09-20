@@ -237,7 +237,7 @@ visualize(bootstrap_delta) +
   
 ```
 
-## Global warming a reality we must face
+## Global warming is a reality we must face
 
 From this analysis of historical data it becomes evident that temperature deviations have been rising and that every decade we are experiencing a greater number and variation of annual anomalies.
 Our confidence interval suggests, at best, temperature anomalies of 0.91°C, which is extremely problematic given that [NASA points out on their website](https://earthobservatory.nasa.gov/world-of-change/decadaltemp.php) that 

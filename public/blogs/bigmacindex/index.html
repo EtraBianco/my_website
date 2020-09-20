@@ -75,6 +75,8 @@
                                 <span class="image main"><img src="/img/blogs/burger.jpg" alt="" /></span>
                             
                             
+<script src="/rmarkdown-libs/kePrint/kePrint.js"></script>
+<link href="/rmarkdown-libs/lightable/lightable.css" rel="stylesheet" />
 
 
 <p>In 1986 <em>The Economist</em> introduced <strong>The Big Mac Index</strong>, providing a unit of comparison for the cost of living in different countries and exchange rates based on the price of a Big Mac burger from McDonald’s. Burgernomics was certainly innovative and in the analysis below I dig into <a href="https://github.com/TheEconomist/big-mac-data">The Economist’s data</a> for insights.</p>
@@ -946,24 +948,39 @@ recent_data &lt;- bmindex_data %&gt;%
 <pre class="r"><code>#plotting the variation in price for a Big Mac as of July 2020
   ggplot(recent_data, aes(x = dollar_price)) +
   geom_vline(xintercept = 3.58, color = &quot;#DA291C&quot;) +
-  geom_density() + 
-  theme_few() +
+  geom_density(color = &quot;#C7C8CF&quot;) + 
   labs(
     title=&quot;A Big Mac costs $3.58 on average around the world&quot;,
     subtitle=&quot;Distribution of prices for a big Mac as of July 2020&quot;,
     x=&quot;Price(US$)&quot;,
-    y=&quot;Density&quot;) </code></pre>
+    y=&quot;Density&quot;) +
+  theme(panel.background = element_rect(fill = &quot;#2B304A&quot;, color = &quot;#2B304A&quot;), 
+        panel.grid = element_blank(),
+        plot.title = element_text(color = &quot;#C7C8CF&quot;, size = 10),
+        plot.subtitle = element_text(color = &quot;#C7C8CF&quot;, size = 9),
+        plot.background = element_rect(fill = &quot;#2B304A&quot;),
+        axis.title = element_text(color = &quot;#C7C8CF&quot;), 
+        axis.text = element_text(color = &quot;#C7C8CF&quot;),
+        axis.line = element_line(color = &quot;#C7C8CF&quot;))</code></pre>
 <p><img src="/blogs/bigmacindex_files/figure-html/cheapest_burger-1.png" width="648" style="display: block; margin: auto;" /></p>
 <p>As of July 2020 a Big Mac was priced, on average $3.58 around the world. Interestingly, the distribution for the price of a Big Mac is right skewed, suggesting that most countries have a relatively cheaper price, also reflected by the box plot below.</p>
 <pre class="r"><code>#plotting the variation in price for a Big Mac as of July 2020
   ggplot(recent_data, aes(x = dollar_price)) +
-  geom_boxplot() +
+  geom_boxplot(color = &quot;#C7C8CF&quot;) +
   theme_few() +
   labs(
     title=&quot;A Big Mac costs $3.58 on average around the world&quot;,
     subtitle=&quot;Distribution of prices for a big Mac as of July 2020&quot;,
     x=&quot;Price(US$)&quot;,
-    y=&quot;Density&quot;) </code></pre>
+    y=&quot;Density&quot;) +
+  theme(panel.background = element_rect(fill = &quot;#2B304A&quot;, color = &quot;#2B304A&quot;), 
+        panel.grid = element_blank(),
+        plot.title = element_text(color = &quot;#C7C8CF&quot;, size = 10),
+        plot.subtitle = element_text(color = &quot;#C7C8CF&quot;, size = 9),
+        plot.background = element_rect(fill = &quot;#2B304A&quot;),
+        axis.title = element_text(color = &quot;#C7C8CF&quot;), 
+        axis.text = element_text(color = &quot;#C7C8CF&quot;),
+        axis.line = element_line(color = &quot;#C7C8CF&quot;))</code></pre>
 <p><img src="/blogs/bigmacindex_files/figure-html/cheapest_burger2-1.png" width="648" style="display: block; margin: auto;" /></p>
 <p>Next we look in more detail at which countries are towards the lower level of the spectrum and which instead are the most expensive.</p>
 <pre class="r"><code>#reducing the data to the cheapest 8 locations in July 2020
@@ -982,7 +999,15 @@ p1 &lt;- cheapest_july20 %&gt;%
     subtitle=&quot;Price per country of a Big Mac in July 2020 &quot;,
     x=&quot;Price(US$)&quot;,
     y=&quot;Country&quot;) +
- scale_x_continuous(expand = c(0,0))
+ scale_x_continuous(expand = c(0,0)) +
+  theme(panel.background = element_rect(fill = &quot;#2B304A&quot;, color = &quot;#2B304A&quot;), 
+        panel.grid = element_blank(),
+        plot.title = element_text(color = &quot;#C7C8CF&quot;, size = 10),
+        plot.subtitle = element_text(color = &quot;#C7C8CF&quot;, size = 9),
+        plot.background = element_rect(fill = &quot;#2B304A&quot;),
+        axis.title = element_text(color = &quot;#C7C8CF&quot;), 
+        axis.text = element_text(color = &quot;#C7C8CF&quot;),
+        axis.line = element_line(color = &quot;#C7C8CF&quot;))
 
 #reducing the data to the most expensive 8 locations in July 2020
 expensive_july20 &lt;- bmindex_data %&gt;% 
@@ -996,13 +1021,20 @@ p2 &lt;- expensive_july20 %&gt;%
   arrange(desc(dollar_price)) %&gt;%
   ggplot(aes(x = dollar_price, y = reorder(name,dollar_price))) +
   geom_col(fill = &quot;#FFC72C&quot;) + 
-  theme_few() +
   labs(
     title=&quot;Swizerland has the most expensive Big Mac&quot;,
     subtitle=&quot;Price per country of a Big Mac in July 2020 &quot;,
     x=&quot;Price(US$)&quot;,
     y=&quot;Country&quot;) +
- scale_x_continuous(expand = c(0,0))
+ scale_x_continuous(expand = c(0,0)) +
+  theme(panel.background = element_rect(fill = &quot;#2B304A&quot;, color = &quot;#2B304A&quot;), 
+        panel.grid = element_blank(),
+        plot.title = element_text(color = &quot;#C7C8CF&quot;, size = 10),
+        plot.subtitle = element_text(color = &quot;#C7C8CF&quot;, size = 9),
+        plot.background = element_rect(fill = &quot;#2B304A&quot;),
+        axis.title = element_text(color = &quot;#C7C8CF&quot;), 
+        axis.text = element_text(color = &quot;#C7C8CF&quot;),
+        axis.line = element_line(color = &quot;#C7C8CF&quot;))
 
 
 grid.arrange(p1,p2, nrow = 1)</code></pre>
@@ -1012,6 +1044,8 @@ Vice versa, Swizerland, with almost 4 times the amount, sold the most expensive 
 </div>
 <div id="has-covid-impacted-the-price-for-big-mac" class="section level1">
 <h1>Has Covid impacted the price for Big Mac?</h1>
+<p>Next, I look into the percentage change in the price for a Big Mac between January and July 2020 the Big Mac has had in 2020. In fact, in light of China’s Covid-19 emergency, which unfolded in Europe and then worldwide in March 2020, I was curious to see what price fluctuations have taken place in 2020.
+Interestingly, as reflected by the bar chart below, whilst the price has fluctuated, the price change has not been homogeneous across countries. Indeed, there is not a clear or similar pattern across countries, but rather, it increased in some whilst decreasing in others.</p>
 <pre class="r"><code>#reducing the data to July 2020 and January observations only
 covid_data &lt;- bmindex_data %&gt;% 
   filter(date == &quot;2020-07-01&quot; | date == &quot;2020-01-14&quot;) </code></pre>
@@ -1045,10 +1079,197 @@ test</code></pre>
 ## # … with 46 more rows</code></pre>
 <pre class="r"><code>ggplot(test, aes(y = percentage_change, x = name, fill = name, label = name)) +
   geom_col() + 
-  labs(title = &quot;Percentage change in &quot;, x = &quot;Country&quot;, y = &quot;Percentage change&quot;) + 
-  geom_text(size = 3, check_overlap = TRUE) +
-  theme(legend.position = &quot;none&quot;, axis.text = element_blank(), axis.ticks = element_blank()) </code></pre>
+  labs(title = &quot;Covid&#39;s impact on a Big Mac&#39;s price not homogeneous&quot;, subtitle = &quot;Percentage change in price between January and July 2020&quot;, x = &quot;Country&quot;, y = &quot;Percentage change&quot;) + 
+  geom_text(size = 3, check_overlap = FALSE, color = &quot;#C7C8CF&quot;) +
+  theme(legend.position = &quot;none&quot;, axis.text = element_blank(), axis.ticks = element_blank(), 
+        panel.background = element_rect(fill = &quot;#2B304A&quot;, color = &quot;#2B304A&quot;), 
+        panel.grid = element_blank(),
+        plot.title = element_text(color = &quot;#C7C8CF&quot;, size = 10),
+        plot.subtitle = element_text(color = &quot;#C7C8CF&quot;, size = 9),
+        plot.background = element_rect(fill = &quot;#2B304A&quot;),
+        axis.title = element_text(color = &quot;#C7C8CF&quot;), 
+        axis.line = element_line(color = &quot;#C7C8CF&quot;))</code></pre>
 <p><img src="/blogs/bigmacindex_files/figure-html/unnamed-chunk-3-1.png" width="648" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>#reducing the data to 2019 observations only
+data19 &lt;- bmindex_data %&gt;% 
+  filter(date == &quot;2019-01-01&quot; | date == &quot;2019-07-09&quot;) 
+  
+prev_yr&lt;- data19 %&gt;% 
+  group_by(name) %&gt;%
+  mutate(
+    January= dplyr::first(dollar_price) , 
+    July = dplyr::last(dollar_price)
+  ) %&gt;%
+  select(name,January,July) %&gt;%
+  mutate(percentage_change = round(((July - January)/January)*100,2)) %&gt;% 
+  slice(1:10) 
+ 
+prev_yr &lt;- prev_yr[!duplicated(prev_yr$name),]</code></pre>
+<pre class="r"><code>#reducing the data to 2019 observations only
+data18 &lt;- bmindex_data %&gt;% 
+  filter(date == &quot;2018-07-01&quot; | date == &quot;2018-01-01&quot;) 
+  
+prev_yr2&lt;- data18 %&gt;% 
+  group_by(name) %&gt;%
+  mutate(
+    January= dplyr::first(dollar_price) , 
+    July = dplyr::last(dollar_price)
+  ) %&gt;%
+  select(name,January,July) %&gt;%
+  mutate(percentage_change = round(((July - January)/January)*100,2)) %&gt;% 
+  slice(1:10) 
+ 
+prev_yr2 &lt;- prev_yr2[!duplicated(prev_yr2$name),]</code></pre>
+<pre class="r"><code>#computing summary statistics for percentage change in price 18,19,2020
+price_stats18 &lt;- favstats(~ percentage_change, data = prev_yr2) 
+price_stats19 &lt;- favstats(~ percentage_change, data = prev_yr)
+price_stats20 &lt;- favstats(~ percentage_change, data = test) 
+
+#combined all of the above summary statistics for my variables in one table
+sum_tab &lt;- rbind(price_stats18, price_stats19, price_stats20) %&gt;%
+  #adding a column with the variable names 
+  mutate(year  = c(&quot;2018&quot; , &quot;2019&quot; , &quot;2020&quot;)) 
+sum_tab[,c(10,1:9)] %&gt;% 
+  #Formatting the table for HTML
+kbl(caption = &quot;Summary Statistics for % change in prices per year&quot;) %&gt;% 
+  kable_styling()</code></pre>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:unnamed-chunk-6">Table 1: </span>Summary Statistics for % change in prices per year
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+year
+</th>
+<th style="text-align:right;">
+min
+</th>
+<th style="text-align:right;">
+Q1
+</th>
+<th style="text-align:right;">
+median
+</th>
+<th style="text-align:right;">
+Q3
+</th>
+<th style="text-align:right;">
+max
+</th>
+<th style="text-align:right;">
+mean
+</th>
+<th style="text-align:right;">
+sd
+</th>
+<th style="text-align:right;">
+n
+</th>
+<th style="text-align:right;">
+missing
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+2018
+</td>
+<td style="text-align:right;">
+-31.7
+</td>
+<td style="text-align:right;">
+-6.12
+</td>
+<td style="text-align:right;">
+-2.460
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+16.6
+</td>
+<td style="text-align:right;">
+-3.864
+</td>
+<td style="text-align:right;">
+6.96
+</td>
+<td style="text-align:right;">
+57
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2019
+</td>
+<td style="text-align:right;">
+-17.2
+</td>
+<td style="text-align:right;">
+-1.12
+</td>
+<td style="text-align:right;">
+1.640
+</td>
+<td style="text-align:right;">
+4.35
+</td>
+<td style="text-align:right;">
+43.4
+</td>
+<td style="text-align:right;">
+3.714
+</td>
+<td style="text-align:right;">
+9.06
+</td>
+<td style="text-align:right;">
+56
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2020
+</td>
+<td style="text-align:right;">
+-18.6
+</td>
+<td style="text-align:right;">
+-3.72
+</td>
+<td style="text-align:right;">
+-0.005
+</td>
+<td style="text-align:right;">
+2.39
+</td>
+<td style="text-align:right;">
+38.6
+</td>
+<td style="text-align:right;">
+-0.131
+</td>
+<td style="text-align:right;">
+8.53
+</td>
+<td style="text-align:right;">
+56
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+</tbody>
+</table>
 </div>
 
                         </div>

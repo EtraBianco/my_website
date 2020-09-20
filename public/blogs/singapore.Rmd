@@ -168,10 +168,8 @@ df_cleaned <- df_fil%>%
   filter(is.na(price) == FALSE)
 
 ```
-  
 In the following section I clean one variable at a time to improve data quality and the reliability of my results. 
 After researching the listings I replace the NA in `cleaning_fee` with zero as these are AirBnBs that do not charge for cleaning or include the charge in the `price`.
-
 ```{r, cleaning fee NAs into 0}
 #creating a new column with NAs replaced with zeros for cleaning fees 
 df_cleaned <- df_cleaned %>%
@@ -354,8 +352,6 @@ From an initial overview of the summary statistics I extracted 5 main observatio
 3. The maximum `cleaning_fee` is of $900, which is significantly greater that the average fee of 25, which will increase the overall price for that listing. Upon internet research I have confirmed that this high cleaning fee is accurate.
 4. Unsurprisingly, price_4_nights have a higher standard deviation than price, suggesting a higher viability, as this is a combination of several charges. 
 5. Comparing the 75th percentile with the maximum value for the variables I note that both `beds` and `guests_included` have an outlier. Moreover, it is unusual how `guests_included` go up to 50 but `beds` actually goes up to 58. 
-
-
 
 ### Visualizations of the dependant variables 
 

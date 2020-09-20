@@ -3,14 +3,13 @@ categories:
 - ""
 - ""
 date: "2017-10-31T22:42:51-05:00"
-description: Nullam et orci eu lorem consequat tincidunt vivamus et sagittis magna sed nunc rhoncus condimentum sem. In efficitur ligula tate urna. Maecenas massa sed magna lacinia magna pellentesque lorem ipsum dolor. Nullam et orci eu lorem consequat tincidunt. Vivamus et sagittis tempus.
+description: Visualizing temperature anomalies in R
 draft: false
 image: pic07.jpg
 keywords: ""
 slug: climatechange
 title: Climate Change
 ---
-
 ```{r, setup, include=FALSE}
 knitr::opts_chunk$set(
   message = FALSE, 
@@ -23,13 +22,11 @@ options(digits = 3)
 knitr::opts_chunk$set(
   fig.width=6.75, 
   fig.height=6.75,
-  fig.align = "center"
-)
+  fig.align = "center")
 ```
 
-
 ```{r load-libraries, include=FALSE}
-library(tidyverse)  
+library(tidyverse) # Loading the packages to clean, wrangle and visualize data
 library(mosaic)
 library(ggthemes)
 library(lubridate)
@@ -43,49 +40,63 @@ library(kableExtra)
 library(lubridate)
 library(infer)
 ```
+# Analysis of Temperature Anomalies 
+The Covid-19 emergency has put a halt on, and arguably reversed, the fight for sustainability. However, the below analysis of historical temperature anomalies serves as a reminder that efforts against climate change cannot be postponed. 
 
-# Climate Change 
-
-The Covid-19 emergency has put a halt on, and arguably reversed, the fight for sustainability. However, the below analysis of temperature anomalies recorded since 1880 serves as a sad reminder that efforts against climate change cannot be postponed. 
-
-The raw data was sourced from [NASA's Goddard Institute for Space Studies](https://data.giss.nasa.gov/gistemp), who recorded the *Combined Land-Surface Air and Sea-Surface Water Temperature Anomalies* in the Northern Hemisphere. The [tabular data of temperature anomalies can be found here.](https://data.giss.nasa.gov/gistemp/tabledata_v3/NH.Ts+dSST.txt)
+##Familiarizing with the data
+The raw data, which I *import* below, is sourced from [NASA's Goddard Institute for Space Studies](https://data.giss.nasa.gov/gistemp), who recorded the *Combined Land-Surface Air and Sea-Surface Water Temperature Anomalies* in the Northern Hemisphere. The [tabular data of temperature anomalies can be found here.](https://data.giss.nasa.gov/gistemp/tabledata_v3/NH.Ts+dSST.txt)
 
 ```{r weather_data, cache=TRUE}
-
+#importing the data from NASA's GISS
 weather <- 
   read_csv("https://data.giss.nasa.gov/gistemp/tabledata_v3/NH.Ts+dSST.csv", 
            skip = 1, 
            na = "***")
-
 ```
 
-```{r tidyweather}
+Firstly I *inspect* the data frame weather, which consists of 140 rows, corresponding to observations, and 19 columns, the variables describing each observation. To adjust the data frame for my analysis, I select the relevant columns (`Year` and the 12 months variables) and use the function `pivot_longer`to reorder the data points, creating the new data frame below, named `tidyweather`. This displays the monthly deviations from the expected temperature (`delta`) recorded since 1880. 
+
+```{r }
+#inspecting the data 
+glimpse(weather)
+# checking for missing values and duplicates
+skim(weather)
+
 #remove unnecessary columns from the original data frame
 remove_cols <- weather %>%
   select(1:13)
-
+#adjust the data frame
 tidyweather <- remove_cols %>%
   pivot_longer(cols = 2:13, names_to = "Month", values_to = "delta")
-
 ```
 
-## Inspecting the data
+```{r tidyweather}
+#viewing the new data frame
+glimpse(tidyweather)
+```
 
-After cleaning the data, we plot it in a time-series scatter plot below. 
+## Visualizing the data
+To visualize the temperature deviations I build the following time-series scatter plot and add a trend line, which evidences the constant increase in anomalies throughout the centuries.
 
-```{r scatter_plot, fig.height = 4, fig.weight = 5}
+```{r scatter_plot, fig.height = 5, fig.width = 10}
 
+#adding a variable ('date') to plot in a chronological order 
 tidyweather <- tidyweather %>%
   mutate(date = ymd(paste(as.character(Year), Month, "1")),
          month = month(date, label=TRUE),
          year = year(date))
 
+#creating the scatter plot
 ggplot(tidyweather, aes(x=date, y = delta))+
+#adjusting the color and size for the points
   geom_point(size = 0.5, color = "grey")+
+#inserting a trend line
   geom_smooth(color="white") +
+#labelling the graph
   labs (
     title = "GLOBAL WARMING", subtitle = "Temperature anomalies since 1880", x = "Year", y = "Temperature Deviation", caption = "Source: NASA's Goddard Institute for Space Studies"
   ) + 
+#adjusting color and size for the background, axis and text 
   theme(panel.background = element_rect(fill = "#2B304A", color = "#2B304A"), 
         panel.grid = element_blank(),
         plot.title = element_text(color = "#C7C8CF", size = 10),
@@ -97,6 +108,8 @@ ggplot(tidyweather, aes(x=date, y = delta))+
         plot.caption = element_text(color = "#2B304A"))
 
 ```
+
+Interested to analyse more closely the anomalies for the past three decades, I group the data into the different time intervals (1990-2000, 2000-2010, 2010-2020 respectively) and create a density plot to visualize the distribution of monthly deviations (`delta`) in these three time periods. 
 
 ```{r intervals}
 #The code below creates a new data frame called `comparison` that groups data 
@@ -112,21 +125,20 @@ comparison <- tidyweather %>%
   
   comparison 
   
-  comparison %>%
+  comparison <- comparison %>%
   rename("Delta" = "delta" , 'Full Date' = 'date',
          'Months' = 'month','Years' = 'year' ,
          'Interval' = 'interval')
 
 ```
 
-```{r density_plot}
+```{r density_plot, fig.height = 5, fig.width=10}
 
 comparison%>%
-group_by(interval)%>%
-ggplot(aes(x=delta, fill=interval)) +
+group_by(Interval)%>%
+ggplot(aes(x=Delta, fill=Interval)) +
   geom_density(alpha=0.2) +   
-  labs (title = "Both temperature and unpredictability of the weather are increasing", subtitle = "Distribution of temperature deviations per decade since 1990", x = "Temperature Deviations", caption ="Source: NASA's Goddard Institute for Space Studies") +
-  theme(panel.background = element_rect(fill = "#2B304A", color = "#2B304A"), 
+  labs (title = "Both temperature and unpredictability of the weather are increasing", subtitle = "Distribution of temperature deviations per decade since 1990", x = "Temperature Deviations", caption ="Source: NASA's Goddard Institute for Space Studies") + theme(panel.background = element_rect(fill = "#2B304A", color = "#2B304A"), 
         panel.grid = element_blank(),
         plot.title = element_text(color = "#C7C8CF", size = 10),
         plot.subtitle = element_text(color = "#C7C8CF", size = 9),
@@ -143,5 +155,93 @@ ggplot(aes(x=delta, fill=interval)) +
 
 ```
 
+```{r density_plot111}
+
+summary_stat <- favstats( Delta ~ Interval, data = comparison)
+
+summary_stat %>%
+  kbl(caption = 'Statistics on Temperature Anomalies')%>%
+  kable_styling()
+
+```
+
+From the above summary statistics we can note that the mean, median, minimum and maximum `delta` are each decade higher than the previous. Indeed, evident from both the density plot and the summary statistics, we can observe that the temperatures are rising and becoming unpredictable.
+
+##  Annual Temperature Anomalies since 2010
+
+Looking at the last decade, the average annual `delta` since 2010 has been of 0.96, as calculated below. To have a more comprehensive understanding of the average `delta` I also proceed with calculating the confidence interval. 
+
+```{r, annual delta since 2010}
+avg_annual_delta <- comparison %>% 
+  # choose deltas after 2010
+  filter(Year>= 2010) %>% 
+  #calculate summary statistics for annual delta
+  summarise(mean=mean(Delta,na.rm=TRUE),sd=sd(Delta,na.rm=TRUE), count=n(),se=sd/sqrt(count)) 
+
+avg_annual_delta
+```
+
+```{r, calculate_CI_using_formula}
+
+#calculating the confidence interval
+formula_ci <- avg_annual_delta %>% 
+  summarise(lower_ci = mean-1.96*se, upper_ci = mean+1.96*se) %>%
+  rename("Lower Boundary" = 'lower_ci', "Upper Boundary" = 'upper_ci' ) %>%
+kbl(caption = 'Confidence Interval for the annual delta since 2010')%>%
+  kable_styling() 
+
+formula_ci 
+```
 
 
+```{r, calculate_CI_using_bootstrap}
+#calculating confidence interval with bootstrapping
+bootstrap_delta <- comparison %>% 
+  filter(Year>= 2010) %>% 
+  specify(response=Delta) %>%
+  generate(reps =1000, type ="bootstrap") %>%
+  calculate(stat ="mean")
+infer_ci <- bootstrap_delta %>% 
+  get_confidence_interval(level=0.95,type="percentile") %>%
+  rename("Lower Boundary" = 'lower_ci', "Upper Boundary" = 'upper_ci' ) 
+
+infer_ci %>%
+  kbl(caption = 'Confidence Interval for the annual delta since 2011')%>%
+  kable_styling()
+```
+
+Above, I fist manually calculate the confidence interval using the Standard Error, Count and Mean values derived from the summary statistics. Since I am assuming a normal distribution, I use the critical Z value for 95%, which is 1.96. 
+For the second method, I have bootstrapped the data by sampling 1000 times and calculated the mean from all these sampled sets. The two methods yielded almost the same result: the 95% confidence interval for the average annual delta since 2010, is 0.91-1 degrees celsius, visualized in the plot below.
+
+```{r, fig.height = 5, fig.width=10}
+
+visualize(bootstrap_delta) + 
+  shade_ci(endpoints = infer_ci, fill = "white", colour = "white")+ 
+  #The confidence interval
+  geom_vline(xintercept = infer_ci$lower_ci, colour = "white")+
+  geom_vline(xintercept = infer_ci$upper_ci, colour = "white") +
+  theme(panel.background = element_rect(fill = "#2B304A", color = "#2B304A"), 
+        panel.grid = element_blank(),
+        plot.title = element_text(color = "#C7C8CF", size = 10),
+        plot.subtitle = element_text(color = "#C7C8CF", size = 9),
+        plot.background = element_rect(fill = "#2B304A"),
+        axis.title = element_text(color = "#C7C8CF"), 
+        axis.text = element_text(color = "#C7C8CF"),
+        axis.line = element_line(color = "#C7C8CF"),
+        plot.caption = element_text(color = "#C7C8CF"),
+        legend.key = element_rect(fill = "#2B304A"),
+        legend.text = element_text(color = "#C7C8CF"),
+        legend.title = element_text(color = "#C7C8CF"),
+         legend.background = element_rect(fill = "#2B304A"))
+  
+  
+```
+
+## Global warming a reality we must face
+
+From this analysis of historical data it becomes evident that temperature deviations have been rising and that every decade we are experiencing a greater number and variation of annual anomalies.
+Our confidence interval suggests, at best, temperature anomalies of 0.91°C, which is extremely problematic given that [NASA points out on their website](https://earthobservatory.nasa.gov/world-of-change/decadaltemp.php) that 
+
+> A one-degree global change is significant because it takes a vast amount of heat to warm all the oceans, atmosphere, and land by that much. In the past, a one- to two-degree drop was all it took to plunge the Earth into the Little Ice Age.
+
+ 

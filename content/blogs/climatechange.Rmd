@@ -155,7 +155,7 @@ ggplot(aes(x=Delta, fill=Interval)) +
 
 ```
 
-```{r density_plot}
+```{r density_plot111}
 
 summary_stat <- favstats( Delta ~ Interval, data = comparison)
 

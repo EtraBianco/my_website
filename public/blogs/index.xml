@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Lifestyle on Portfolio website for Etra Bianco</title>
+    <title>My projects in R on Portfolio website for Etra Bianco</title>
     <link>/blogs/</link>
-    <description>Recent content in Lifestyle on Portfolio website for Etra Bianco</description>
+    <description>Recent content in My projects in R on Portfolio website for Etra Bianco</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Tue, 31 Oct 2017 22:27:21 -0500</lastBuildDate>
@@ -31,13 +31,23 @@ When you click the Knit button a document will be generated that includes both c
     </item>
     
     <item>
+      <title>Brexit</title>
+      <link>/blogs/brexit/</link>
+      <pubDate>Tue, 31 Oct 2017 22:42:51 -0500</pubDate>
+      
+      <guid>/blogs/brexit/</guid>
+      <description>An analysis of the Brexit Referendum The purpose of this project is to analyse the results of the 2016 Brexit vote in the UK. The data comes from Elliott Morris, who made it available through his DataCamp class on analysing election and polling data in R.
+Exploratory Data Analysis Importing and inspecting the data First I import the data using read_csv() and briefly glimpse the data frame to inspect it.</description>
+    </item>
+    
+    <item>
       <title>Climate Change</title>
       <link>/blogs/climatechange/</link>
       <pubDate>Tue, 31 Oct 2017 22:42:51 -0500</pubDate>
       
       <guid>/blogs/climatechange/</guid>
-      <description>Climate Change The Covid-19 emergency has put a halt on, and arguably reversed, the fight for sustainability. However, the below analysis of temperature anomalies recorded since 1880 serves as a sad reminder that efforts against climate change cannot be postponed.
-The raw data was sourced from NASA’s Goddard Institute for Space Studies, who recorded the Combined Land-Surface Air and Sea-Surface Water Temperature Anomalies in the Northern Hemisphere. The tabular data of temperature anomalies can be found here.</description>
+      <description>Analysis of Temperature Anomalies The Covid-19 emergency has put a halt on, and arguably reversed, the fight for sustainability. However, the below analysis of historical temperature anomalies serves as a reminder that efforts against climate change cannot be postponed.
+##Familiarizing with the data The raw data, which I import below, is sourced from NASA’s Goddard Institute for Space Studies, who recorded the Combined Land-Surface Air and Sea-Surface Water Temperature Anomalies in the Northern Hemisphere.</description>
     </item>
     
     <item>
@@ -73,8 +83,8 @@ The raw data was sourced from NASA’s Goddard Institute for Space Studies, who 
       <pubDate>Tue, 31 Oct 2017 21:28:43 -0500</pubDate>
       
       <guid>/blogs/singapore/</guid>
-      <description>Predicting prices for AirBnBs This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see http://rmarkdown.rstudio.com.
-When you click the Knit button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:</description>
+      <description>Predicting prices for AirBnBs In this project I will be analysing data about Airbnb listings in Singapore with the goal of building a model to predict the total cost for two people staying four nights in Singapore. The data is from insideairbnb.com
+#importing the raw data from insideairbnb.com df_raw &amp;lt;- read_csv(&amp;quot;listings.csv&amp;quot;) Inspecting and cleaning the data #glimpsing the data frame to get a sense of the raw data glimpse(df_raw) ## Rows: 7,323 ## Columns: 106 ## $ id &amp;lt;dbl&amp;gt; 49091, 50646, 56334, 716… ## $ listing_url &amp;lt;chr&amp;gt; &amp;quot;https://www.</description>
     </item>
     
     <item>

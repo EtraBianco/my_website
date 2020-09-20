@@ -13,22 +13,3349 @@ title: AirBnB
 
 
 
-<div id="predicting-prices-for-airbnbs" class="section level2">
-<h2>Predicting prices for AirBnBs</h2>
-<p>This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <a href="http://rmarkdown.rstudio.com" class="uri">http://rmarkdown.rstudio.com</a>.</p>
-<p>When you click the <strong>Knit</strong> button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:</p>
-<pre class="r"><code>summary(cars)</code></pre>
-<pre><code>##      speed           dist       
-##  Min.   : 4.0   Min.   :  2.00  
-##  1st Qu.:12.0   1st Qu.: 26.00  
-##  Median :15.0   Median : 36.00  
-##  Mean   :15.4   Mean   : 42.98  
-##  3rd Qu.:19.0   3rd Qu.: 56.00  
-##  Max.   :25.0   Max.   :120.00</code></pre>
+<div id="predicting-prices-for-airbnbs" class="section level1">
+<h1>Predicting prices for AirBnBs</h1>
+<p>In this project I will be analysing data about Airbnb listings in Singapore with the goal of building a model to predict the total cost for two people staying four nights in Singapore. The data is from <a href="">insideairbnb.com</a></p>
+<pre class="r"><code>#importing the raw data from insideairbnb.com 
+df_raw &lt;- read_csv(&quot;listings.csv&quot;)</code></pre>
+<div id="inspecting-and-cleaning-the-data" class="section level2">
+<h2>Inspecting and cleaning the data</h2>
+<pre class="r"><code>#glimpsing the data frame to get a sense of the raw data
+glimpse(df_raw)</code></pre>
+<pre><code>## Rows: 7,323
+## Columns: 106
+## $ id                                           &lt;dbl&gt; 49091, 50646, 56334, 716…
+## $ listing_url                                  &lt;chr&gt; &quot;https://www.airbnb.com/…
+## $ scrape_id                                    &lt;dbl&gt; 20200622052726, 20200622…
+## $ last_scraped                                 &lt;date&gt; 2020-06-22, 2020-06-22,…
+## $ name                                         &lt;chr&gt; &quot;COZICOMFORT LONG TERM S…
+## $ summary                                      &lt;chr&gt; NA, &quot;Fully furnished bed…
+## $ space                                        &lt;chr&gt; &quot;This is Room No. 2.(ava…
+## $ description                                  &lt;chr&gt; &quot;This is Room No. 2.(ava…
+## $ experiences_offered                          &lt;chr&gt; &quot;none&quot;, &quot;none&quot;, &quot;none&quot;, …
+## $ neighborhood_overview                        &lt;chr&gt; NA, &quot;The serenity &amp; quie…
+## $ notes                                        &lt;chr&gt; NA, &quot;Accommodation has a…
+## $ transit                                      &lt;chr&gt; NA, &quot;Less than 400m from…
+## $ access                                       &lt;chr&gt; NA, &quot;Kitchen, washing fa…
+## $ interaction                                  &lt;chr&gt; NA, &quot;We love to host peo…
+## $ house_rules                                  &lt;chr&gt; &quot;No smoking indoors. Ple…
+## $ thumbnail_url                                &lt;lgl&gt; NA, NA, NA, NA, NA, NA, …
+## $ medium_url                                   &lt;lgl&gt; NA, NA, NA, NA, NA, NA, …
+## $ picture_url                                  &lt;chr&gt; &quot;https://a0.muscache.com…
+## $ xl_picture_url                               &lt;lgl&gt; NA, NA, NA, NA, NA, NA, …
+## $ host_id                                      &lt;dbl&gt; 266763, 227796, 266763, …
+## $ host_url                                     &lt;chr&gt; &quot;https://www.airbnb.com/…
+## $ host_name                                    &lt;chr&gt; &quot;Francesca&quot;, &quot;Sujatha&quot;, …
+## $ host_since                                   &lt;date&gt; 2010-10-20, 2010-09-08,…
+## $ host_location                                &lt;chr&gt; &quot;singapore&quot;, &quot;Singapore,…
+## $ host_about                                   &lt;chr&gt; &quot;I am a private tutor by…
+## $ host_response_time                           &lt;chr&gt; &quot;within an hour&quot;, &quot;N/A&quot;,…
+## $ host_response_rate                           &lt;chr&gt; &quot;100%&quot;, &quot;N/A&quot;, &quot;100%&quot;, &quot;…
+## $ host_acceptance_rate                         &lt;chr&gt; &quot;N/A&quot;, &quot;N/A&quot;, &quot;N/A&quot;, &quot;10…
+## $ host_is_superhost                            &lt;lgl&gt; FALSE, FALSE, FALSE, FAL…
+## $ host_thumbnail_url                           &lt;chr&gt; &quot;https://a0.muscache.com…
+## $ host_picture_url                             &lt;chr&gt; &quot;https://a0.muscache.com…
+## $ host_neighbourhood                           &lt;chr&gt; &quot;Woodlands&quot;, &quot;Bukit Tima…
+## $ host_listings_count                          &lt;dbl&gt; 2, 1, 2, 8, 8, 8, 8, 4, …
+## $ host_total_listings_count                    &lt;dbl&gt; 2, 1, 2, 8, 8, 8, 8, 4, …
+## $ host_verifications                           &lt;chr&gt; &quot;[&#39;email&#39;, &#39;phone&#39;, &#39;fac…
+## $ host_has_profile_pic                         &lt;lgl&gt; TRUE, TRUE, TRUE, TRUE, …
+## $ host_identity_verified                       &lt;lgl&gt; FALSE, FALSE, FALSE, TRU…
+## $ street                                       &lt;chr&gt; &quot;Singapore, Singapore&quot;, …
+## $ neighbourhood                                &lt;chr&gt; &quot;Woodlands&quot;, &quot;Bukit Tima…
+## $ neighbourhood_cleansed                       &lt;chr&gt; &quot;Woodlands&quot;, &quot;Bukit Tima…
+## $ neighbourhood_group_cleansed                 &lt;chr&gt; &quot;North Region&quot;, &quot;Central…
+## $ city                                         &lt;chr&gt; &quot;Singapore&quot;, &quot;Singapore&quot;…
+## $ state                                        &lt;chr&gt; NA, NA, NA, NA, NA, NA, …
+## $ zipcode                                      &lt;chr&gt; &quot;730702&quot;, &quot;589664&quot;, NA, …
+## $ market                                       &lt;chr&gt; &quot;Singapore&quot;, &quot;Singapore&quot;…
+## $ smart_location                               &lt;chr&gt; &quot;Singapore&quot;, &quot;Singapore&quot;…
+## $ country_code                                 &lt;chr&gt; &quot;SG&quot;, &quot;SG&quot;, &quot;SG&quot;, &quot;SG&quot;, …
+## $ country                                      &lt;chr&gt; &quot;Singapore&quot;, &quot;Singapore&quot;…
+## $ latitude                                     &lt;dbl&gt; 1.44, 1.33, 1.44, 1.35, …
+## $ longitude                                    &lt;dbl&gt; 104, 104, 104, 104, 104,…
+## $ is_location_exact                            &lt;lgl&gt; TRUE, TRUE, TRUE, TRUE, …
+## $ property_type                                &lt;chr&gt; &quot;Apartment&quot;, &quot;Apartment&quot;…
+## $ room_type                                    &lt;chr&gt; &quot;Private room&quot;, &quot;Private…
+## $ accommodates                                 &lt;dbl&gt; 1, 2, 1, 6, 3, 3, 6, 1, …
+## $ bathrooms                                    &lt;dbl&gt; 1.0, 1.0, 1.0, 1.0, 0.5,…
+## $ bedrooms                                     &lt;dbl&gt; 1, 1, 1, 2, 1, 1, 1, 1, …
+## $ beds                                         &lt;dbl&gt; 1, 1, 1, 3, 1, 2, 7, 1, …
+## $ bed_type                                     &lt;chr&gt; &quot;Real Bed&quot;, &quot;Real Bed&quot;, …
+## $ amenities                                    &lt;chr&gt; &quot;{TV,\&quot;Cable TV\&quot;,Intern…
+## $ square_feet                                  &lt;dbl&gt; 0, NA, 0, 205, NA, NA, 4…
+## $ price                                        &lt;chr&gt; &quot;$84.00&quot;, &quot;$80.00&quot;, &quot;$70…
+## $ weekly_price                                 &lt;chr&gt; NA, &quot;$400.00&quot;, NA, NA, &quot;…
+## $ monthly_price                                &lt;chr&gt; &quot;$1,048.00&quot;, &quot;$1,600.00&quot;…
+## $ security_deposit                             &lt;chr&gt; NA, NA, NA, &quot;$279.00&quot;, &quot;…
+## $ cleaning_fee                                 &lt;chr&gt; NA, NA, NA, &quot;$56.00&quot;, &quot;$…
+## $ guests_included                              &lt;dbl&gt; 1, 2, 1, 4, 1, 1, 4, 1, …
+## $ extra_people                                 &lt;chr&gt; &quot;$14.00&quot;, &quot;$20.00&quot;, &quot;$14…
+## $ minimum_nights                               &lt;dbl&gt; 180, 90, 6, 90, 90, 90, …
+## $ maximum_nights                               &lt;dbl&gt; 360, 730, 14, 1125, 1125…
+## $ minimum_minimum_nights                       &lt;dbl&gt; 180, 90, 6, 90, 90, 90, …
+## $ maximum_minimum_nights                       &lt;dbl&gt; 180, 90, 6, 90, 90, 90, …
+## $ minimum_maximum_nights                       &lt;dbl&gt; 360, 730, 14, 1125, 1125…
+## $ maximum_maximum_nights                       &lt;dbl&gt; 360, 730, 14, 1125, 1125…
+## $ minimum_nights_avg_ntm                       &lt;dbl&gt; 180, 90, 6, 90, 90, 90, …
+## $ maximum_nights_avg_ntm                       &lt;dbl&gt; 360, 730, 14, 1125, 1125…
+## $ calendar_updated                             &lt;chr&gt; &quot;73 months ago&quot;, &quot;71 mon…
+## $ has_availability                             &lt;lgl&gt; TRUE, TRUE, TRUE, TRUE, …
+## $ availability_30                              &lt;dbl&gt; 30, 30, 30, 30, 30, 30, …
+## $ availability_60                              &lt;dbl&gt; 60, 60, 60, 60, 60, 60, …
+## $ availability_90                              &lt;dbl&gt; 90, 90, 90, 90, 90, 90, …
+## $ availability_365                             &lt;dbl&gt; 365, 365, 365, 365, 365,…
+## $ calendar_last_scraped                        &lt;date&gt; 2020-06-22, 2020-06-22,…
+## $ number_of_reviews                            &lt;dbl&gt; 1, 18, 20, 20, 24, 48, 2…
+## $ number_of_reviews_ltm                        &lt;dbl&gt; 0, 0, 0, 8, 4, 13, 6, 2,…
+## $ first_review                                 &lt;date&gt; 2013-10-21, 2014-04-18,…
+## $ last_review                                  &lt;date&gt; 2013-10-21, 2014-12-26,…
+## $ review_scores_rating                         &lt;dbl&gt; 94, 91, 98, 89, 83, 88, …
+## $ review_scores_accuracy                       &lt;dbl&gt; 10, 9, 10, 9, 8, 9, 9, 1…
+## $ review_scores_cleanliness                    &lt;dbl&gt; 10, 10, 10, 8, 8, 9, 8, …
+## $ review_scores_checkin                        &lt;dbl&gt; 10, 10, 10, 9, 9, 9, 9, …
+## $ review_scores_communication                  &lt;dbl&gt; 10, 10, 10, 10, 9, 9, 9,…
+## $ review_scores_location                       &lt;dbl&gt; 8, 9, 8, 9, 8, 9, 9, 10,…
+## $ review_scores_value                          &lt;dbl&gt; 8, 9, 9, 9, 8, 9, 8, 10,…
+## $ requires_license                             &lt;lgl&gt; FALSE, FALSE, FALSE, FAL…
+## $ license                                      &lt;lgl&gt; NA, NA, NA, NA, NA, NA, …
+## $ jurisdiction_names                           &lt;lgl&gt; NA, NA, NA, NA, NA, NA, …
+## $ instant_bookable                             &lt;lgl&gt; FALSE, FALSE, FALSE, TRU…
+## $ is_business_travel_ready                     &lt;lgl&gt; FALSE, FALSE, FALSE, FAL…
+## $ cancellation_policy                          &lt;chr&gt; &quot;flexible&quot;, &quot;moderate&quot;, …
+## $ require_guest_profile_picture                &lt;lgl&gt; TRUE, FALSE, TRUE, FALSE…
+## $ require_guest_phone_verification             &lt;lgl&gt; TRUE, TRUE, TRUE, TRUE, …
+## $ calculated_host_listings_count               &lt;dbl&gt; 2, 1, 2, 8, 8, 8, 8, 3, …
+## $ calculated_host_listings_count_entire_homes  &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, …
+## $ calculated_host_listings_count_private_rooms &lt;dbl&gt; 2, 1, 2, 8, 8, 8, 8, 3, …
+## $ calculated_host_listings_count_shared_rooms  &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, …
+## $ reviews_per_month                            &lt;dbl&gt; 0.01, 0.24, 0.18, 0.19, …</code></pre>
+<pre class="r"><code>#Skim for further inspection of the data frame 
+skimr::skim(df_raw)</code></pre>
+<table style='width: auto;'
+        class='table table-condensed'>
+<caption>
+<span id="tab:unnamed-chunk-2">Table 1: </span>Data summary
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:left;">
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Name
+</td>
+<td style="text-align:left;">
+df_raw
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Number of rows
+</td>
+<td style="text-align:left;">
+7323
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Number of columns
+</td>
+<td style="text-align:left;">
+106
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+_______________________
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Column type frequency:
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+character
+</td>
+<td style="text-align:left;">
+47
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Date
+</td>
+<td style="text-align:left;">
+5
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+logical
+</td>
+<td style="text-align:left;">
+15
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+numeric
+</td>
+<td style="text-align:left;">
+39
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+________________________
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Group variables
+</td>
+<td style="text-align:left;">
+None
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: character</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+skim_variable
+</th>
+<th style="text-align:right;">
+n_missing
+</th>
+<th style="text-align:right;">
+complete_rate
+</th>
+<th style="text-align:right;">
+min
+</th>
+<th style="text-align:right;">
+max
+</th>
+<th style="text-align:right;">
+empty
+</th>
+<th style="text-align:right;">
+n_unique
+</th>
+<th style="text-align:right;">
+whitespace
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+listing_url
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+34
+</td>
+<td style="text-align:right;">
+37
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+7323
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+name
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+92
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+6766
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+summary
+</td>
+<td style="text-align:right;">
+324
+</td>
+<td style="text-align:right;">
+0.96
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1000
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+4365
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+space
+</td>
+<td style="text-align:right;">
+1957
+</td>
+<td style="text-align:right;">
+0.73
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1000
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+3139
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+description
+</td>
+<td style="text-align:right;">
+249
+</td>
+<td style="text-align:right;">
+0.97
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1000
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+5180
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+experiences_offered
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+neighborhood_overview
+</td>
+<td style="text-align:right;">
+2933
+</td>
+<td style="text-align:right;">
+0.60
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+1000
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+2135
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+notes
+</td>
+<td style="text-align:right;">
+3315
+</td>
+<td style="text-align:right;">
+0.55
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1000
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1634
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+transit
+</td>
+<td style="text-align:right;">
+2895
+</td>
+<td style="text-align:right;">
+0.60
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1000
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+2211
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+access
+</td>
+<td style="text-align:right;">
+2821
+</td>
+<td style="text-align:right;">
+0.61
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1000
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+2002
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+interaction
+</td>
+<td style="text-align:right;">
+3250
+</td>
+<td style="text-align:right;">
+0.56
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1000
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1665
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+house_rules
+</td>
+<td style="text-align:right;">
+3874
+</td>
+<td style="text-align:right;">
+0.47
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1000
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+2059
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+picture_url
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+81
+</td>
+<td style="text-align:right;">
+146
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+6777
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+host_url
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+39
+</td>
+<td style="text-align:right;">
+43
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+2466
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+host_name
+</td>
+<td style="text-align:right;">
+22
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+35
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1739
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+host_location
+</td>
+<td style="text-align:right;">
+41
+</td>
+<td style="text-align:right;">
+0.99
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+183
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+217
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+host_about
+</td>
+<td style="text-align:right;">
+2441
+</td>
+<td style="text-align:right;">
+0.67
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2857
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1174
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+host_response_time
+</td>
+<td style="text-align:right;">
+22
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+18
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+host_response_rate
+</td>
+<td style="text-align:right;">
+22
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+56
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+host_acceptance_rate
+</td>
+<td style="text-align:right;">
+22
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+79
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+host_thumbnail_url
+</td>
+<td style="text-align:right;">
+22
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+55
+</td>
+<td style="text-align:right;">
+106
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+2448
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+host_picture_url
+</td>
+<td style="text-align:right;">
+22
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+57
+</td>
+<td style="text-align:right;">
+109
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+2448
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+host_neighbourhood
+</td>
+<td style="text-align:right;">
+842
+</td>
+<td style="text-align:right;">
+0.89
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+18
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+62
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+host_verifications
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+158
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+187
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+street
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+13
+</td>
+<td style="text-align:right;">
+61
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+93
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+neighbourhood
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+18
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+45
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+neighbourhood_cleansed
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+23
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+43
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+neighbourhood_group_cleansed
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+11
+</td>
+<td style="text-align:right;">
+17
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+city
+</td>
+<td style="text-align:right;">
+64
+</td>
+<td style="text-align:right;">
+0.99
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+20
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+39
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+state
+</td>
+<td style="text-align:right;">
+6817
+</td>
+<td style="text-align:right;">
+0.07
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+39
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+50
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+zipcode
+</td>
+<td style="text-align:right;">
+818
+</td>
+<td style="text-align:right;">
+0.89
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+9
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1975
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+market
+</td>
+<td style="text-align:right;">
+90
+</td>
+<td style="text-align:right;">
+0.99
+</td>
+<td style="text-align:right;">
+9
+</td>
+<td style="text-align:right;">
+11
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+smart_location
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+9
+</td>
+<td style="text-align:right;">
+31
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+43
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+country_code
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+country
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+9
+</td>
+<td style="text-align:right;">
+9
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+property_type
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+22
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+26
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+room_type
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+15
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+bed_type
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+13
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+amenities
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+977
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+5621
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+price
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+429
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+weekly_price
+</td>
+<td style="text-align:right;">
+6857
+</td>
+<td style="text-align:right;">
+0.06
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+203
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+monthly_price
+</td>
+<td style="text-align:right;">
+6826
+</td>
+<td style="text-align:right;">
+0.07
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+193
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+security_deposit
+</td>
+<td style="text-align:right;">
+2217
+</td>
+<td style="text-align:right;">
+0.70
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+9
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+156
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+cleaning_fee
+</td>
+<td style="text-align:right;">
+1947
+</td>
+<td style="text-align:right;">
+0.73
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+113
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+extra_people
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+81
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+calendar_updated
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+13
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+79
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+cancellation_policy
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+27
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: Date</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+skim_variable
+</th>
+<th style="text-align:right;">
+n_missing
+</th>
+<th style="text-align:right;">
+complete_rate
+</th>
+<th style="text-align:left;">
+min
+</th>
+<th style="text-align:left;">
+max
+</th>
+<th style="text-align:left;">
+median
+</th>
+<th style="text-align:right;">
+n_unique
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+last_scraped
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:left;">
+2020-06-22
+</td>
+<td style="text-align:left;">
+2020-06-23
+</td>
+<td style="text-align:left;">
+2020-06-22
+</td>
+<td style="text-align:right;">
+2
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+host_since
+</td>
+<td style="text-align:right;">
+22
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:left;">
+2009-06-29
+</td>
+<td style="text-align:left;">
+2020-06-14
+</td>
+<td style="text-align:left;">
+2016-04-09
+</td>
+<td style="text-align:right;">
+1576
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+calendar_last_scraped
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:left;">
+2020-06-22
+</td>
+<td style="text-align:left;">
+2020-06-23
+</td>
+<td style="text-align:left;">
+2020-06-22
+</td>
+<td style="text-align:right;">
+2
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+first_review
+</td>
+<td style="text-align:right;">
+2835
+</td>
+<td style="text-align:right;">
+0.61
+</td>
+<td style="text-align:left;">
+2011-05-04
+</td>
+<td style="text-align:left;">
+2020-06-22
+</td>
+<td style="text-align:left;">
+2018-08-10
+</td>
+<td style="text-align:right;">
+1730
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+last_review
+</td>
+<td style="text-align:right;">
+2835
+</td>
+<td style="text-align:right;">
+0.61
+</td>
+<td style="text-align:left;">
+2013-10-21
+</td>
+<td style="text-align:left;">
+2020-06-22
+</td>
+<td style="text-align:left;">
+2019-12-25
+</td>
+<td style="text-align:right;">
+1158
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: logical</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+skim_variable
+</th>
+<th style="text-align:right;">
+n_missing
+</th>
+<th style="text-align:right;">
+complete_rate
+</th>
+<th style="text-align:right;">
+mean
+</th>
+<th style="text-align:left;">
+count
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+thumbnail_url
+</td>
+<td style="text-align:right;">
+7323
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+NaN
+</td>
+<td style="text-align:left;">
+:
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+medium_url
+</td>
+<td style="text-align:right;">
+7323
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+NaN
+</td>
+<td style="text-align:left;">
+:
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+xl_picture_url
+</td>
+<td style="text-align:right;">
+7323
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+NaN
+</td>
+<td style="text-align:left;">
+:
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+host_is_superhost
+</td>
+<td style="text-align:right;">
+22
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0.16
+</td>
+<td style="text-align:left;">
+FAL: 6143, TRU: 1158
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+host_has_profile_pic
+</td>
+<td style="text-align:right;">
+22
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:left;">
+TRU: 7282, FAL: 19
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+host_identity_verified
+</td>
+<td style="text-align:right;">
+22
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0.22
+</td>
+<td style="text-align:left;">
+FAL: 5668, TRU: 1633
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+is_location_exact
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0.80
+</td>
+<td style="text-align:left;">
+TRU: 5845, FAL: 1478
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+has_availability
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:left;">
+TRU: 7323
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+requires_license
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:left;">
+FAL: 7323
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+license
+</td>
+<td style="text-align:right;">
+7323
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+NaN
+</td>
+<td style="text-align:left;">
+:
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+jurisdiction_names
+</td>
+<td style="text-align:right;">
+7323
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+NaN
+</td>
+<td style="text-align:left;">
+:
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+instant_bookable
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0.42
+</td>
+<td style="text-align:left;">
+FAL: 4227, TRU: 3096
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+is_business_travel_ready
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:left;">
+FAL: 7323
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+require_guest_profile_picture
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:left;">
+FAL: 7289, TRU: 34
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+require_guest_phone_verification
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0.01
+</td>
+<td style="text-align:left;">
+FAL: 7276, TRU: 47
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: numeric</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+skim_variable
+</th>
+<th style="text-align:right;">
+n_missing
+</th>
+<th style="text-align:right;">
+complete_rate
+</th>
+<th style="text-align:right;">
+mean
+</th>
+<th style="text-align:right;">
+sd
+</th>
+<th style="text-align:right;">
+p0
+</th>
+<th style="text-align:right;">
+p25
+</th>
+<th style="text-align:right;">
+p50
+</th>
+<th style="text-align:right;">
+p75
+</th>
+<th style="text-align:right;">
+p100
+</th>
+<th style="text-align:left;">
+hist
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+id
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+26917907.66
+</td>
+<td style="text-align:right;">
+12153265.75
+</td>
+<td style="text-align:right;">
+49091.00
+</td>
+<td style="text-align:right;">
+17003308.50
+</td>
+<td style="text-align:right;">
+29015280.00
+</td>
+<td style="text-align:right;">
+38251162.00
+</td>
+<td style="text-align:right;">
+43880119.00
+</td>
+<td style="text-align:left;">
+▂▃▅▆▇
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+scrape_id
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+20200622052726.00
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+20200622052726.00
+</td>
+<td style="text-align:right;">
+20200622052726.00
+</td>
+<td style="text-align:right;">
+20200622052726.00
+</td>
+<td style="text-align:right;">
+20200622052726.00
+</td>
+<td style="text-align:right;">
+20200622052726.00
+</td>
+<td style="text-align:left;">
+▁▁▇▁▁
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+host_id
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+106428003.17
+</td>
+<td style="text-align:right;">
+95842331.29
+</td>
+<td style="text-align:right;">
+23666.00
+</td>
+<td style="text-align:right;">
+25422497.00
+</td>
+<td style="text-align:right;">
+66406177.00
+</td>
+<td style="text-align:right;">
+173904781.00
+</td>
+<td style="text-align:right;">
+350083864.00
+</td>
+<td style="text-align:left;">
+▇▂▂▂▁
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+host_listings_count
+</td>
+<td style="text-align:right;">
+22
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+49.57
+</td>
+<td style="text-align:right;">
+90.44
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+9.00
+</td>
+<td style="text-align:right;">
+51.00
+</td>
+<td style="text-align:right;">
+392.00
+</td>
+<td style="text-align:left;">
+▇▁▁▁▁
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+host_total_listings_count
+</td>
+<td style="text-align:right;">
+22
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+49.57
+</td>
+<td style="text-align:right;">
+90.44
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+9.00
+</td>
+<td style="text-align:right;">
+51.00
+</td>
+<td style="text-align:right;">
+392.00
+</td>
+<td style="text-align:left;">
+▇▁▁▁▁
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+latitude
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+1.31
+</td>
+<td style="text-align:right;">
+0.03
+</td>
+<td style="text-align:right;">
+1.24
+</td>
+<td style="text-align:right;">
+1.30
+</td>
+<td style="text-align:right;">
+1.31
+</td>
+<td style="text-align:right;">
+1.32
+</td>
+<td style="text-align:right;">
+1.45
+</td>
+<td style="text-align:left;">
+▂▇▂▁▁
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+longitude
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+103.85
+</td>
+<td style="text-align:right;">
+0.04
+</td>
+<td style="text-align:right;">
+103.65
+</td>
+<td style="text-align:right;">
+103.84
+</td>
+<td style="text-align:right;">
+103.85
+</td>
+<td style="text-align:right;">
+103.87
+</td>
+<td style="text-align:right;">
+103.97
+</td>
+<td style="text-align:left;">
+▁▁▃▇▁
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+accommodates
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+3.25
+</td>
+<td style="text-align:right;">
+2.51
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+2.00
+</td>
+<td style="text-align:right;">
+2.00
+</td>
+<td style="text-align:right;">
+4.00
+</td>
+<td style="text-align:right;">
+16.00
+</td>
+<td style="text-align:left;">
+▇▂▁▁▁
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+bathrooms
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+1.54
+</td>
+<td style="text-align:right;">
+1.16
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+2.00
+</td>
+<td style="text-align:right;">
+21.00
+</td>
+<td style="text-align:left;">
+▇▁▁▁▁
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+bedrooms
+</td>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+1.31
+</td>
+<td style="text-align:right;">
+0.87
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+2.00
+</td>
+<td style="text-align:right;">
+10.00
+</td>
+<td style="text-align:left;">
+▇▁▁▁▁
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+beds
+</td>
+<td style="text-align:right;">
+71
+</td>
+<td style="text-align:right;">
+0.99
+</td>
+<td style="text-align:right;">
+1.98
+</td>
+<td style="text-align:right;">
+2.52
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+2.00
+</td>
+<td style="text-align:right;">
+58.00
+</td>
+<td style="text-align:left;">
+▇▁▁▁▁
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+square_feet
+</td>
+<td style="text-align:right;">
+7292
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+204.55
+</td>
+<td style="text-align:right;">
+245.89
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+200.00
+</td>
+<td style="text-align:right;">
+317.50
+</td>
+<td style="text-align:right;">
+1001.00
+</td>
+<td style="text-align:left;">
+▇▃▁▁▁
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+guests_included
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+1.87
+</td>
+<td style="text-align:right;">
+1.60
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+2.00
+</td>
+<td style="text-align:right;">
+50.00
+</td>
+<td style="text-align:left;">
+▇▁▁▁▁
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+minimum_nights
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+20.73
+</td>
+<td style="text-align:right;">
+46.87
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+2.00
+</td>
+<td style="text-align:right;">
+4.00
+</td>
+<td style="text-align:right;">
+18.00
+</td>
+<td style="text-align:right;">
+1000.00
+</td>
+<td style="text-align:left;">
+▇▁▁▁▁
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+maximum_nights
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+926.67
+</td>
+<td style="text-align:right;">
+1247.89
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+1124.00
+</td>
+<td style="text-align:right;">
+1125.00
+</td>
+<td style="text-align:right;">
+1125.00
+</td>
+<td style="text-align:right;">
+100000.00
+</td>
+<td style="text-align:left;">
+▇▁▁▁▁
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+minimum_minimum_nights
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+20.08
+</td>
+<td style="text-align:right;">
+43.52
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+4.00
+</td>
+<td style="text-align:right;">
+18.00
+</td>
+<td style="text-align:right;">
+1000.00
+</td>
+<td style="text-align:left;">
+▇▁▁▁▁
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+maximum_minimum_nights
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+20.69
+</td>
+<td style="text-align:right;">
+44.16
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+2.00
+</td>
+<td style="text-align:right;">
+5.00
+</td>
+<td style="text-align:right;">
+18.00
+</td>
+<td style="text-align:right;">
+1000.00
+</td>
+<td style="text-align:left;">
+▇▁▁▁▁
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+minimum_maximum_nights
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+880704.99
+</td>
+<td style="text-align:right;">
+43459673.78
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+1124.00
+</td>
+<td style="text-align:right;">
+1125.00
+</td>
+<td style="text-align:right;">
+1125.00
+</td>
+<td style="text-align:right;">
+2147483647.00
+</td>
+<td style="text-align:left;">
+▇▁▁▁▁
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+maximum_maximum_nights
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+1173963.96
+</td>
+<td style="text-align:right;">
+50179480.63
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+1124.00
+</td>
+<td style="text-align:right;">
+1125.00
+</td>
+<td style="text-align:right;">
+1125.00
+</td>
+<td style="text-align:right;">
+2147483647.00
+</td>
+<td style="text-align:left;">
+▇▁▁▁▁
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+minimum_nights_avg_ntm
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+20.33
+</td>
+<td style="text-align:right;">
+43.69
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+2.00
+</td>
+<td style="text-align:right;">
+4.00
+</td>
+<td style="text-align:right;">
+18.00
+</td>
+<td style="text-align:right;">
+1000.00
+</td>
+<td style="text-align:left;">
+▇▁▁▁▁
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+maximum_nights_avg_ntm
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+1173298.32
+</td>
+<td style="text-align:right;">
+50151122.73
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+1124.00
+</td>
+<td style="text-align:right;">
+1125.00
+</td>
+<td style="text-align:right;">
+1125.00
+</td>
+<td style="text-align:right;">
+2147483647.00
+</td>
+<td style="text-align:left;">
+▇▁▁▁▁
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+availability_30
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+15.80
+</td>
+<td style="text-align:right;">
+13.51
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+21.00
+</td>
+<td style="text-align:right;">
+29.00
+</td>
+<td style="text-align:right;">
+30.00
+</td>
+<td style="text-align:left;">
+▇▁▁▂▇
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+availability_60
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+34.32
+</td>
+<td style="text-align:right;">
+26.86
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+51.00
+</td>
+<td style="text-align:right;">
+59.00
+</td>
+<td style="text-align:right;">
+60.00
+</td>
+<td style="text-align:left;">
+▆▁▁▁▇
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+availability_90
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+53.28
+</td>
+<td style="text-align:right;">
+40.15
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+81.00
+</td>
+<td style="text-align:right;">
+89.00
+</td>
+<td style="text-align:right;">
+90.00
+</td>
+<td style="text-align:left;">
+▅▁▁▁▇
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+availability_365
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+195.00
+</td>
+<td style="text-align:right;">
+159.20
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+181.00
+</td>
+<td style="text-align:right;">
+363.00
+</td>
+<td style="text-align:right;">
+365.00
+</td>
+<td style="text-align:left;">
+▆▂▂▁▇
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+number_of_reviews
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+12.46
+</td>
+<td style="text-align:right;">
+31.65
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+8.00
+</td>
+<td style="text-align:right;">
+370.00
+</td>
+<td style="text-align:left;">
+▇▁▁▁▁
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+number_of_reviews_ltm
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+3.79
+</td>
+<td style="text-align:right;">
+9.27
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+2.00
+</td>
+<td style="text-align:right;">
+139.00
+</td>
+<td style="text-align:left;">
+▇▁▁▁▁
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+review_scores_rating
+</td>
+<td style="text-align:right;">
+2969
+</td>
+<td style="text-align:right;">
+0.59
+</td>
+<td style="text-align:right;">
+90.59
+</td>
+<td style="text-align:right;">
+12.47
+</td>
+<td style="text-align:right;">
+20.00
+</td>
+<td style="text-align:right;">
+87.00
+</td>
+<td style="text-align:right;">
+94.00
+</td>
+<td style="text-align:right;">
+100.00
+</td>
+<td style="text-align:right;">
+100.00
+</td>
+<td style="text-align:left;">
+▁▁▁▂▇
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+review_scores_accuracy
+</td>
+<td style="text-align:right;">
+2974
+</td>
+<td style="text-align:right;">
+0.59
+</td>
+<td style="text-align:right;">
+9.23
+</td>
+<td style="text-align:right;">
+1.28
+</td>
+<td style="text-align:right;">
+2.00
+</td>
+<td style="text-align:right;">
+9.00
+</td>
+<td style="text-align:right;">
+10.00
+</td>
+<td style="text-align:right;">
+10.00
+</td>
+<td style="text-align:right;">
+10.00
+</td>
+<td style="text-align:left;">
+▁▁▁▁▇
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+review_scores_cleanliness
+</td>
+<td style="text-align:right;">
+2972
+</td>
+<td style="text-align:right;">
+0.59
+</td>
+<td style="text-align:right;">
+8.99
+</td>
+<td style="text-align:right;">
+1.36
+</td>
+<td style="text-align:right;">
+2.00
+</td>
+<td style="text-align:right;">
+9.00
+</td>
+<td style="text-align:right;">
+9.00
+</td>
+<td style="text-align:right;">
+10.00
+</td>
+<td style="text-align:right;">
+10.00
+</td>
+<td style="text-align:left;">
+▁▁▁▂▇
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+review_scores_checkin
+</td>
+<td style="text-align:right;">
+2978
+</td>
+<td style="text-align:right;">
+0.59
+</td>
+<td style="text-align:right;">
+9.51
+</td>
+<td style="text-align:right;">
+1.07
+</td>
+<td style="text-align:right;">
+2.00
+</td>
+<td style="text-align:right;">
+9.00
+</td>
+<td style="text-align:right;">
+10.00
+</td>
+<td style="text-align:right;">
+10.00
+</td>
+<td style="text-align:right;">
+10.00
+</td>
+<td style="text-align:left;">
+▁▁▁▁▇
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+review_scores_communication
+</td>
+<td style="text-align:right;">
+2974
+</td>
+<td style="text-align:right;">
+0.59
+</td>
+<td style="text-align:right;">
+9.49
+</td>
+<td style="text-align:right;">
+1.11
+</td>
+<td style="text-align:right;">
+2.00
+</td>
+<td style="text-align:right;">
+9.00
+</td>
+<td style="text-align:right;">
+10.00
+</td>
+<td style="text-align:right;">
+10.00
+</td>
+<td style="text-align:right;">
+10.00
+</td>
+<td style="text-align:left;">
+▁▁▁▁▇
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+review_scores_location
+</td>
+<td style="text-align:right;">
+2979
+</td>
+<td style="text-align:right;">
+0.59
+</td>
+<td style="text-align:right;">
+9.38
+</td>
+<td style="text-align:right;">
+1.04
+</td>
+<td style="text-align:right;">
+2.00
+</td>
+<td style="text-align:right;">
+9.00
+</td>
+<td style="text-align:right;">
+10.00
+</td>
+<td style="text-align:right;">
+10.00
+</td>
+<td style="text-align:right;">
+10.00
+</td>
+<td style="text-align:left;">
+▁▁▁▁▇
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+review_scores_value
+</td>
+<td style="text-align:right;">
+2978
+</td>
+<td style="text-align:right;">
+0.59
+</td>
+<td style="text-align:right;">
+8.96
+</td>
+<td style="text-align:right;">
+1.27
+</td>
+<td style="text-align:right;">
+2.00
+</td>
+<td style="text-align:right;">
+9.00
+</td>
+<td style="text-align:right;">
+9.00
+</td>
+<td style="text-align:right;">
+10.00
+</td>
+<td style="text-align:right;">
+10.00
+</td>
+<td style="text-align:left;">
+▁▁▁▂▇
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+calculated_host_listings_count
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+43.73
+</td>
+<td style="text-align:right;">
+75.22
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+2.00
+</td>
+<td style="text-align:right;">
+10.00
+</td>
+<td style="text-align:right;">
+52.00
+</td>
+<td style="text-align:right;">
+335.00
+</td>
+<td style="text-align:left;">
+▇▂▁▁▁
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+calculated_host_listings_count_entire_homes
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+31.83
+</td>
+<td style="text-align:right;">
+72.64
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+23.00
+</td>
+<td style="text-align:right;">
+330.00
+</td>
+<td style="text-align:left;">
+▇▁▁▁▁
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+calculated_host_listings_count_private_rooms
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+8.90
+</td>
+<td style="text-align:right;">
+24.70
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+4.00
+</td>
+<td style="text-align:right;">
+136.00
+</td>
+<td style="text-align:left;">
+▇▁▁▁▁
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+calculated_host_listings_count_shared_rooms
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+0.45
+</td>
+<td style="text-align:right;">
+2.11
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+20.00
+</td>
+<td style="text-align:left;">
+▇▁▁▁▁
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+reviews_per_month
+</td>
+<td style="text-align:right;">
+2835
+</td>
+<td style="text-align:right;">
+0.61
+</td>
+<td style="text-align:right;">
+0.76
+</td>
+<td style="text-align:right;">
+1.33
+</td>
+<td style="text-align:right;">
+0.01
+</td>
+<td style="text-align:right;">
+0.11
+</td>
+<td style="text-align:right;">
+0.30
+</td>
+<td style="text-align:right;">
+0.87
+</td>
+<td style="text-align:right;">
+28.72
+</td>
+<td style="text-align:left;">
+▇▁▁▁▁
+</td>
+</tr>
+</tbody>
+</table>
+<p>An initial inspection using the <code>glimpse</code> and <code>skim</code> functions above shows that the raw data consists of 7323 observations (rows) and 106 variables (columns) and includes both quantitative and qualitative information on AirBnBs in Singapore. It revealed numerous duplicated observations and many missing values which I proceed to remove, alongside any irrelevant variables. Lastly, some quantitative variables (eg. price, cleaning_fee, extra_people) appear with the wrong data type, which I change into numerical.</p>
+<p>Some of the main variables analyzed are described below, with cost data typically expressed in US$:
+- <code>price</code> = cost per night
+- <code>cleaning_fee</code>: cleaning fee
+- <code>extra_people</code>: charge for having more than 1 person
+- <code>property_type</code>: type of accommodation (House, Apartment, etc.)
+- <code>room_type</code>:
+* Entire home/apt (guests have entire place to themselves)
+* Private room (Guests have private room to sleep, all other rooms shared)
+* Shared room (Guests sleep in room shared with others)
+- <code>number_of_reviews</code>: Total number of reviews for the listing
+- <code>review_scores_rating</code>: Average review score (0 - 100)
+- <code>longitude, latitude</code>: geographical coordinates to help us locate the listing
+- <code>neighbourhood</code>: three variables on a few major neighbourhoods in each city
+- <code>square_feet</code>: size of the listing in square feet
+- <code>cancellation policy</code>: type of cancellation policy (flexible, moderate, strict)
+- <code>host_is_identified</code>: indicates if the host has been validated by airbnb (True or False)
+- <code>host_is_superhost</code>: if the host is experienced and has received consistently positive reviews</p>
+<pre class="r"><code>##selecting the needed variables 
+df_fil &lt;- df_raw %&gt;%
+  select(id,listing_url,
+         price, cleaning_fee , extra_people, property_type,  room_type,
+         number_of_reviews, review_scores_rating,  
+         latitude ,longitude , is_location_exact,
+         neighbourhood_cleansed , neighbourhood_group_cleansed, neighbourhood, 
+         bathrooms,bedrooms,beds,
+        host_identity_verified, host_is_superhost, accommodates,
+        cancellation_policy, minimum_nights, guests_included)</code></pre>
+<pre class="r"><code># turn prices, cleaning_fee and extra people into a numeric column
+#and removing the &#39;$&#39; and &#39;,&#39;
+df_fil &lt;- transform(df_fil,price=as.numeric(sub(&quot;\\$&quot;,&quot;&quot;, sub(&quot;,&quot;,&quot;&quot;, price)),na.rm=TRUE),
+                cleaning_fee=as.numeric(sub(&quot;\\$&quot;,&quot;&quot;, sub(&quot;,&quot;,&quot;&quot;, cleaning_fee)),na.rm=TRUE),
+                extra_people=as.numeric(sub(&quot;\\$&quot;,&quot;&quot;, sub(&quot;,&quot;,&quot;&quot;, extra_people)),na.rm=TRUE))</code></pre>
+<pre class="r"><code>df_cleaned &lt;- df_fil%&gt;%
+#removing duplicate ids 
+ filter(duplicated(id) == FALSE) %&gt;%
+#removing listings with missing price
+  filter(is.na(price) == FALSE)</code></pre>
 </div>
-<div id="including-plots" class="section level2">
-<h2>Including Plots</h2>
-<p>You can also embed plots, for example:</p>
-<p><img src="/blogs/singapore_files/figure-html/pressure-1.png" width="672" /></p>
-<p>Note that the <code>echo = FALSE</code> parameter was added to the code chunk to prevent printing of the R code that generated the plot.</p>
 </div>

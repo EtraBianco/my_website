@@ -60,7 +60,7 @@ library(ggfortify)
 library(car)
 ```
 
-```{r}
+```{r, include=FALSE}
 # Creating custom theme and palette for visualizations
 
 # Generate the colors for the chart procedurally with RColorBrewer
@@ -111,11 +111,11 @@ df_raw <- read_csv("listings.csv")
 
 ## Inspecting and cleaning the data 
 
-```{r, cache=TRUE, eval = TRUE, echo = FALSE }
+```{r, cache=TRUE, eval = TRUE, echo = FALSE, include=FALSE}
 #glimpsing the data frame to get a sense of the raw data
 glimpse(df_raw)
 ```
-```{r, cache=TRUE, eval = TRUE, echo = FALSE }
+```{r, cache=TRUE, eval = TRUE, echo = FALSE, include=FALSE }
 #Skim for further inspection of the data frame 
 skimr::skim(df_raw)
 ```

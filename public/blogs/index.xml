@@ -47,7 +47,8 @@ Exploratory Data Analysis Importing and inspecting the data First I import the d
       <pubDate>Tue, 31 Oct 2017 21:28:43 -0500</pubDate>
       
       <guid>/blogs/airbnb/</guid>
-      <description># Creating custom theme and palette for visualizations # Generate the colors for the chart procedurally with RColorBrewer palette &amp;lt;- brewer.pal(&amp;quot;Greys&amp;quot;, n=9) color.background = palette[2] color.grid.major = palette[3] color.axis.text = palette[6] color.axis.title = palette[7] color.title = palette[9] #setting up a fil paletter fill_palette &amp;lt;- c(&amp;#39;#EAAEAE&amp;#39; , &amp;#39;#E8C29C&amp;#39; , &amp;#39;#E4B181&amp;#39; , &amp;#39;#DE9754&amp;#39;) #creating custom theme theme_cust &amp;lt;- theme_minimal(base_size = 13) + theme( #formatting the axis axis.</description>
+      <description>Predicting prices for AirBnBs In this project I will be analysing data about Airbnb listings in Singapore with the goal of building a model to predict the total cost for two people staying four nights in Singapore. The data is from insideairbnb.com
+#importing the raw data from insideairbnb.com df_raw &amp;lt;- read_csv(&amp;quot;listings.csv&amp;quot;) Inspecting and cleaning the data An initial inspection using the glimpse and skim functions above shows that the raw data consists of 7323 observations (rows) and 106 variables (columns) and includes both quantitative and qualitative information on AirBnBs in Singapore.</description>
     </item>
     
   </channel>

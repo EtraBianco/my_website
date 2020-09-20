@@ -193,7 +193,7 @@ disqusShortname = ""
     
     [[params.footer.social]]
       icon = "fa-github"
-      url= "https://github.com/EtraBianco/my_website.git"
+      url= "https://github.com/EtraBianco"
       label = "GitHub"
 
     [[params.footer.social]]

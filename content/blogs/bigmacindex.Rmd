@@ -12,27 +12,183 @@ title: Big Mac Index
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(
+  message = FALSE, 
+  warning = FALSE, 
+  tidy=FALSE,     # display code as typed
+  size="small")   # slightly smaller font for code
+options(digits = 3)
+
+# default figure size
+knitr::opts_chunk$set(
+  fig.width=6.75, 
+  fig.height=6.75,
+  fig.align = "center")
+
+options(scipen=999)
 ```
 
-
-
-## Big Mac Index
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
+```{r load-libraries, warning=FALSE, message=FALSE, echo=FALSE}
+library(tidyverse)  # Loading  packages
+library(mosaic)
+library(ggthemes)
+library(lubridate)
+library(fivethirtyeight)
+library(here)
+library(skimr)
+library(janitor)
+library(vroom)
+library(tidyquant)
+library(ggthemes)
+library(kableExtra)
+library(ggrepel)
+library(RColorBrewer)
+library(scales)
+library(gridExtra)
 ```
 
-## Including Plots
+In 1986 *The Economist* introduced **The Big Mac Index**, providing a unit of comparison for the cost of living in different countries and exchange rates based on the price of a Big Mac burger from McDonald's. Burgernomics was certainly innovative and in the analysis below I dig into [The Economist's data](https://github.com/TheEconomist/big-mac-data) for insights.
 
-You can also embed plots, for example:
+```{r, load_data, echo = TRUE}
+#importing the raw data from The Economist
+source_data <- read_csv("big-mac-source-data.csv")
+historical_data <- read_csv("big-mac-historical-source-data.csv")
+bmindex_data <- read_csv("big-mac-full-index.csv")
+```
+```{r, inspecting_data, echo = FALSE}
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+glimpse(bmindex_data)
+skim(bmindex_data)
+
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+I firstly load and inspect the data from the `bmindex_data`, which is the data frame I will be drawing my analysis from. It displays information for 56 countries dating back to 2000. The most important variables that the data frame includes are:
+<ol>
+- `local_price`: local price for a Big Mac in the local currency
+- `dollar_ex`: the exchange rate to dollars of the country's local currency
+- `dollar_price`: the equivalent dollar price for a Big Mac
+</ol>
+
+# How does the price for a Big Mac vary across countries? 
+
+```{r, slim_data_frame}
+#reducing the data to July 2020 observations only
+recent_data <- bmindex_data %>% 
+  filter(date == c("2020-07-01")) 
+```
+
+```{r}
+favstats(~ dollar_price, data = recent_data)
+```
+
+```{r cheapest_burger, fig.height=5, fig.weight = 10}
+#plotting the variation in price for a Big Mac as of July 2020
+  ggplot(recent_data, aes(x = dollar_price)) +
+  geom_vline(xintercept = 3.58, color = "#DA291C") +
+  geom_density() + 
+  theme_few() +
+  labs(
+    title="A Big Mac costs $3.58 on average around the world",
+    subtitle="Distribution of prices for a big Mac as of July 2020",
+    x="Price(US$)",
+    y="Density") 
+```
+
+As of July 2020 a Big Mac was priced, on average $3.58 around the world. Interestingly, the distribution for the price of a Big Mac is right skewed, suggesting that most countries have a relatively cheaper price, also reflected by the box plot below.
+
+```{r cheapest_burger2, fig.height=5, fig.weight = 10}
+#plotting the variation in price for a Big Mac as of July 2020
+  ggplot(recent_data, aes(x = dollar_price)) +
+  geom_boxplot() +
+  theme_few() +
+  labs(
+    title="A Big Mac costs $3.58 on average around the world",
+    subtitle="Distribution of prices for a big Mac as of July 2020",
+    x="Price(US$)",
+    y="Density") 
+```
+
+Next we look in more detail at which countries are towards the lower level of the spectrum and which instead are the most expensive. 
+
+```{r, most_expensive_burger}
+
+#reducing the data to the cheapest 8 locations in July 2020
+cheapest_july20 <- bmindex_data %>% 
+  filter(date == c("2020-07-01")) %>% 
+  arrange(dollar_price) %>% 
+  head(8)
+
+#graphing the price in US Dollars for the cheapest Big Macs in July 2020
+p1 <- cheapest_july20 %>% 
+  ggplot(aes(x = dollar_price, reorder(name, dollar_price))) +
+  geom_col(fill = "#DA291C") + 
+  theme_few() +
+  labs(
+    title="South Africa has the cheapest Big Mac",
+    subtitle="Price per country of a Big Mac in July 2020 ",
+    x="Price(US$)",
+    y="Country") +
+ scale_x_continuous(expand = c(0,0))
+
+#reducing the data to the most expensive 8 locations in July 2020
+expensive_july20 <- bmindex_data %>% 
+  filter(date == c("2020-07-01")) %>% 
+  arrange(desc(dollar_price)) %>% 
+  head(8)
+  
+
+#graphing the price for the most expensive Big Macs in July 2020
+p2 <- expensive_july20 %>% 
+  arrange(desc(dollar_price)) %>%
+  ggplot(aes(x = dollar_price, y = reorder(name,dollar_price))) +
+  geom_col(fill = "#FFC72C") + 
+  theme_few() +
+  labs(
+    title="Swizerland has the most expensive Big Mac",
+    subtitle="Price per country of a Big Mac in July 2020 ",
+    x="Price(US$)",
+    y="Country") +
+ scale_x_continuous(expand = c(0,0))
+
+
+grid.arrange(p1,p2, nrow = 1)
+```
+
+According to The Economist's data, as of July 2020, South Africa was the country with the cheapest Big Mac (only $1.86) among the countries included in the study.
+Vice versa, Swizerland, with almost 4 times the amount, sold the most expensive ($6.91). 
+
+# Has Covid impacted the price for Big Mac? 
+
+
+```{r graph_for_covid}
+#reducing the data to July 2020 and January observations only
+covid_data <- bmindex_data %>% 
+  filter(date == "2020-07-01" | date == "2020-01-14") 
+  
+```
+
+```{r}
+test<- covid_data %>% 
+  group_by(name) %>%
+  mutate(
+    January= dplyr::first(dollar_price) , 
+    July = dplyr::last(dollar_price)
+  ) %>%
+  select(name,January,July) %>%
+  mutate(percentage_change = round(((July - January)/January)*100,2)) %>% 
+  slice(1:10) 
+ 
+test <- test[!duplicated(test$name),]
+
+test
+
+```
+
+```{r}
+ggplot(test, aes(y = percentage_change, x = name, fill = name, label = name)) +
+  geom_col() + 
+  labs(title = "Percentage change in ", x = "Country", y = "Percentage change") + 
+  geom_text(size = 3, check_overlap = TRUE) +
+  theme(legend.position = "none", axis.text = element_blank(), axis.ticks = element_blank()) 
+
+```

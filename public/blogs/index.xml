@@ -12,22 +12,13 @@
     
     
     <item>
-      <title>Aliquam</title>
-      <link>/blogs/aliquam/</link>
-      <pubDate>Tue, 31 Oct 2017 22:42:51 -0500</pubDate>
-      
-      <guid>/blogs/aliquam/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>Big Mac Index</title>
       <link>/blogs/bigmacindex/</link>
       <pubDate>Tue, 31 Oct 2017 22:42:51 -0500</pubDate>
       
       <guid>/blogs/bigmacindex/</guid>
-      <description>Big Mac Index This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see http://rmarkdown.rstudio.com.
-When you click the Knit button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:</description>
+      <description>In 1986 The Economist introduced The Big Mac Index, providing a unit of comparison for the cost of living in different countries and exchange rates based on the price of a Big Mac burger from McDonald’s. Burgernomics was certainly innovative and in the analysis below I dig into The Economist’s data for insights.
+#importing the raw data from The Economist source_data &amp;lt;- read_csv(&amp;quot;big-mac-source-data.csv&amp;quot;) historical_data &amp;lt;- read_csv(&amp;quot;big-mac-historical-source-data.csv&amp;quot;) bmindex_data &amp;lt;- read_csv(&amp;quot;big-mac-full-index.csv&amp;quot;) ## Rows: 1,386 ## Columns: 19 ## $ date &amp;lt;date&amp;gt; 2000-04-01, 2000-04-01, 2000-04-01, 2000-04-01, 2000-0… ## $ iso_a3 &amp;lt;chr&amp;gt; &amp;quot;ARG&amp;quot;, &amp;quot;AUS&amp;quot;, &amp;quot;BRA&amp;quot;, &amp;quot;CAN&amp;quot;, &amp;quot;CHE&amp;quot;, &amp;quot;CHL&amp;quot;, &amp;quot;CHN&amp;quot;, &amp;quot;CZE&amp;quot;,… ## $ currency_code &amp;lt;chr&amp;gt; &amp;quot;ARS&amp;quot;, &amp;quot;AUD&amp;quot;, &amp;quot;BRL&amp;quot;, &amp;quot;CAD&amp;quot;, &amp;quot;CHF&amp;quot;, &amp;quot;CLP&amp;quot;, &amp;quot;CNY&amp;quot;, &amp;quot;CZK&amp;quot;,… ## $ name &amp;lt;chr&amp;gt; &amp;quot;Argentina&amp;quot;, &amp;quot;Australia&amp;quot;, &amp;quot;Brazil&amp;quot;, &amp;quot;Canada&amp;quot;, &amp;quot;Switzerl… ## $ local_price &amp;lt;dbl&amp;gt; 2.</description>
     </item>
     
     <item>
@@ -51,49 +42,12 @@ Exploratory Data Analysis Importing and inspecting the data First I import the d
     </item>
     
     <item>
-      <title>Tempus</title>
-      <link>/blogs/tempus/</link>
-      <pubDate>Tue, 31 Oct 2017 22:26:13 -0500</pubDate>
-      
-      <guid>/blogs/tempus/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Magna</title>
-      <link>/blogs/magna/</link>
-      <pubDate>Tue, 31 Oct 2017 22:26:09 -0500</pubDate>
-      
-      <guid>/blogs/magna/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>AirBnB</title>
       <link>/blogs/airbnb/</link>
       <pubDate>Tue, 31 Oct 2017 21:28:43 -0500</pubDate>
       
       <guid>/blogs/airbnb/</guid>
-      <description>Prediction of prices for AirBnBs in Singapore.</description>
-    </item>
-    
-    <item>
-      <title>AirBnB</title>
-      <link>/blogs/singapore/</link>
-      <pubDate>Tue, 31 Oct 2017 21:28:43 -0500</pubDate>
-      
-      <guid>/blogs/singapore/</guid>
-      <description>Predicting prices for AirBnBs In this project I will be analysing data about Airbnb listings in Singapore with the goal of building a model to predict the total cost for two people staying four nights in Singapore. The data is from insideairbnb.com
-#importing the raw data from insideairbnb.com df_raw &amp;lt;- read_csv(&amp;quot;listings.csv&amp;quot;) Inspecting and cleaning the data #glimpsing the data frame to get a sense of the raw data glimpse(df_raw) ## Rows: 7,323 ## Columns: 106 ## $ id &amp;lt;dbl&amp;gt; 49091, 50646, 56334, 716… ## $ listing_url &amp;lt;chr&amp;gt; &amp;quot;https://www.</description>
-    </item>
-    
-    <item>
-      <title>Ipsum</title>
-      <link>/blogs/ipsum/</link>
-      <pubDate>Tue, 31 Oct 2017 21:28:43 -0500</pubDate>
-      
-      <guid>/blogs/ipsum/</guid>
-      <description>Nullam et orci eu lorem consequat tincidunt vivamus et sagittis magna sed nunc rhoncus condimentum sem. In efficitur ligula tate urna. Maecenas massa sed magna lacinia magna pellentesque lorem ipsum dolor. Nullam et orci eu lorem consequat tincidunt. Vivamus et sagittis tempus.</description>
+      <description># Creating custom theme and palette for visualizations # Generate the colors for the chart procedurally with RColorBrewer palette &amp;lt;- brewer.pal(&amp;quot;Greys&amp;quot;, n=9) color.background = palette[2] color.grid.major = palette[3] color.axis.text = palette[6] color.axis.title = palette[7] color.title = palette[9] #setting up a fil paletter fill_palette &amp;lt;- c(&amp;#39;#EAAEAE&amp;#39; , &amp;#39;#E8C29C&amp;#39; , &amp;#39;#E4B181&amp;#39; , &amp;#39;#DE9754&amp;#39;) #creating custom theme theme_cust &amp;lt;- theme_minimal(base_size = 13) + theme( #formatting the axis axis.</description>
     </item>
     
   </channel>

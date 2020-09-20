@@ -150,14 +150,12 @@ ggplot(brexit_longer,aes(x=value,y=leave_share)) +
   geom_smooth(method=&quot;lm&quot;,aes(color=party))+
   scale_color_manual(values = c(&quot;#0087dc&quot;,&quot;#d50000&quot;, &quot;#FDBB30&quot;,&quot;#EFE600&quot;),labels=c(&quot;Convervative&quot;,&quot;Labour&quot;,&quot;Lib Dems&quot;,&quot;UKIP&quot;))+
   scale_fill_manual(values = c(&quot;#0087dc&quot;,&quot;#d50000&quot;, &quot;#FDBB30&quot;,&quot;#EFE600&quot;))+
-  theme(legend.position = &quot;right&quot;,legend.box=&quot;horizontal&quot;,aspect.ratio = 0.4)+
+  theme(legend.position = &quot;right&quot;,legend.box=&quot;horizontal&quot;)+
   labs(
     title=&quot;How political affiliation translated to Brexit Voting&quot;,
     x=&quot;Party % in the UK 2015 general election&quot;,
-    y=&quot;Leave % in the 2016 Brexit referendum&quot;,
-    color=&quot;&quot;
-  )+
-  guides(fill=FALSE) +
+    y=&quot;Leave % in the 2016 Brexit referendum&quot;)+
+  guides(fill=FALSE)+
   theme(panel.background = element_rect(fill = &quot;#2B304A&quot;, color = &quot;#2B304A&quot;), 
         panel.grid = element_blank(),
         plot.title = element_text(color = &quot;#C7C8CF&quot;, size = 10),

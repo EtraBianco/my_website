@@ -136,24 +136,6 @@ y = "UK-born residents (as % of total in a constituency)") +
 
 The correlation of almost 0.5, shows a positive correlation between the two variables, the proportion of native born residents in a constituency and the leave share in that constituency (number of Pro-Brexit votes as a percentage of total), further highlighted by the scatterplot. It thus supports the hypothesis that the Brexit outcome was influenced by nationalism and fear of immigration. However, it must be noted that the correlation is moderate, and thus not strong enough to suggest that this was the sole determinant of the referendum's outcome. In line with the correlation described above, it is unsurprising to find that political affiliation translated into Brexit voting, as highlighted by the scatterplot below.
 
-```{r, brexit_plot }
-brexit_longer <- brexit_results %>% pivot_longer(cols=c("con_2015","lab_2015","ld_2015","ukip_2015"),names_to="party")
-
-ggplot(brexit_longer,aes(x=value,y=leave_share)) +
-  geom_point(shape = 21,alpha=0.3,aes(fill=party, color=party))+
-  geom_smooth(method="lm",aes(color=party)) +
-  labs(
-    title="How political affiliation translated to Brexit Voting",
-    x="Party % in the UK 2015 general election",
-    y="Leave % in the 2016 Brexit referendum")+
-  theme(panel.background = element_rect(fill = "#2B304A", color = "#2B304A"), 
-        panel.grid = element_blank(), 
-        plot.background = element_rect(fill = "#2B304A"),
-        legend.background = element_rect(fill = "#2B304A") )
-```
-
-
-
 ```{r figBrexit, fig.width = 10}
 
 brexit_longer <- brexit_results %>% pivot_longer(cols=c("con_2015","lab_2015","ld_2015","ukip_2015"),names_to="party")

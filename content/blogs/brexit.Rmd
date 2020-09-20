@@ -150,6 +150,7 @@ ggplot(brexit_longer,aes(x=value,y=leave_share)) +
     title="How political affiliation translated to Brexit Voting",
     x="Party % in the UK 2015 general election",
     y="Leave % in the 2016 Brexit referendum")+
+  guides(fill=FALSE)+
   theme(panel.background = element_rect(fill = "#2B304A", color = "#2B304A"), 
         panel.grid = element_blank(),
         plot.title = element_text(color = "#C7C8CF", size = 10),

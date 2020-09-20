@@ -56,7 +56,7 @@ weather <-
 
 Firstly I *inspect* the data frame weather, which consists of 140 rows, corresponding to observations, and 19 columns, the variables describing each observation. To adjust the data frame for my analysis, I select the relevant columns (`Year` and the 12 months variables) and use the function `pivot_longer`to reorder the data points, creating the new data frame below, named `tidyweather`. This displays the monthly deviations from the expected temperature (`delta`) recorded since 1880. 
 
-```{r, eval = FALSE}
+```{r }
 #inspecting the data 
 glimpse(weather)
 # checking for missing values and duplicates

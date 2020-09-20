@@ -208,14 +208,12 @@ test<- covid_data %>%
   select(name,January,July) %>%
   mutate(percentage_change = round(((July - January)/January)*100,2)) %>% 
   slice(1:10) 
- 
 test <- test[!duplicated(test$name),]
-
 test
 
 ```
 
-```{r}
+```{r, fig.height = 5, fig.width=10}
 ggplot(test, aes(y = percentage_change, x = name, fill = name, label = name)) +
   geom_col() + 
   labs(title = "Covid's impact on a Big Mac's price not homogeneous", subtitle = "Percentage change in price between January and July 2020", x = "Country", y = "Percentage change") + 
@@ -229,57 +227,5 @@ ggplot(test, aes(y = percentage_change, x = name, fill = name, label = name)) +
         axis.title = element_text(color = "#C7C8CF"), 
         axis.line = element_line(color = "#C7C8CF"))
 
-```
-
-```{r}
-#reducing the data to 2019 observations only
-data19 <- bmindex_data %>% 
-  filter(date == "2019-01-01" | date == "2019-07-09") 
-  
-prev_yr<- data19 %>% 
-  group_by(name) %>%
-  mutate(
-    January= dplyr::first(dollar_price) , 
-    July = dplyr::last(dollar_price)
-  ) %>%
-  select(name,January,July) %>%
-  mutate(percentage_change = round(((July - January)/January)*100,2)) %>% 
-  slice(1:10) 
- 
-prev_yr <- prev_yr[!duplicated(prev_yr$name),]
-```
-```{r}
-#reducing the data to 2019 observations only
-data18 <- bmindex_data %>% 
-  filter(date == "2018-07-01" | date == "2018-01-01") 
-  
-prev_yr2<- data18 %>% 
-  group_by(name) %>%
-  mutate(
-    January= dplyr::first(dollar_price) , 
-    July = dplyr::last(dollar_price)
-  ) %>%
-  select(name,January,July) %>%
-  mutate(percentage_change = round(((July - January)/January)*100,2)) %>% 
-  slice(1:10) 
- 
-prev_yr2 <- prev_yr2[!duplicated(prev_yr2$name),]
-```
-
-```{r}
-
-#computing summary statistics for percentage change in price 18,19,2020
-price_stats18 <- favstats(~ percentage_change, data = prev_yr2) 
-price_stats19 <- favstats(~ percentage_change, data = prev_yr)
-price_stats20 <- favstats(~ percentage_change, data = test) 
-
-#combined all of the above summary statistics for my variables in one table
-sum_tab <- rbind(price_stats18, price_stats19, price_stats20) %>%
-  #adding a column with the variable names 
-  mutate(year  = c("2018" , "2019" , "2020")) 
-sum_tab[,c(10,1:9)] %>% 
-  #Formatting the table for HTML
-kbl(caption = "Summary Statistics for % change in prices per year") %>% 
-  kable_styling()
 ```
 

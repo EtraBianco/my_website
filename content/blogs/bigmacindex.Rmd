@@ -93,13 +93,13 @@ kbl(caption = "Exchange Rate Mismatch") %>%
   kable_styling() 
 
 ```
-```{r fig.height = 5, fig.width=10}
+```{r plot1, fig.height = 5, fig.width=15}
 
 #plotting the under and over valuation of the exchange rates
 ggplot(er_mismatch, aes(y = percent_miss, x = name, fill = name, label = currency_code)) +
   geom_col() + 
   labs(title = "Most currencies were undervalued against the Dollar in July 2020", subtitle = "Percentage difference between the implied and actual exchange rate", x = "Country", y = "Percentage mismatch") + 
-  geom_text(color = "white",size = 4, y = -0.8, color = "#C7C8CF") +
+  geom_text(color = "white",size = 1.8, y = -0.8, color = "#C7C8CF") +
   theme(legend.position = "right", axis.text = element_blank(), axis.ticks = element_blank(), 
         panel.background = element_rect(fill = "#2B304A", color = "#2B304A"), 
         panel.grid = element_blank(),
@@ -112,13 +112,6 @@ ggplot(er_mismatch, aes(y = percent_miss, x = name, fill = name, label = currenc
         legend.text = element_text(color = "#C7C8CF"),
         legend.title = element_blank(),
          legend.background = element_rect(fill = "#2B304A"))
-
-table_curr <- er_mismatch %>% 
-  select(3:4) %>% 
-#Formatting the table for HTML
-kbl(caption = "Exchange Rate Mismatch") %>% 
-  kable_styling() 
-table_curr 
 
 ```
 Notably, most currencies were undervalued against the dollar in July 2020, with the exception of the Swiss Franc (CHF), the Lebanese Pound (LBP) and the Swedish Krona (SEK).
@@ -135,7 +128,7 @@ recent_data <- bmindex_data %>%
 favstats(~ dollar_price, data = recent_data)
 ```
 
-```{r cheapest_burger, fig.height=5, fig.weight = 10}
+```{r cheapest_burger, fig.height=5, fig.width= 10}
 #plotting the variation in price for a Big Mac as of July 2020
   ggplot(recent_data, aes(x = dollar_price)) +
   geom_vline(xintercept = 3.58, color = "#DA291C") +
@@ -157,7 +150,7 @@ favstats(~ dollar_price, data = recent_data)
 
 As of July 2020 a Big Mac was priced, on average $3.58 around the world. Interestingly, the distribution for the price of a Big Mac is right skewed, suggesting that most countries have a relatively cheaper price, also reflected by the box plot below.
 
-```{r cheapest_burger2, fig.height=5, fig.weight = 10}
+```{r cheapest_burger2, fig.height=5, fig.width= 10}
 #plotting the variation in price for a Big Mac as of July 2020
   ggplot(recent_data, aes(x = dollar_price)) +
   geom_boxplot(color = "#C7C8CF") +
@@ -179,7 +172,7 @@ As of July 2020 a Big Mac was priced, on average $3.58 around the world. Interes
 
 Next we look in more detail at which countries are towards the lower level of the spectrum and which instead are the most expensive. 
 
-```{r, most_expensive_burger, fig.height = 5, fig.width=10}
+```{r, most_expensive_burger, fig.height = 5, fig.width=12}
 
 #reducing the data to the cheapest 8 locations in July 2020
 cheapest_july20 <- bmindex_data %>% 
@@ -268,11 +261,11 @@ test
 
 ```
 
-```{r, fig.height = 5, fig.width=10}
+```{r graph, fig.height = 5, fig.width=10}
 ggplot(test, aes(y = percentage_change, x = name, fill = name, label = name)) +
   geom_col() + 
   labs(title = "Covid's impact on a Big Mac's price not homogeneous", subtitle = "Percentage change in price between January and July 2020", x = "Country", y = "Percentage change") + 
-  geom_text(size = 3, check_overlap = FALSE, color = "#C7C8CF") +
+  geom_text(size = 2, check_overlap = FALSE, color = "#C7C8CF") +
   theme(legend.position = "none", axis.text = element_blank(), axis.ticks = element_blank(), 
         panel.background = element_rect(fill = "#2B304A", color = "#2B304A"), 
         panel.grid = element_blank(),

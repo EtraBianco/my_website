@@ -187,7 +187,7 @@ Australia
 ggplot(er_mismatch, aes(y = percent_miss, x = name, fill = name, label = currency_code)) +
   geom_col() + 
   labs(title = &quot;Most currencies were undervalued against the Dollar in July 2020&quot;, subtitle = &quot;Percentage difference between the implied and actual exchange rate&quot;, x = &quot;Country&quot;, y = &quot;Percentage mismatch&quot;) + 
-  geom_text(color = &quot;white&quot;,size = 4, y = -0.8, color = &quot;#C7C8CF&quot;) +
+  geom_text(color = &quot;white&quot;,size = 1.8, y = -0.8, color = &quot;#C7C8CF&quot;) +
   theme(legend.position = &quot;right&quot;, axis.text = element_blank(), axis.ticks = element_blank(), 
         panel.background = element_rect(fill = &quot;#2B304A&quot;, color = &quot;#2B304A&quot;), 
         panel.grid = element_blank(),
@@ -200,479 +200,8 @@ ggplot(er_mismatch, aes(y = percent_miss, x = name, fill = name, label = currenc
         legend.text = element_text(color = &quot;#C7C8CF&quot;),
         legend.title = element_blank(),
          legend.background = element_rect(fill = &quot;#2B304A&quot;))</code></pre>
-<p><img src="/blogs/bigmacindex_files/figure-html/unnamed-chunk-2-1.png" width="960" style="display: block; margin: auto;" /></p>
-<pre class="r"><code>table_curr &lt;- er_mismatch %&gt;% 
-  select(3:4) %&gt;% 
-#Formatting the table for HTML
-kbl(caption = &quot;Exchange Rate Mismatch&quot;) %&gt;% 
-  kable_styling() 
-table_curr </code></pre>
-<table class="table" style="margin-left: auto; margin-right: auto;">
-<caption>
-<span id="tab:unnamed-chunk-2">Table 2: </span>Exchange Rate Mismatch
-</caption>
-<thead>
-<tr>
-<th style="text-align:left;">
-currency_code
-</th>
-<th style="text-align:left;">
-name
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left;">
-AED
-</td>
-<td style="text-align:left;">
-United Arab Emirates
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-ARS
-</td>
-<td style="text-align:left;">
-Argentina
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-AUD
-</td>
-<td style="text-align:left;">
-Australia
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-AZN
-</td>
-<td style="text-align:left;">
-Azerbaijan
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-BHD
-</td>
-<td style="text-align:left;">
-Bahrain
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-BRL
-</td>
-<td style="text-align:left;">
-Brazil
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-CAD
-</td>
-<td style="text-align:left;">
-Canada
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-CHF
-</td>
-<td style="text-align:left;">
-Switzerland
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-CLP
-</td>
-<td style="text-align:left;">
-Chile
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-CNY
-</td>
-<td style="text-align:left;">
-China
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-COP
-</td>
-<td style="text-align:left;">
-Colombia
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-CRC
-</td>
-<td style="text-align:left;">
-Costa Rica
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-CZK
-</td>
-<td style="text-align:left;">
-Czech Republic
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-DKK
-</td>
-<td style="text-align:left;">
-Denmark
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-EGP
-</td>
-<td style="text-align:left;">
-Egypt
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-EUR
-</td>
-<td style="text-align:left;">
-Euro area
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-GBP
-</td>
-<td style="text-align:left;">
-Britain
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-GTQ
-</td>
-<td style="text-align:left;">
-Guatemala
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-HKD
-</td>
-<td style="text-align:left;">
-Hong Kong
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-HNL
-</td>
-<td style="text-align:left;">
-Honduras
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-HRK
-</td>
-<td style="text-align:left;">
-Croatia
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-HUF
-</td>
-<td style="text-align:left;">
-Hungary
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-IDR
-</td>
-<td style="text-align:left;">
-Indonesia
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-INR
-</td>
-<td style="text-align:left;">
-India
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-ILS
-</td>
-<td style="text-align:left;">
-Israel
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-JOD
-</td>
-<td style="text-align:left;">
-Jordan
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-JPY
-</td>
-<td style="text-align:left;">
-Japan
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-KRW
-</td>
-<td style="text-align:left;">
-South Korea
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-KWD
-</td>
-<td style="text-align:left;">
-Kuwait
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-LBP
-</td>
-<td style="text-align:left;">
-Lebanon
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-LKR
-</td>
-<td style="text-align:left;">
-Sri Lanka
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-MDL
-</td>
-<td style="text-align:left;">
-Moldova
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-MXN
-</td>
-<td style="text-align:left;">
-Mexico
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-MYR
-</td>
-<td style="text-align:left;">
-Malaysia
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-NIO
-</td>
-<td style="text-align:left;">
-Nicaragua
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-NOK
-</td>
-<td style="text-align:left;">
-Norway
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-NZD
-</td>
-<td style="text-align:left;">
-New Zealand
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-OMR
-</td>
-<td style="text-align:left;">
-Oman
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-PKR
-</td>
-<td style="text-align:left;">
-Pakistan
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-PEN
-</td>
-<td style="text-align:left;">
-Peru
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-PHP
-</td>
-<td style="text-align:left;">
-Philippines
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-PLN
-</td>
-<td style="text-align:left;">
-Poland
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-QAR
-</td>
-<td style="text-align:left;">
-Qatar
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-RON
-</td>
-<td style="text-align:left;">
-Romania
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-RUB
-</td>
-<td style="text-align:left;">
-Russia
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-SAR
-</td>
-<td style="text-align:left;">
-Saudi Arabia
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-SGD
-</td>
-<td style="text-align:left;">
-Singapore
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-SEK
-</td>
-<td style="text-align:left;">
-Sweden
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-THB
-</td>
-<td style="text-align:left;">
-Thailand
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-TRY
-</td>
-<td style="text-align:left;">
-Turkey
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-TWD
-</td>
-<td style="text-align:left;">
-Taiwan
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-UAH
-</td>
-<td style="text-align:left;">
-Ukraine
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-UYU
-</td>
-<td style="text-align:left;">
-Uruguay
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-USD
-</td>
-<td style="text-align:left;">
-United States
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-VND
-</td>
-<td style="text-align:left;">
-Vietnam
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-ZAR
-</td>
-<td style="text-align:left;">
-South Africa
-</td>
-</tr>
-</tbody>
-</table>
-<p>Notably, most currencies were undervalued against the dollar in July 2020, with the exception of the Swiss Franc (CHF), the Lebanese Pound (LBP) and the Swedish Krona (SEK).</p>
+<p><img src="/blogs/bigmacindex_files/figure-html/plot1-1.png" width="1440" style="display: block; margin: auto;" />
+Notably, most currencies were undervalued against the dollar in July 2020, with the exception of the Swiss Franc (CHF), the Lebanese Pound (LBP) and the Swedish Krona (SEK).</p>
 </div>
 <div id="how-does-the-price-for-a-big-mac-vary-across-countries" class="section level1">
 <h1>How does the price for a Big Mac vary across countries?</h1>
@@ -699,7 +228,7 @@ recent_data &lt;- bmindex_data %&gt;%
         axis.title = element_text(color = &quot;#C7C8CF&quot;), 
         axis.text = element_text(color = &quot;#C7C8CF&quot;),
         axis.line = element_line(color = &quot;#C7C8CF&quot;))</code></pre>
-<p><img src="/blogs/bigmacindex_files/figure-html/cheapest_burger-1.png" width="648" style="display: block; margin: auto;" /></p>
+<p><img src="/blogs/bigmacindex_files/figure-html/cheapest_burger-1.png" width="960" style="display: block; margin: auto;" /></p>
 <p>As of July 2020 a Big Mac was priced, on average $3.58 around the world. Interestingly, the distribution for the price of a Big Mac is right skewed, suggesting that most countries have a relatively cheaper price, also reflected by the box plot below.</p>
 <pre class="r"><code>#plotting the variation in price for a Big Mac as of July 2020
   ggplot(recent_data, aes(x = dollar_price)) +
@@ -718,7 +247,7 @@ recent_data &lt;- bmindex_data %&gt;%
         axis.title = element_text(color = &quot;#C7C8CF&quot;), 
         axis.text = element_text(color = &quot;#C7C8CF&quot;),
         axis.line = element_line(color = &quot;#C7C8CF&quot;))</code></pre>
-<p><img src="/blogs/bigmacindex_files/figure-html/cheapest_burger2-1.png" width="648" style="display: block; margin: auto;" /></p>
+<p><img src="/blogs/bigmacindex_files/figure-html/cheapest_burger2-1.png" width="960" style="display: block; margin: auto;" /></p>
 <p>Next we look in more detail at which countries are towards the lower level of the spectrum and which instead are the most expensive.</p>
 <pre class="r"><code>#reducing the data to the cheapest 8 locations in July 2020
 cheapest_july20 &lt;- bmindex_data %&gt;% 
@@ -775,7 +304,7 @@ p2 &lt;- expensive_july20 %&gt;%
 
 
 grid.arrange(p1,p2, nrow = 1)</code></pre>
-<p><img src="/blogs/bigmacindex_files/figure-html/most_expensive_burger-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p><img src="/blogs/bigmacindex_files/figure-html/most_expensive_burger-1.png" width="1152" style="display: block; margin: auto;" /></p>
 <p>According to The Economist’s data, as of July 2020, South Africa was the country with the cheapest Big Mac (only $1.86) among the countries included in the study.
 Vice versa, Swizerland, with almost 4 times the amount, sold the most expensive ($6.91).</p>
 </div>
@@ -815,7 +344,7 @@ test</code></pre>
 <pre class="r"><code>ggplot(test, aes(y = percentage_change, x = name, fill = name, label = name)) +
   geom_col() + 
   labs(title = &quot;Covid&#39;s impact on a Big Mac&#39;s price not homogeneous&quot;, subtitle = &quot;Percentage change in price between January and July 2020&quot;, x = &quot;Country&quot;, y = &quot;Percentage change&quot;) + 
-  geom_text(size = 3, check_overlap = FALSE, color = &quot;#C7C8CF&quot;) +
+  geom_text(size = 2, check_overlap = FALSE, color = &quot;#C7C8CF&quot;) +
   theme(legend.position = &quot;none&quot;, axis.text = element_blank(), axis.ticks = element_blank(), 
         panel.background = element_rect(fill = &quot;#2B304A&quot;, color = &quot;#2B304A&quot;), 
         panel.grid = element_blank(),
@@ -824,5 +353,5 @@ test</code></pre>
         plot.background = element_rect(fill = &quot;#2B304A&quot;),
         axis.title = element_text(color = &quot;#C7C8CF&quot;), 
         axis.line = element_line(color = &quot;#C7C8CF&quot;))</code></pre>
-<p><img src="/blogs/bigmacindex_files/figure-html/unnamed-chunk-5-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p><img src="/blogs/bigmacindex_files/figure-html/graph-1.png" width="960" style="display: block; margin: auto;" /></p>
 </div>

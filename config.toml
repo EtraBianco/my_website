@@ -82,7 +82,7 @@ disqusShortname = ""
     # To change the background image on the homepage banner, replace 'banner.jpg' in
     # the 'static/img' folder.
     title = "Etra Bianco"
-    subtitle = "Welcome! This platform showcases my portfolio of data science projects" 
+    subtitle = "Welcome! I am completing a Masters in Analytics and Management at LBS and this platform showcases my portfolio of data science projects" 
     buttonText = "My projects"
 
   # Tiles Section
@@ -138,7 +138,7 @@ disqusShortname = ""
   [params.two]
     enable = true
     title = "About Me"
-    subtitle = "I am an International Management graduate from the University of Bath, with experience in the beverage and beauty industries, who is currently delving into data analytics at London Business School with the aspiration of bringing meaningful insights and lasting impact to businesses. 
+    subtitle = "I am an International Management graduate from the University of Bath, with experience in the beverage and beauty industries, who is currently delving into data analytics at London Business School with the aspiration of bringing meaningful insights and lasting impact to businesses." 
 
   # Contact section
   [params.contact]
